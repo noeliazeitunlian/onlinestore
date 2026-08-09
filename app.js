@@ -8,6 +8,8 @@
     duration: 55,
   };
 
+  let lastRender = null; // { objectiveLabel, populationLabel, result } de la clase mostrada actualmente
+
   // ---------- helpers ----------
   const $ = (sel) => document.querySelector(sel);
   const $$ = (sel) => Array.from(document.querySelectorAll(sel));
@@ -95,18 +97,20 @@
       btn.setAttribute("aria-selected", "true");
       state.discipline = btn.dataset.discipline;
       refreshFormForDiscipline();
+      lastRender = null;
       $("#output-content").classList.add("hidden");
       $("#output-empty").classList.remove("hidden");
     });
   });
 
   // ---------- generate class ----------
-  function filterPool(discipline, moment, modality, level, objective, populationId) {
+  function filterPool(discipline, moment, modality, level, objective, populationId, excludeIds = new Set()) {
     let pool = allExercises().filter(ex =>
       ex.discipline === discipline &&
       ex.moment === moment &&
       (ex.modality.includes(modality) || ex.modality.includes("mixta")) &&
-      ex.level.includes(level)
+      ex.level.includes(level) &&
+      !excludeIds.has(ex.id)
     );
 
     // avoid contraindicated for population
@@ -127,7 +131,9 @@
     if (pool.length) return { pool, fallback: true };
 
     // last resort: ignore level
-    const anyLevel = allExercises().filter(ex => ex.discipline === discipline && ex.moment === moment);
+    const anyLevel = allExercises().filter(ex =>
+      ex.discipline === discipline && ex.moment === moment && !excludeIds.has(ex.id)
+    );
     return { pool: anyLevel, fallback: true };
   }
 
@@ -151,7 +157,80 @@
     renderClass({ objectiveLabel, populationLabel, result });
   }
 
+  // ---------- extender clase sin repetir ejercicios ----------
+  function extendClass() {
+    if (!lastRender) return;
+    state.duration += 20;
+
+    const { objectiveLabel, populationLabel } = lastRender;
+    const objectiveId = $("#objective-select").value;
+    const populationId = $("#population-select").value;
+    const includeWarmup = $("#include-warmup").checked;
+
+    const blocksToUse = BLOCKS.filter(b => includeWarmup || !b.optional);
+    const weightSum = blocksToUse.reduce((s, b) => s + b.weight, 0);
+
+    const usedIds = new Set(lastRender.result.flatMap(r => r.exercises.map(ex => ex.id)));
+
+    const result = blocksToUse.map(block => {
+      const minutes = Math.max(3, Math.round((block.weight / weightSum) * state.duration));
+      const previous = lastRender.result.find(r => r.block.id === block.id);
+      const extraCount = block.id === 3 ? 2 : 1;
+      const { pool, fallback } = filterPool(state.discipline, block.id, state.modality, state.level, objectiveId, populationId, usedIds);
+      const extras = shuffle(pool).slice(0, extraCount);
+      extras.forEach(ex => usedIds.add(ex.id));
+      const exercises = (previous ? previous.exercises : []).concat(extras);
+      return {
+        block,
+        minutes,
+        exercises,
+        fallback: previous ? previous.fallback : fallback,
+        noExtra: !!previous && exercises.length > 0 && extras.length === 0,
+      };
+    });
+
+    renderClass({ objectiveLabel, populationLabel, result });
+  }
+
+  // ---------- descargar clase en PDF ----------
+  function downloadPDF() {
+    const btn = $("#btn-pdf");
+    if (!btn || typeof html2canvas === "undefined" || !window.jspdf) return;
+    const original = btn.textContent;
+    btn.textContent = "Generando…";
+    btn.disabled = true;
+
+    html2canvas($("#output-content"), { scale: 2, backgroundColor: "#FBF1EE" })
+      .then(canvas => {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF({ unit: "pt", format: "a4" });
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        const imgWidth = pageWidth;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        const imgData = canvas.toDataURL("image/png");
+
+        let heightLeft = imgHeight;
+        let position = 0;
+        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+        while (heightLeft > 0) {
+          position = heightLeft - imgHeight;
+          pdf.addPage();
+          pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+          heightLeft -= pageHeight;
+        }
+        pdf.save(`clase-${state.discipline}-${Date.now()}.pdf`);
+      })
+      .catch(() => alert("No se pudo generar el PDF. Probá de nuevo."))
+      .finally(() => {
+        btn.textContent = original;
+        btn.disabled = false;
+      });
+  }
+
   function renderClass({ objectiveLabel, populationLabel, result }) {
+    lastRender = { objectiveLabel, populationLabel, result };
     $("#output-empty").classList.add("hidden");
     const content = $("#output-content");
     content.classList.remove("hidden");
@@ -175,6 +254,8 @@
           ${result.map((r, i) => `<span style="background:${ribbonColors[i % ribbonColors.length]}"></span>`).join("")}
         </div>
         <div class="actions">
+          <button type="button" class="btn-outline" id="btn-pdf">↓ Descargar PDF</button>
+          <button type="button" class="btn-outline" id="btn-extend">+ 20 min sin repetir</button>
           <button type="button" class="btn-outline" id="btn-regenerate">↻ Regenerar clase</button>
           <button type="button" class="btn-outline" id="btn-copy">⎘ Copiar texto</button>
         </div>
@@ -186,7 +267,7 @@
       </div>
     `;
 
-    result.forEach(({ block, minutes, exercises, fallback }) => {
+    result.forEach(({ block, minutes, exercises, fallback, noExtra }) => {
       html += `<div class="block">
         <div class="block-head">
           <div class="block-num">${block.id}</div>
@@ -202,6 +283,9 @@
       } else {
         if (fallback) {
           html += `<p class="block-empty">Mostrando ejercicios similares (no hay carga exacta para este objetivo/nivel en este bloque todavía).</p>`;
+        }
+        if (noExtra) {
+          html += `<p class="block-empty">No hay más ejercicios nuevos para sumar en este bloque sin repetir.</p>`;
         }
         exercises.forEach(ex => {
           html += `<div class="exercise-card">
@@ -229,6 +313,8 @@
     content.innerHTML = html;
 
     $("#btn-regenerate").addEventListener("click", buildClass);
+    $("#btn-extend").addEventListener("click", extendClass);
+    $("#btn-pdf").addEventListener("click", downloadPDF);
     $("#btn-copy").addEventListener("click", () => {
       navigator.clipboard.writeText(content.innerText).then(() => {
         const b = $("#btn-copy");
