@@ -87,12 +87,63 @@
     return `pensado específicamente para nivel ${levelLabel.toLowerCase()}`;
   }
 
+  // Principio general de seguridad por condición + cómo aplicarlo en el ejercicio puntual.
+  // Se usa como base para CUALQUIER ejercicio; si el ejercicio tiene "adaptations" cargado
+  // a mano para esa condición, ese contenido específico tiene prioridad sobre este genérico.
+  const CONDITION_GUIDANCE = {
+    "Osteoporosis / osteopenia": {
+      principle: "evitar la flexión de columna combinada con rotación y cualquier carga de impacto",
+      suggestion: "trabajá dentro de un rango más neutro de columna, sin buscar el máximo de flexión ni de rotación, y con apoyos que reduzcan la carga articular",
+    },
+    "Hernia de disco lumbar": {
+      principle: "evitar la flexión lumbar profunda y la rotación forzada bajo carga",
+      suggestion: "reducí el rango de flexión hacia adelante, mantené la columna más neutra y priorizá el control abdominal antes que la amplitud del movimiento",
+    },
+    "Embarazo / posparto": {
+      principle: "evitar la posición boca abajo, la presión abdominal directa y las torsiones cerradas",
+      suggestion: "adaptá la posición (de costado, sentada o de pie según convenga), reducí la intensidad y priorizá la respiración por sobre el rango de movimiento",
+    },
+    "Problemas de cadera / prótesis": {
+      principle: "evitar el rango extremo de flexión, rotación interna o cruzar la línea media de cadera",
+      suggestion: "trabajá dentro de un rango cómodo y menor, sumando apoyos (bloques, silla, pared) que sostengan la articulación",
+    },
+    "Post-cirugía de rodilla": {
+      principle: "evitar la flexión profunda de rodilla y la carga con pivote sobre la rodilla flexionada",
+      suggestion: "reducí el rango de flexión de rodilla, trabajá con menor carga o apoyo adicional, y evitá cualquier torsión con el pie fijo",
+    },
+    "Hipermovilidad": {
+      principle: "evitar buscar el rango máximo o bloquear las articulaciones al final del recorrido",
+      suggestion: "sostené el movimiento dentro de un rango controlado, activando el músculo en vez de apoyarte en el límite articular",
+    },
+    "Fibromialgia": {
+      principle: "evitar sostenidos largos, cargas altas o cambios bruscos de ritmo que puedan generar sobrecarga",
+      suggestion: "reducí el tiempo de sostén y la intensidad, sumá pausas y dejá que la alumna regule el ritmo según su energía del día",
+    },
+    "Disfunción de suelo pélvico": {
+      principle: "evitar retener el aire o generar presión intraabdominal alta (maniobra de Valsalva)",
+      suggestion: "coordiná el esfuerzo con una exhalación activa y reducí la intensidad o el rango si aparece sensación de presión hacia abajo",
+    },
+  };
+
   function getAdaptationForCondition(ex, tag) {
+    // 1) contenido específico cargado a mano para este ejercicio y esta condición puntual
     if (ex.adaptations && ex.adaptations[tag]) return ex.adaptations[tag];
-    if ((ex.avoid || []).includes(tag)) {
-      return ex.adaptation || "Esta condición está marcada para este ejercicio: reducí rango, carga o velocidad, o proponé una alternativa según cómo se sienta la alumna.";
+
+    const guidance = CONDITION_GUIDANCE[tag];
+    const taggedHere = (ex.avoid || []).includes(tag);
+
+    // 2) el ejercicio ya trae una adaptación general y esta condición es la que la motiva
+    const specificNote = taggedHere && ex.adaptation
+      ? ` Para este ejercicio en particular: ${ex.adaptation.charAt(0).toLowerCase()}${ex.adaptation.slice(1)}`
+      : "";
+
+    if (!guidance) {
+      return ex.adaptation || "No hay un ajuste específico registrado; individualizá el rango y la intensidad, y ante cualquier duda consultá con el profesional tratante de la alumna.";
     }
-    return "No hay una restricción específica registrada para esta condición en este ejercicio. De todas formas, individualizá el rango y la intensidad, y ante cualquier duda consultá con el profesional tratante de la alumna.";
+
+    // 3) siempre generamos una adaptación aplicable a "este" ejercicio, combinando el
+    // principio general de la condición con el nombre del ejercicio que se está mostrando
+    return `Para esta condición, en general conviene ${guidance.principle}. En "${ex.name}": ${guidance.suggestion}.${specificNote}`;
   }
 
   // ---------- render form options depending on discipline ----------
