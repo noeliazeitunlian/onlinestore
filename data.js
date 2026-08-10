@@ -21,12 +21,12 @@
    ============================================================ */
 
 const BLOCKS = [
-  { id: 1, name: "Preparación",         subtitle: "Conectar con el cuerpo y la respiración",     weight: 0.15, optional: true },
-  { id: 2, name: "Activación",          subtitle: "Despertar el centro, sentar las bases",        weight: 0.17 },
-  { id: 3, name: "Desarrollo Principal",subtitle: "El patrón central, ligado al objetivo elegido",weight: 0.22 },
-  { id: 4, name: "Profundización",      subtitle: "Variación, carga o coordinación sobre lo aprendido", weight: 0.17 },
-  { id: 5, name: "Integración",         subtitle: "Secuencia fluida que une lo trabajado",        weight: 0.14 },
-  { id: 6, name: "Cierre",              subtitle: "Vuelta al eje, respiración, sensación final",  weight: 0.15 },
+  { id: 1, name: "Preparar el Cuerpo",              subtitle: "Llevar la atención al cuerpo, activar la respiración",        weight: 0.15, optional: true },
+  { id: 2, name: "Activar el Centro",               subtitle: "Despertar el centro, sentar las bases",                       weight: 0.17 },
+  { id: 3, name: "Construir el Patrón Principal",   subtitle: "El patrón central, ligado al objetivo elegido",               weight: 0.22 },
+  { id: 4, name: "Desafiar sin Desordenar",         subtitle: "Variación, carga o coordinación sobre lo aprendido",          weight: 0.17 },
+  { id: 5, name: "Integrar en Movimiento Global",   subtitle: "Secuencia fluida que une lo trabajado",                       weight: 0.14 },
+  { id: 6, name: "Cerrar con Conciencia",           subtitle: "Vuelta al eje, respiración, sensación final",                 weight: 0.15 },
 ];
 
 const OBJECTIVES = {
@@ -67,11 +67,13 @@ const POPULATIONS = [
 ];
 
 const AVOID_TAGS = [
+  "Osteoporosis / osteopenia",
   "Hernia de disco lumbar",
   "Embarazo / posparto",
   "Problemas de cadera / prótesis",
   "Post-cirugía de rodilla",
   "Hipermovilidad",
+  "Fibromialgia",
   "Disfunción de suelo pélvico",
 ];
 
@@ -88,6 +90,17 @@ const EXERCISES = [
     description: "Apoyada en manos y rodillas, dirigí el aire hacia las costillas laterales al inhalar y sentí cómo se estrechan al exhalar, activando el centro antes de empezar a moverte.",
     howTo: "Pedí que sientan que las costillas se abren como un acordeón hacia los costados.",
     adaptation: "Si las muñecas molestan, apoyar los antebrazos en el piso en lugar de las manos.",
+    coaching: {
+      verbal: "Guiá con calma: inhalá abriendo las costillas hacia los costados, exhalá cerrando suavemente sin hundir la espalda.",
+      imagenMental: "Las costillas son como las varillas de un abanico que se abre a los lados con el aire.",
+      tactil: "Apoyá tus manos, con permiso, a los costados de las costillas de la alumna para que sienta hacia dónde tiene que expandir.",
+      pregunta: "¿Sentís que el aire llega más a los costados que hacia arriba, al pecho?",
+    },
+    progression: "en cuadrupedia ya es una base accesible para cualquier nivel; para progresar, sumá conciencia de la espalda baja durante la inhalación",
+    adaptations: {
+      "Embarazo / posparto": "Apoyar manos y rodillas separadas al ancho de cadera y dejar espacio para el abdomen; reducir el tiempo de sostén si aparece fatiga.",
+      "Problemas de cadera / prótesis": "Colocar una manta doblada debajo de las rodillas para reducir la presión en la cadera de apoyo.",
+    },
     seriesDefault: 1,
   },
   {
@@ -103,6 +116,17 @@ const EXERCISES = [
     description: "De pie, dejá caer la cabeza y desenrollá la columna vértebra por vértebra hacia el piso, soltando cuello y hombros, y luego subí enrollando desde la base.",
     howTo: "Contá las vértebras en voz baja mientras bajan, como si fueran cuentas de un collar.",
     adaptation: "Flexionar las rodillas si los isquiotibiales están tensos o si aparece molestia lumbar.",
+    coaching: {
+      verbal: "Pedí que dejen caer la cabeza primero, después los hombros, y recién ahí empiecen a desenrollar el resto de la columna.",
+      imagenMental: "La columna se despliega como una cortina que baja despacio, vértebra por vértebra.",
+      tactil: "Apoyá una mano suavemente sobre la zona media de la espalda para marcar el punto por donde sigue el desenrollado.",
+      pregunta: "¿Podés sentir cada vértebra por separado, o baja todo el torso de un solo bloque?",
+    },
+    progression: "sostené el ritmo lento en todos los niveles; para progresar, sumá una pausa de dos respiraciones a mitad de camino",
+    adaptations: {
+      "Hipermovilidad": "Pedir que no busquen el rango máximo hacia abajo: frenar el descenso antes del punto de mayor flexión y sostener con el abdomen activo.",
+      "Osteoporosis / osteopenia": "Evitar la flexión completa de columna; limitar el recorrido a una inclinación suave manteniendo la espalda más neutra.",
+    },
     seriesDefault: 2,
   },
   {
@@ -130,6 +154,17 @@ const EXERCISES = [
     description: "Con las rodillas en mesa y la cabeza apoyada, bombeá los brazos suavemente al costado del cuerpo mientras sostenés la respiración en cinco tiempos, activando el centro sin tensar el cuello.",
     howTo: "Si el cuello tensa, pedí que apoyen la cabeza y trabajen solo con los brazos.",
     adaptation: "Mantener la cabeza apoyada en el piso durante toda la serie si el cuello se fatiga.",
+    coaching: {
+      verbal: "Pedí que mantengan la cabeza apoyada y bombeen los brazos parejo, sin que se acelere la respiración.",
+      imagenMental: "Los brazos golpean el aire como si estuvieran chapoteando agua, livianos y parejos.",
+      tactil: "Apoyá dos dedos sobre el abdomen bajo para que sienta que se mantiene firme mientras los brazos se mueven.",
+      pregunta: "¿El abdomen se mantiene firme o se abulta cuando bombeás los brazos?",
+    },
+    progression: "con la cabeza apoyada es la entrada a este patrón; para progresar hacia niveles más avanzados, se suma el enrollado del torso",
+    adaptations: {
+      "Disfunción de suelo pélvico": "Coordinar el bombeo de brazos con una exhalación suave y sostenida, sin retener el aire ni empujar hacia abajo.",
+      "Hernia de disco lumbar": "Mantener ambas rodillas apoyadas en el piso en lugar de en mesa, para reducir la exigencia sobre la zona lumbar.",
+    },
     seriesDefault: 1,
   },
   {
@@ -143,6 +178,16 @@ const EXERCISES = [
     objective: ["tren-superior"],
     description: "Sentada de espaldas al cabezal, empujá la barra hacia adelante y abajo con carga liviana, organizando primero las escápulas y luego extendiendo los codos con control.",
     howTo: "Pedí que bajen los omóplatos antes de que las manos se muevan un centímetro.",
+    coaching: {
+      verbal: "Pedí que bajen y atrás los omóplatos antes de que las manos empiecen a moverse.",
+      imagenMental: "Los omóplatos se deslizan hacia los bolsillos traseros del pantalón antes de que se muevan los brazos.",
+      tactil: "Apoyá una mano sobre el omóplato para que sienta el punto exacto donde tiene que anclar antes de tirar de la barra.",
+      pregunta: "¿Sentís que el movimiento arranca desde la espalda o desde los brazos?",
+    },
+    progression: "con carga liviana alcanza para organizar el patrón; progresá aumentando levemente la resistencia una vez que el control escapular es estable",
+    adaptations: {
+      "Problemas de cadera / prótesis": "Sentarse sobre un cojín o step para elevar levemente la cadera y aliviar la flexión de cadera al estar sentada.",
+    },
     seriesDefault: 3,
   },
   {
@@ -172,6 +217,17 @@ const EXERCISES = [
     description: "Con una rodilla al pecho y la otra pierna extendida en el aire, sostené el torso estable mientras alternás las piernas de forma lenta y controlada.",
     howTo: "Pedí que mantengan la zona lumbar apoyada, sin que se despegue al cambiar de pierna.",
     adaptation: "Apoyar la cabeza en el piso y mantener ambas rodillas flexionadas si el cuello o el abdomen se fatigan.",
+    coaching: {
+      verbal: "Pedí que mantengan la zona lumbar apoyada mientras alternan las piernas, sin acelerar el ritmo.",
+      imagenMental: "Las piernas se turnan como si estuvieran pedaleando una bicicleta muy lenta y controlada.",
+      tactil: "Apoyá dos dedos debajo de la zona lumbar para que sienta si se despega al cambiar de pierna.",
+      pregunta: "¿La zona lumbar se mantiene en contacto con el piso todo el tiempo, o se despega en algún cambio?",
+    },
+    progression: "con la cabeza apoyada y ritmo lento es la base; progresá sumando el enrollado del torso cuando el control lumbar sea sólido",
+    adaptations: {
+      "Hernia de disco lumbar": "Reducir la altura de la pierna extendida y acortar el recorrido, priorizando que la zona lumbar no se despegue del piso.",
+      "Embarazo / posparto": "Trabajar con movimientos más pequeños y controlados, evitando la presión abdominal excesiva; suspender si genera molestia.",
+    },
     seriesDefault: 3,
   },
   {
@@ -201,6 +257,17 @@ const EXERCISES = [
     description: "Con el torso enrollado y las piernas extendidas en diagonal, bombeá los brazos con energía sosteniendo el abdomen conectado y el cuello relajado durante toda la serie de respiraciones.",
     howTo: "Si el cuello se tensa, pedí que bajen la cabeza y sigan solo con las piernas.",
     adaptation: "Mantener las rodillas flexionadas en mesa y la cabeza apoyada para reducir la exigencia abdominal y cervical.",
+    coaching: {
+      verbal: "Pedí que mantengan el cuello relajado y el abdomen conectado durante las cien respiraciones.",
+      imagenMental: "Los brazos laten como el aleteo rápido y chico de un colibrí, sin perder el eje del torso.",
+      tactil: "Apoyá una mano bajo la nuca para chequear que no haya tensión excesiva mientras sostiene el enrollado.",
+      pregunta: "¿Podés sostener el enrollado del torso sin que el cuello empiece a cargarse?",
+    },
+    progression: "el enrollado completo con piernas en diagonal es para niveles intermedio/avanzado; para progresar, extendé más las piernas manteniendo el mismo control abdominal",
+    adaptations: {
+      "Hernia de disco lumbar": "Mantener las rodillas flexionadas en mesa y la cabeza apoyada en el piso durante toda la serie, sin enrollar el torso.",
+      "Embarazo / posparto": "Reemplazar por la versión con cabeza apoyada y sin enrollado de torso, priorizando la respiración y el bombeo de brazos.",
+    },
     seriesDefault: 1,
   },
   {
@@ -229,6 +296,17 @@ const EXERCISES = [
     description: "Con una pierna extendida hacia el techo, dibujá círculos amplios y controlados mientras la pelvis permanece completamente quieta; luego repetí la misma cantidad con la otra pierna.",
     howTo: "Si la pelvis se balancea, pedí que achiquen el círculo hasta recuperar el control.",
     adaptation: "Flexionar levemente la rodilla de la pierna que se mueve para reducir la palanca.",
+    coaching: {
+      verbal: "Pedí que dibujen círculos amplios solo mientras la pelvis se mantiene absolutamente quieta.",
+      imagenMental: "La pierna dibuja el borde de un plato imaginario en el aire, sin que la pelvis se entere.",
+      tactil: "Apoyá las manos sobre ambos lados de la pelvis para que sienta si se balancea con el círculo.",
+      pregunta: "¿En qué parte del círculo sentís que la pelvis empieza a moverse?",
+    },
+    progression: "con la rodilla algo flexionada se reduce la palanca; progresá extendiendo más la pierna a medida que el control mejora",
+    adaptations: {
+      "Problemas de cadera / prótesis": "Reducir mucho el tamaño del círculo y trabajar dentro de un rango cómodo, sin cruzar la línea media del cuerpo.",
+      "Hipermovilidad": "Evitar buscar el rango máximo del círculo; priorizar el control muscular sobre la amplitud del movimiento.",
+    },
     seriesDefault: 3,
   },
   {
@@ -257,6 +335,17 @@ const EXERCISES = [
     description: "Sentada con las piernas abiertas, rotá el torso hacia un lado y estirá el brazo opuesto hacia el pie como serruchando, manteniendo ambos isquiones apoyados en el piso.",
     howTo: "Pedí que ambos isquiones se mantengan apoyados durante toda la rotación hacia los dos lados.",
     adaptation: "Reducir la flexión hacia adelante y mantener la columna más erguida durante la rotación.",
+    coaching: {
+      verbal: "Pedí que ambos isquiones se mantengan apoyados mientras el torso rota hacia cada lado.",
+      imagenMental: "El brazo serrucha el aire hacia el pie de adelante, como si cortara con un serrucho imaginario.",
+      tactil: "Apoyá una mano sobre el isquion que tiende a despegarse para que la alumna registre dónde sostener el peso.",
+      pregunta: "¿Sentís que un lado de la cadera se levanta más que el otro al rotar?",
+    },
+    progression: "mantener la columna más erguida y rotar menos es la entrada; progresá aumentando el rango de flexión hacia adelante en cada rotación",
+    adaptations: {
+      "Hernia de disco lumbar": "Reducir la flexión hacia adelante y priorizar la rotación con la columna erguida, sin buscar tocar el pie.",
+      "Osteoporosis / osteopenia": "Evitar la flexión combinada con rotación completa; trabajar solo la rotación de torso manteniendo la columna neutra.",
+    },
     seriesDefault: 3,
   },
   {
@@ -286,6 +375,17 @@ const EXERCISES = [
     description: "Boca abajo con brazos y piernas extendidos, elevá levemente brazo y pierna opuestos alternando en un ritmo continuo, como si nadaras, sosteniendo el centro activo todo el tiempo.",
     howTo: "Pedí un movimiento chico y rápido, sin que la zona lumbar se comprima.",
     adaptation: "Reducir la altura de brazos y piernas o trabajar de a un lado por vez.",
+    coaching: {
+      verbal: "Pedí un movimiento chico y rápido de brazo y pierna opuestos, sin que la zona lumbar se comprima.",
+      imagenMental: "El cuerpo se mueve como si nadara en aguas muy poco profundas, con movimientos cortos y parejos.",
+      tactil: "Apoyá una mano suavemente sobre la zona lumbar para que sienta si se comprime al elevar brazo y pierna.",
+      pregunta: "¿La zona lumbar se siente comprimida o se mantiene larga durante el movimiento?",
+    },
+    progression: "con movimientos de menor amplitud es más accesible; progresá aumentando la altura de brazo y pierna manteniendo la zona lumbar larga",
+    adaptations: {
+      "Embarazo / posparto": "Evitar la posición prona; reemplazar por cuadrupedia, elevando brazo y pierna opuestos con el mismo patrón.",
+      "Disfunción de suelo pélvico": "Coordinar el movimiento con una exhalación activa, evitando retener el aire durante las elevaciones.",
+    },
     seriesDefault: 2,
   },
   {
@@ -301,6 +401,18 @@ const EXERCISES = [
     description: "En posición de plancha con las manos en la barra, empujá el carro alejándolo con las piernas mientras el cuerpo se mantiene en una línea recta de cabeza a talones.",
     howTo: "Pedí que la cadera no suba ni baje: la línea del cuerpo se mantiene entera.",
     adaptation: "Realizar el movimiento con las rodillas apoyadas en la plataforma en lugar de en plancha completa.",
+    coaching: {
+      verbal: "Pedí que la línea de cabeza a talones se mantenga entera mientras el carro se aleja y regresa.",
+      imagenMental: "El cuerpo es una tabla rígida que se desliza entera, sin que ninguna parte se adelante o se atrase.",
+      tactil: "Apoyá una mano sobre la zona lumbar para chequear que no se hunda mientras el carro se aleja.",
+      pregunta: "¿La cadera se mantiene alineada con los hombros y los talones, o sube o baja en algún punto?",
+    },
+    progression: "es un ejercicio de nivel avanzado; para acercarse a él antes de dominarlo, practicá el mismo patrón con las rodillas apoyadas en la plataforma",
+    adaptations: {
+      "Embarazo / posparto": "Evitar por completo la posición de plancha; trabajar el mismo patrón de empuje con las rodillas apoyadas y menor carga.",
+      "Disfunción de suelo pélvico": "Reducir la distancia que recorre el carro y coordinar el esfuerzo con la exhalación, sin retener el aire.",
+      "Hipermovilidad": "Evitar bloquear los codos; mantenerlos con una leve flexión activa durante todo el recorrido.",
+    },
     seriesDefault: 3,
   },
   {
@@ -329,6 +441,17 @@ const EXERCISES = [
     description: "Sentate hacia atrás sobre los talones con los brazos extendidos al frente, soltando el peso de la espalda y respirando hacia la zona lumbar durante unas respiraciones.",
     howTo: "Pedí que sientan cómo se separan las vértebras con cada exhalación.",
     adaptation: "Colocar una almohada entre los talones y los glúteos si hay molestia en rodillas o tobillos.",
+    coaching: {
+      verbal: "Pedí que suelten el peso de la espalda hacia atrás, sin sostener tensión en los brazos.",
+      imagenMental: "La espalda se estira como una banda elástica que se suelta después de todo el trabajo de la clase.",
+      tactil: "Apoyá una mano suave sobre el sacro para invitar a que el peso caiga hacia los talones.",
+      pregunta: "¿Sentís que la respiración llega hasta la espalda baja en esta posición?",
+    },
+    progression: "es una postura de cierre válida para todos los niveles; no requiere progresión, solo ajustar el tiempo de permanencia según la energía del grupo",
+    adaptations: {
+      "Post-cirugía de rodilla": "Colocar una almohada entre los talones y los glúteos, o realizar la variante sentada con las piernas extendidas hacia adelante.",
+      "Embarazo / posparto": "Separar más las rodillas para dejar espacio al abdomen, o reemplazar por una posición sentada con torso apoyado en una almohada.",
+    },
     seriesDefault: 1,
   },
   {
@@ -342,6 +465,13 @@ const EXERCISES = [
     objective: ["centro", "lumbopelvica", "principiantes-abs", "miedo-movimiento"],
     description: "Acostada con las rodillas flexionadas, volvé a la columna neutra del comienzo y notá los cambios en el apoyo, la respiración y la tensión general del cuerpo.",
     howTo: "Invitá a comparar en silencio cómo se siente el cuerpo ahora respecto al inicio de la clase.",
+    coaching: {
+      verbal: "Invitá a comparar en silencio cómo se siente el cuerpo ahora respecto al inicio de la clase.",
+      imagenMental: "El cuerpo vuelve al mismo punto de partida, pero ahora con más información sobre sí mismo.",
+      tactil: "No hace falta contacto físico en este cierre; dejá que la alumna registre las sensaciones por su cuenta.",
+      pregunta: "¿Qué cambió entre la respiración del comienzo y esta, ahora?",
+    },
+    progression: "es un cierre apto para todos los niveles, sin necesidad de progresión",
     seriesDefault: 1,
   },
   {
@@ -747,6 +877,16 @@ const EXERCISES = [
     objective: ["enraizamiento", "adultos-mayores", "principiantes-abs", "miedo-movimiento"],
     description: "Acostada con las rodillas flexionadas, apoyá una mano en el pecho y otra en el abdomen, y sentí cómo se expande primero el abdomen y luego el pecho al inhalar.",
     howTo: "Pedí que la mano del abdomen suba antes que la del pecho en cada inhalación.",
+    coaching: {
+      verbal: "Pedí que la mano del abdomen suba antes que la del pecho en cada inhalación.",
+      imagenMental: "El abdomen se infla como un globo suave que se llena de aire antes de que el pecho se expanda.",
+      tactil: "Apoyá tu mano sobre el abdomen de la alumna, con su permiso, para que sienta el movimiento antes de hacerlo sola.",
+      pregunta: "¿La mano del abdomen se mueve antes o al mismo tiempo que la del pecho?",
+    },
+    progression: "es la base respiratoria para todos los niveles; no necesita progresión, solo sostener la atención más tiempo con la práctica",
+    adaptations: {
+      "Embarazo / posparto": "Elevar el torso con almohadones en lugar de estar completamente acostada, para reducir la presión sobre el abdomen.",
+    },
     seriesDefault: 1,
   },
   {
@@ -762,6 +902,17 @@ const EXERCISES = [
     description: "Sentada con las piernas cruzadas, girá el torso hacia un lado apoyando una mano detrás y la otra sobre la rodilla opuesta, alargando la columna antes de girar.",
     howTo: "Pedí que crezcan con la inhalación y giren un poco más con la exhalación; luego repitan del otro lado.",
     adaptation: "Realizar el giro con menor amplitud o sentada sobre una manta para elevar la cadera.",
+    coaching: {
+      verbal: "Pedí que crezcan con la inhalación y giren un poco más con la exhalación, sin forzar.",
+      imagenMental: "La columna gira como un tornillo que sube mientras se enrosca, sin perder altura.",
+      tactil: "Apoyá una mano sobre el hombro más alejado para acompañar el giro sin empujar de más.",
+      pregunta: "¿Sentís que el giro nace de la cintura hacia arriba, o solo mueven los hombros?",
+    },
+    progression: "con menor amplitud es la entrada para cualquier nivel; progresá aumentando el rango de rotación a medida que la columna se sienta más libre",
+    adaptations: {
+      "Embarazo / posparto": "Realizar una torsión abierta (girando hacia el lado de la pierna cruzada) en lugar de una torsión cerrada, para no comprimir el abdomen.",
+      "Hernia de disco lumbar": "Reducir considerablemente la amplitud del giro y priorizar el alargamiento de columna por sobre la rotación.",
+    },
     seriesDefault: 1,
   },
   {
@@ -791,6 +942,17 @@ const EXERCISES = [
     description: "Con las manos debajo de los hombros y las rodillas apoyadas en el piso, sostené el torso en línea recta desde la cabeza hasta las rodillas, activando el abdomen.",
     howTo: "Pedí que empujen el piso alejándolo, para que los omóplatos no se hundan.",
     adaptation: "Apoyar el torso sobre los antebrazos en lugar de las manos si las muñecas molestan.",
+    coaching: {
+      verbal: "Pedí que empujen el piso alejándolo para que los omóplatos no se hundan entre sí.",
+      imagenMental: "El torso se mantiene como una tabla apoyada sobre dos patas firmes, sin que el centro se hunda.",
+      tactil: "Apoyá dos dedos entre los omóplatos para que sienta si se hunden durante la sostenida.",
+      pregunta: "¿Sentís que el abdomen sostiene la postura, o el peso cae hacia la zona lumbar?",
+    },
+    progression: "con las rodillas apoyadas es la entrada; progresá elevando las rodillas del piso una vez que el torso se mantiene estable",
+    adaptations: {
+      "Embarazo / posparto": "Realizar la plancha de pie, apoyando las manos en la pared a la altura del pecho, en lugar de en el piso.",
+      "Disfunción de suelo pélvico": "Acortar el tiempo de sostén y coordinar con una exhalación activa, sin retener el aire.",
+    },
     seriesDefault: 2,
   },
   {
@@ -806,6 +968,17 @@ const EXERCISES = [
     description: "De pie con los pies al ancho de cadera, flexioná las rodillas como si te sentaras en una silla, llevando los brazos hacia arriba y el peso hacia los talones.",
     howTo: "Pedí que puedan ver la punta de los pies por delante de las rodillas.",
     adaptation: "Reducir la profundidad de la flexión de rodillas o apoyar la espalda contra una pared.",
+    coaching: {
+      verbal: "Pedí que puedan ver la punta de los pies por delante de las rodillas mientras flexionan.",
+      imagenMental: "El cuerpo se sienta sobre una silla invisible, con el peso repartido hacia los talones.",
+      tactil: "Apoyá una mano sobre la zona lumbar para chequear que no se arquee en exceso al flexionar las rodillas.",
+      pregunta: "¿El peso está más sobre los talones o se está yendo hacia la punta de los pies?",
+    },
+    progression: "con menor profundidad de flexión es más accesible; progresá bajando más la cadera a medida que el sostén sea estable",
+    adaptations: {
+      "Post-cirugía de rodilla": "Reducir la profundidad de la flexión de rodillas y apoyar la espalda contra una pared para descargar peso.",
+      "Osteoporosis / osteopenia": "Mantener la espalda bien apoyada contra la pared durante toda la postura, evitando cualquier redondeo de columna.",
+    },
     seriesDefault: 1,
   },
   {
@@ -832,6 +1005,17 @@ const EXERCISES = [
     objective: ["fuerza-yoga"],
     description: "Apoyada sobre un antebrazo o mano y la rodilla inferior en el piso, elevá la cadera formando una línea diagonal, sosteniendo el centro activo unos segundos de cada lado.",
     howTo: "Pedí que la cadera no caiga hacia el piso durante toda la sostenida.",
+    coaching: {
+      verbal: "Pedí que la cadera no caiga hacia el piso durante toda la sostenida, de cada lado.",
+      imagenMental: "El cuerpo forma una línea diagonal firme, como una rampa que no se dobla en el medio.",
+      tactil: "Apoyá una mano debajo de la cadera para marcar la altura que tiene que sostener sin caer.",
+      pregunta: "¿Sentís que la cadera se mantiene arriba todo el tiempo o va cayendo de a poco?",
+    },
+    progression: "con la rodilla inferior apoyada es la entrada; progresá extendiendo también la pierna inferior cuando el hombro y el centro estén firmes",
+    adaptations: {
+      "Problemas de cadera / prótesis": "Reducir el tiempo de sostén y trabajar con la cadera más baja, sin buscar la alineación completa.",
+      "Hipermovilidad": "Evitar bloquear el codo o la muñeca de apoyo; mantener una leve flexión activa en la articulación de apoyo.",
+    },
     seriesDefault: 2,
   },
   {
@@ -861,6 +1045,17 @@ const EXERCISES = [
     description: "Con las piernas separadas y un pie girado hacia afuera, inclinate lateralmente desde la cadera apoyando la mano en la pierna o un bloque, y extendé el otro brazo hacia arriba.",
     howTo: "Pedí que el pecho gire hacia el techo en lugar de caer hacia el piso; luego repitan del otro lado.",
     adaptation: "Apoyar la mano en un bloque o en la espinilla en lugar de buscar el piso.",
+    coaching: {
+      verbal: "Pedí que el pecho gire hacia el techo en lugar de caer hacia el piso, de cada lado.",
+      imagenMental: "El cuerpo se extiende entre dos paredes imaginarias, adelante y atrás, sin acortarse hacia el costado.",
+      tactil: "Apoyá una mano sobre el hombro de arriba para invitar a que gire hacia el techo.",
+      pregunta: "¿Sentís más estiramiento en la parte de atrás de la pierna, o el esfuerzo se va hacia la zona lumbar?",
+    },
+    progression: "apoyando la mano en un bloque es la entrada; progresá bajando la mano hacia la espinilla o el piso cuando el rango lo permita",
+    adaptations: {
+      "Hipermovilidad": "Evitar bloquear la rodilla de la pierna delantera; mantenerla con una leve flexión activa.",
+      "Problemas de cadera / prótesis": "Reducir la apertura entre los pies y trabajar con menor profundidad de inclinación lateral.",
+    },
     seriesDefault: 1,
   },
   {
@@ -891,6 +1086,17 @@ const EXERCISES = [
     description: "Desde triángulo, apoyá una mano en el piso o un bloque y elevá la pierna de atrás mientras el torso rota hacia arriba, sosteniendo el equilibrio con la mirada al frente.",
     howTo: "Pedí que empujen el talón de la pierna elevada hacia atrás, como contra una pared.",
     adaptation: "Practicar cerca de una pared para apoyar la pierna elevada o mantener una mano en la cadera.",
+    coaching: {
+      verbal: "Pedí que empujen el talón de la pierna elevada hacia atrás, como si empujaran una pared.",
+      imagenMental: "El cuerpo se abre como una estrella de mar horizontal, sostenida por un solo punto de apoyo.",
+      tactil: "Apoyá una mano bajo la cadera elevada para ayudar a mantenerla nivelada con la de abajo.",
+      pregunta: "¿Sentís que la cadera de arriba se abre hacia el techo, o rota hacia adelante?",
+    },
+    progression: "practicando cerca de una pared es la entrada a esta postura; progresá alejándote de la pared a medida que el equilibrio sea más estable",
+    adaptations: {
+      "Problemas de cadera / prótesis": "Practicar la variante con la mano de apoyo sobre una silla y sin elevar demasiado la pierna de atrás.",
+      "Post-cirugía de rodilla": "Mantener una leve flexión en la rodilla de apoyo en lugar de buscar la extensión completa.",
+    },
     seriesDefault: 1,
   },
   {
@@ -906,6 +1112,17 @@ const EXERCISES = [
     description: "Acostada, cruzá un tobillo sobre la rodilla opuesta formando un cuatro, y sostené la pierna de abajo con las manos, acercando suavemente las piernas hacia el pecho.",
     howTo: "Pedí que la cabeza y los hombros se mantengan apoyados y relajados; luego repitan del otro lado.",
     adaptation: "Mantener el pie apoyado en el piso en lugar de acercar las piernas al pecho.",
+    coaching: {
+      verbal: "Pedí que la cabeza y los hombros se mantengan apoyados y relajados, de cada lado.",
+      imagenMental: "La pierna de arriba dibuja un cuatro relajado que descansa sobre la de abajo, sin tironear.",
+      tactil: "Apoyá una mano sobre el hombro para recordar que se mantenga apoyado mientras las piernas trabajan.",
+      pregunta: "¿Sentís el estiramiento en el glúteo de la pierna cruzada, o se te escapa hacia la rodilla?",
+    },
+    progression: "manteniendo el pie apoyado en el piso es la entrada; progresá acercando las piernas hacia el pecho cuando la cadera lo permita sin dolor",
+    adaptations: {
+      "Problemas de cadera / prótesis": "Mantener el pie apoyado en el piso sin acercar las piernas al pecho, trabajando solo con el cruce suave del tobillo.",
+      "Post-cirugía de rodilla": "Evitar la flexión profunda de la rodilla cruzada; trabajar con un ángulo más abierto entre la pierna y el torso.",
+    },
     seriesDefault: 1,
   },
   {
@@ -949,6 +1166,16 @@ const EXERCISES = [
     objective: ["fuerza-yoga", "enraizamiento"],
     description: "Desde Guerrero II, extendé la pierna delantera y llevá el torso hacia adelante hasta triángulo, y volvé a flexionar para regresar, uniendo ambas posturas con la respiración.",
     howTo: "Pedí que el movimiento de ida y vuelta siga el ritmo de inhalar y exhalar; alternen el lado en la siguiente ronda.",
+    coaching: {
+      verbal: "Pedí que el movimiento de ida y vuelta siga el ritmo de inhalar y exhalar.",
+      imagenMental: "El cuerpo fluye entre dos formas como una ola que va y viene sin cortes.",
+      tactil: "No suele requerir contacto físico; guiá el ritmo con la voz marcando cada inhalación y exhalación.",
+      pregunta: "¿Sentís que el cambio entre posturas es fluido, o hay una pausa brusca en el medio?",
+    },
+    progression: "alternando ambos lados en cada ronda es la base; progresá sosteniendo cada postura un poco más antes de fluir a la siguiente",
+    adaptations: {
+      "Problemas de cadera / prótesis": "Reducir la profundidad de la flexión de la rodilla delantera en Guerrero II antes de fluir hacia el triángulo.",
+    },
     seriesDefault: 2,
   },
   {
@@ -962,6 +1189,16 @@ const EXERCISES = [
     objective: ["columna-yoga"],
     description: "Encadená gato y vaca con la respiración, y en la siguiente exhalación llevá las caderas hacia atrás y arriba hasta perro boca abajo, repitiendo la secuencia varias veces.",
     howTo: "Pedí que cada cambio de postura coincida con una inhalación o una exhalación completa.",
+    coaching: {
+      verbal: "Pedí que cada cambio de postura coincida con una inhalación o una exhalación completa.",
+      imagenMental: "La columna ondula como una serpiente que se despierta antes de estirarse por completo.",
+      tactil: "Apoyá una mano sobre la zona lumbar durante gato-vaca para que sienta el recorrido completo de la columna.",
+      pregunta: "¿Sentís que el movimiento nace de la pelvis y sube, o empieza directamente en los hombros?",
+    },
+    progression: "es una secuencia apta para todos los niveles; progresá sosteniendo más tiempo el perro boca abajo entre repeticiones",
+    adaptations: {
+      "Hernia de disco lumbar": "Reducir la amplitud de la extensión en vaca y priorizar el redondeo suave en gato, sin forzar el rango.",
+    },
     seriesDefault: 3,
   },
   {
@@ -991,6 +1228,17 @@ const EXERCISES = [
     avoid: ["Problemas de cadera / prótesis"],
     description: "Acostada con las plantas de los pies unidas y las rodillas apoyadas hacia los costados sobre almohadones, quedate en quietud respirando y soltando el peso de las piernas.",
     howTo: "Pedí que ajusten la altura de los almohadones hasta sentir la cadera completamente sostenida.",
+    coaching: {
+      verbal: "Pedí que ajusten la altura de los almohadones hasta sentir la cadera completamente sostenida.",
+      imagenMental: "Las rodillas descansan como las alas de una mariposa posada, sin ningún esfuerzo activo.",
+      tactil: "No requiere contacto físico; invitá a ajustar los soportes hasta que no haya ninguna tensión activa.",
+      pregunta: "¿Hay algún punto de tensión activa en la cadera, o todo el peso está sostenido por los almohadones?",
+    },
+    progression: "es una postura de cierre apta para todos los niveles, sin necesidad de progresión",
+    adaptations: {
+      "Problemas de cadera / prótesis": "Colocar soportes más altos debajo de ambas rodillas para reducir la apertura de cadera al mínimo cómodo.",
+      "Embarazo / posparto": "Elevar el torso con almohadones adicionales para mayor comodidad respiratoria.",
+    },
     seriesDefault: 1,
   },
   {
@@ -1006,6 +1254,17 @@ const EXERCISES = [
     description: "Acostada con las rodillas flexionadas, dejalas caer juntas hacia un costado mientras los brazos se abren en cruz y la mirada busca el lado contrario, respirando con calma.",
     howTo: "Pedí que ambos hombros se mantengan apoyados en el piso; luego repitan hacia el otro costado.",
     adaptation: "Colocar una almohada debajo de las rodillas para reducir el recorrido de la torsión.",
+    coaching: {
+      verbal: "Pedí que ambos hombros se mantengan apoyados en el piso durante toda la torsión, hacia cada lado.",
+      imagenMental: "Las rodillas caen como una hoja que se apoya suavemente hacia un costado, sin peso extra.",
+      tactil: "Apoyá una mano suave sobre la rodilla superior para acompañar la caída sin empujar.",
+      pregunta: "¿Los dos hombros se mantienen apoyados, o uno se levanta al caer las piernas hacia el costado?",
+    },
+    progression: "es una torsión suave apta para todos los niveles; progresá dejando caer las piernas un poco más lejos del cuerpo si no hay molestia",
+    adaptations: {
+      "Hernia de disco lumbar": "Colocar una almohada debajo de las rodillas y reducir mucho el recorrido de la caída hacia el costado.",
+      "Embarazo / posparto": "Evitar la torsión cerrada; reemplazar por una torsión abierta suave o simplemente dejar las rodillas apoyadas al centro con respiración.",
+    },
     seriesDefault: 1,
   },
   {

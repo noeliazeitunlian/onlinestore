@@ -8,11 +8,12 @@
     duration: 55,
   };
 
-  let lastRender = null; // { objectiveLabel, populationLabel, result } de la clase mostrada actualmente
+  let lastRender = null; // { objectiveId, objectiveLabel, populationId, populationLabel, result } de la clase mostrada actualmente
 
   // ---------- helpers ----------
   const $ = (sel) => document.querySelector(sel);
   const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+  const LEVEL_LABELS = { inicial: "Inicial", intermedio: "Intermedio", avanzado: "Avanzado" };
 
   function getCustomExercises() {
     try {
@@ -32,6 +33,66 @@
 
   function shuffle(arr) {
     return arr.map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(v => v[1]);
+  }
+
+  // ---------- ilustraciones de posición (genéricas, decorativas) ----------
+  function getPositionIcon(position) {
+    const p = (position || "").toLowerCase();
+    const has = (...words) => words.some(w => p.includes(w));
+    const wrap = (inner) => `<svg viewBox="0 0 40 40" width="34" height="34" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
+
+    if (has("supino", "decúbito supino", "decubito supino")) {
+      return wrap(`<circle cx="8" cy="20" r="3.4"/><path d="M11 20h14"/><path d="M25 20l6-5"/><path d="M25 20l6 3"/>`);
+    }
+    if (has("prono")) {
+      return wrap(`<circle cx="8" cy="14" r="3.4"/><path d="M11 15h15"/><path d="M22 15l5 7"/><path d="M17 15l-3 8"/>`);
+    }
+    if (has("costado")) {
+      return wrap(`<circle cx="9" cy="16" r="3.4"/><path d="M12 17h13"/><path d="M22 17l6 6"/><path d="M17 17l1 8"/>`);
+    }
+    if (has("cuadrupedia")) {
+      return wrap(`<circle cx="9" cy="14" r="3.2"/><path d="M12 15h16"/><path d="M14 15v9"/><path d="M26 15v9"/>`);
+    }
+    if (has("rodillas")) {
+      return wrap(`<circle cx="20" cy="8" r="3.4"/><path d="M20 11v10"/><path d="M20 21l-6 3v6"/><path d="M20 21l6 3v6"/><path d="M20 15l-6 3"/><path d="M20 15l6 3"/>`);
+    }
+    if (has("sentad")) {
+      return wrap(`<circle cx="20" cy="8" r="3.4"/><path d="M20 11v9"/><path d="M20 20l-7 2"/><path d="M20 20l7 2"/><path d="M13 22v6"/><path d="M27 22v6"/>`);
+    }
+    if (has("pie")) {
+      return wrap(`<circle cx="20" cy="7" r="3.4"/><path d="M20 10v13"/><path d="M20 15l-6 4"/><path d="M20 15l6 4"/><path d="M20 23l-4 9"/><path d="M20 23l4 9"/>`);
+    }
+    return wrap(`<circle cx="20" cy="20" r="10"/><path d="M16 20a4 4 0 0 1 8 0"/>`);
+  }
+
+  // ---------- coaching, progresión y adaptación por condición ----------
+  // Si el ejercicio ya trae contenido cargado a mano (coaching/progression/adaptations en data.js),
+  // se usa ese. Si no, se genera una versión razonable a partir de lo que sí existe (howTo/adaptation/avoid).
+  function getCoaching(ex) {
+    if (ex.coaching) return ex.coaching;
+    return {
+      verbal: ex.howTo || "Guiá la consigna con tus propias palabras, describiendo la acción concreta que tiene que suceder.",
+      imagenMental: `Pensá en "${ex.name}" como un movimiento continuo y sin cortes, sin apurar el tramo final.`,
+      tactil: "Pedí permiso y apoyá una mano cerca de la zona que más se activa, para que la alumna dirija ahí la atención.",
+      pregunta: "¿En qué momento del movimiento sentís que se pierde el control o aparece tensión de más?",
+    };
+  }
+
+  function getProgression(ex) {
+    if (ex.progression) return ex.progression;
+    const levelLabel = LEVEL_LABELS[state.level] || state.level;
+    if (ex.level.length > 1) {
+      return `sostené esta versión para nivel ${levelLabel.toLowerCase()}; para variar, ajustá rango, velocidad o apoyo`;
+    }
+    return `pensado específicamente para nivel ${levelLabel.toLowerCase()}`;
+  }
+
+  function getAdaptationForCondition(ex, tag) {
+    if (ex.adaptations && ex.adaptations[tag]) return ex.adaptations[tag];
+    if ((ex.avoid || []).includes(tag)) {
+      return ex.adaptation || "Esta condición está marcada para este ejercicio: reducí rango, carga o velocidad, o proponé una alternativa según cómo se sienta la alumna.";
+    }
+    return "No hay una restricción específica registrada para esta condición en este ejercicio. De todas formas, individualizá el rango y la intensidad, y ante cualquier duda consultá con el profesional tratante de la alumna.";
   }
 
   // ---------- render form options depending on discipline ----------
@@ -154,7 +215,7 @@
       return { block, minutes, exercises: picked, fallback };
     });
 
-    renderClass({ objectiveLabel, populationLabel, result });
+    renderClass({ objectiveId, objectiveLabel, populationId, populationLabel, result });
   }
 
   // ---------- extender clase sin repetir ejercicios ----------
@@ -162,9 +223,7 @@
     if (!lastRender) return;
     state.duration += 20;
 
-    const { objectiveLabel, populationLabel } = lastRender;
-    const objectiveId = $("#objective-select").value;
-    const populationId = $("#population-select").value;
+    const { objectiveId, objectiveLabel, populationId, populationLabel } = lastRender;
     const includeWarmup = $("#include-warmup").checked;
 
     const blocksToUse = BLOCKS.filter(b => includeWarmup || !b.optional);
@@ -189,7 +248,7 @@
       };
     });
 
-    renderClass({ objectiveLabel, populationLabel, result });
+    renderClass({ objectiveId, objectiveLabel, populationId, populationLabel, result });
   }
 
   // ---------- descargar clase en PDF ----------
@@ -229,14 +288,124 @@
       });
   }
 
-  function renderClass({ objectiveLabel, populationLabel, result }) {
-    lastRender = { objectiveLabel, populationLabel, result };
+  // ---------- helpers de edición en vivo de la clase ----------
+  function findEntry(blockId) {
+    return lastRender.result.find(r => r.block.id === blockId);
+  }
+
+  function swapExercise(blockId, idx) {
+    const entry = findEntry(blockId);
+    if (!entry) return;
+    const excludeIds = new Set(lastRender.result.flatMap(r => r.exercises.map(ex => ex.id)));
+    const { pool } = filterPool(state.discipline, blockId, state.modality, state.level, lastRender.objectiveId, lastRender.populationId, excludeIds);
+    const options = shuffle(pool);
+    if (!options.length) {
+      alert("No hay otro ejercicio disponible para reemplazar este, con los filtros actuales.");
+      return;
+    }
+    entry.exercises[idx] = options[0];
+    renderClass(lastRender);
+  }
+
+  function removeExercise(blockId, idx) {
+    const entry = findEntry(blockId);
+    if (!entry) return;
+    entry.exercises.splice(idx, 1);
+    renderClass(lastRender);
+  }
+
+  function quickAddExercise(blockId, name) {
+    const trimmed = (name || "").trim();
+    if (!trimmed) return;
+    const entry = findEntry(blockId);
+    if (!entry) return;
+    const ex = {
+      id: "custom-" + Date.now(),
+      discipline: state.discipline,
+      name: trimmed,
+      description: trimmed,
+      position: "",
+      modality: [state.modality],
+      level: [state.level],
+      moment: blockId,
+      objective: [lastRender.objectiveId],
+      seriesDefault: 1,
+    };
+    saveCustomExercise(ex);
+    entry.exercises.push(ex);
+    renderClass(lastRender);
+  }
+
+  function changeSeries(blockId, idx, delta) {
+    const entry = findEntry(blockId);
+    if (!entry) return;
+    const ex = entry.exercises[idx];
+    if (!ex) return;
+    ex.seriesDefault = Math.max(1, (ex.seriesDefault || 1) + delta);
+    const el = $(`.exercise-card[data-block="${blockId}"][data-idx="${idx}"] .series-count`);
+    if (el) el.textContent = `${ex.seriesDefault} series`;
+  }
+
+  // ---------- render de una tarjeta de ejercicio ----------
+  function renderExerciseCard(ex, blockId, idx, isPrepOriented) {
+    const coaching = getCoaching(ex);
+    const progression = getProgression(ex);
+    const levelLabel = LEVEL_LABELS[state.level] || state.level;
+
+    return `
+      <div class="exercise-card" data-block="${blockId}" data-idx="${idx}">
+        <div class="exercise-illustration">${getPositionIcon(ex.position)}</div>
+        <div class="exercise-body">
+          <div class="exercise-title-row">
+            <h5>${ex.name}</h5>
+            ${ex.position ? `<span class="position">${ex.position}</span>` : ""}
+            ${isPrepOriented ? `<span class="badge-prep">PREP ORIENTADA</span>` : ""}
+          </div>
+          <p class="exercise-desc">${ex.description}</p>
+
+          <div class="exercise-chips">
+            <span class="chip progression-chip">Progresión (${levelLabel}) · ${progression}</span>
+            <button type="button" class="chip-btn toggle-coaching">Cómo explicarlo ▾</button>
+            <button type="button" class="chip-btn toggle-adaptation">+ Adaptación por patología ▾</button>
+            ${(ex.avoid && ex.avoid.length) ? `<span class="chip warn">Evitar en: ${ex.avoid.join(", ")}</span>` : ""}
+          </div>
+
+          <div class="coaching-panel hidden">
+            <div class="coaching-row"><span class="coaching-icon" aria-hidden="true">🗣️</span><div><strong>Verbal</strong><p>${coaching.verbal}</p></div></div>
+            <div class="coaching-row"><span class="coaching-icon" aria-hidden="true">🖼️</span><div><strong>Imagen mental</strong><p>${coaching.imagenMental}</p></div></div>
+            <div class="coaching-row"><span class="coaching-icon" aria-hidden="true">✋</span><div><strong>Táctil</strong><p>${coaching.tactil}</p></div></div>
+            <div class="coaching-row"><span class="coaching-icon" aria-hidden="true">❓</span><div><strong>Por pregunta</strong><p>${coaching.pregunta}</p></div></div>
+          </div>
+
+          <div class="adaptation-panel hidden">
+            <p>¿Alguna alumna necesita adaptación? Tocá la condición y te muestro qué cambiar — la clase sigue normal para el resto del grupo:</p>
+            <div class="condition-pills">
+              ${AVOID_TAGS.map(tag => `<button type="button" class="pill-condition" data-tag="${tag}">${tag}</button>`).join("")}
+            </div>
+            <div class="condition-result hidden"></div>
+          </div>
+
+          <div class="exercise-controls">
+            <div class="series-stepper">
+              <button type="button" class="step-minus" aria-label="Restar serie">−</button>
+              <span class="series-count">${ex.seriesDefault || 1} series</span>
+              <button type="button" class="step-plus" aria-label="Sumar serie">+</button>
+            </div>
+            <button type="button" class="btn-mini btn-change">⇄ Cambiar</button>
+            <button type="button" class="btn-mini btn-remove">✕ Quitar</button>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function renderClass({ objectiveId, objectiveLabel, populationId, populationLabel, result }) {
+    lastRender = { objectiveId, objectiveLabel, populationId, populationLabel, result };
     $("#output-empty").classList.add("hidden");
     const content = $("#output-content");
     content.classList.remove("hidden");
 
     const modLabel = MODALITIES[state.discipline].find(m => m.id === state.modality)?.label || state.modality;
-    const levelLabel = { inicial: "Inicial", intermedio: "Intermedio", avanzado: "Avanzado" }[state.level];
+    const levelLabel = LEVEL_LABELS[state.level];
 
     const ribbonColors = ["var(--rosa)", "var(--rosa)", "var(--bordo)", "var(--gold)", "var(--bordo)", "var(--rosa)"];
 
@@ -279,7 +448,7 @@
         </div>`;
 
       if (!exercises.length) {
-        html += `<p class="block-empty">Todavía no cargaste ejercicios para esta combinación en este bloque. Sumalos con "+ Agregar ejercicio propio".</p>`;
+        html += `<p class="block-empty">Todavía no cargaste ejercicios para esta combinación en este bloque. Sumalos con "+ Agregar ejercicio propio" o con el campo de acá abajo.</p>`;
       } else {
         if (fallback) {
           html += `<p class="block-empty">Mostrando ejercicios similares (no hay carga exacta para este objetivo/nivel en este bloque todavía).</p>`;
@@ -287,20 +456,18 @@
         if (noExtra) {
           html += `<p class="block-empty">No hay más ejercicios nuevos para sumar en este bloque sin repetir.</p>`;
         }
-        exercises.forEach(ex => {
-          html += `<div class="exercise-card">
-            <h5>${ex.name}${ex.position ? `<span class="position">${ex.position}</span>` : ""}</h5>
-            <p>${ex.description}</p>
-            <div class="exercise-meta">
-              <span class="chip">${ex.seriesDefault || 1} series</span>
-              ${ex.howTo ? `<span class="chip">Cómo explicarlo ▾</span>` : ""}
-              ${ex.adaptation ? `<span class="chip">+ Adaptación por patología ▾</span>` : ""}
-              ${(ex.avoid && ex.avoid.length) ? `<span class="chip warn">Evitar en: ${ex.avoid.join(", ")}</span>` : ""}
-            </div>
-          </div>`;
+        exercises.forEach((ex, idx) => {
+          const isPrepOriented = !!block.optional && !fallback && ex.objective.includes(objectiveId);
+          html += renderExerciseCard(ex, block.id, idx, isPrepOriented);
         });
       }
-      html += `</div>`;
+
+      html += `
+        <div class="quick-add-row">
+          <input type="text" class="quick-add-input" placeholder="Agregar tu propio ejercicio a este bloque...">
+          <button type="button" class="btn-mini btn-quick-add" data-block="${block.id}">+ Sumar</button>
+        </div>
+      </div>`;
     });
 
     html += `
@@ -325,6 +492,47 @@
     });
   }
 
+  // ---------- interacción dentro de una tarjeta de ejercicio (delegado, se registra una sola vez) ----------
+  $("#output-content").addEventListener("click", (e) => {
+    const quickAddBtn = e.target.closest(".btn-quick-add");
+    if (quickAddBtn) {
+      const row = quickAddBtn.closest(".quick-add-row");
+      const input = row.querySelector(".quick-add-input");
+      quickAddExercise(Number(quickAddBtn.dataset.block), input.value);
+      return;
+    }
+
+    const card = e.target.closest(".exercise-card");
+    if (!card) return;
+    const blockId = Number(card.dataset.block);
+    const idx = Number(card.dataset.idx);
+
+    if (e.target.closest(".toggle-coaching")) {
+      card.querySelector(".coaching-panel").classList.toggle("hidden");
+      return;
+    }
+    if (e.target.closest(".toggle-adaptation")) {
+      card.querySelector(".adaptation-panel").classList.toggle("hidden");
+      return;
+    }
+    const conditionPill = e.target.closest(".pill-condition");
+    if (conditionPill) {
+      const panel = card.querySelector(".adaptation-panel");
+      panel.querySelectorAll(".pill-condition").forEach(p => p.classList.remove("is-active"));
+      conditionPill.classList.add("is-active");
+      const entry = findEntry(blockId);
+      const ex = entry.exercises[idx];
+      const resultBox = panel.querySelector(".condition-result");
+      resultBox.textContent = getAdaptationForCondition(ex, conditionPill.dataset.tag);
+      resultBox.classList.remove("hidden");
+      return;
+    }
+    if (e.target.closest(".step-minus")) { changeSeries(blockId, idx, -1); return; }
+    if (e.target.closest(".step-plus")) { changeSeries(blockId, idx, 1); return; }
+    if (e.target.closest(".btn-change")) { swapExercise(blockId, idx); return; }
+    if (e.target.closest(".btn-remove")) { removeExercise(blockId, idx); return; }
+  });
+
   $("#class-form").addEventListener("submit", (e) => {
     e.preventDefault();
     buildClass();
@@ -342,10 +550,6 @@
     e.preventDefault();
 
     const getMultiValues = (id) => $$(`${id} .pill.is-active`).map(p => p.dataset.value);
-    const getSingleValue = (id) => {
-      const active = document.querySelector(`${id} .pill.is-active`);
-      return active ? active.dataset.value : null;
-    };
 
     const modality = getMultiValues("#ex-modality-group");
     const level = getMultiValues("#ex-level-group");
