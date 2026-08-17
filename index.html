@@ -88,6 +88,11 @@
         <span>Incluir bloque de preparación</span>
       </label>
 
+      <label class="checkbox-row">
+        <input type="checkbox" id="avoid-recent" checked>
+        <span>Evitar ejercicios de mis últimas 3 clases guardadas</span>
+      </label>
+
       <button type="submit" class="btn btn-primary btn-block">Armar mi clase ✦</button>
     </form>
 
@@ -140,6 +145,12 @@
 
       <button type="submit" class="btn btn-accent btn-block">Guardar ejercicio ✦</button>
     </form>
+
+    <button type="button" id="toggle-my-exercises" class="btn btn-ghost btn-block">🗂️ Mis ejercicios propios</button>
+    <div id="my-exercises-panel" class="hidden">
+      <p class="panel-hint">Ejercicios que cargaste vos, desde el formulario o el "+ Sumar" rápido dentro de una clase.</p>
+      <div id="my-exercises-list"></div>
+    </div>
 
     <button type="button" id="toggle-saved-classes" class="btn btn-ghost btn-block">📂 Mis clases guardadas</button>
     <div id="saved-classes-panel" class="hidden">

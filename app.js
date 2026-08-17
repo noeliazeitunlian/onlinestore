@@ -26,6 +26,46 @@
     const all = getCustomExercises();
     all.push(ex);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+    renderMyExercisesList();
+  }
+
+  function deleteCustomExercise(id) {
+    const remaining = getCustomExercises().filter(ex => ex.id !== id);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(remaining));
+    renderMyExercisesList();
+  }
+
+  function renderMyExercisesList() {
+    const list = $("#my-exercises-list");
+    if (!list) return;
+    const mine = getCustomExercises();
+
+    const toggleBtn = $("#toggle-my-exercises");
+    if (toggleBtn) toggleBtn.textContent = `🗂️ Mis ejercicios propios (${mine.length})`;
+
+    if (!mine.length) {
+      list.innerHTML = `<p class="block-empty">Todavía no cargaste ningún ejercicio propio.</p>`;
+      return;
+    }
+
+    list.innerHTML = mine.map(ex => {
+      const discLabel = ex.discipline === "pilates" ? "Pilates" : "Yoga";
+      const modLabels = (ex.modality || []).map(id => MODALITIES[ex.discipline]?.find(m => m.id === id)?.label || id).join(", ");
+      const levelLabels = (ex.level || []).map(id => LEVEL_LABELS[id] || id).join(", ");
+      const blockName = BLOCKS.find(b => b.id === ex.moment)?.name || `Bloque ${ex.moment}`;
+      const objLabels = (ex.objective || []).map(id => OBJECTIVES[ex.discipline]?.find(o => o.id === id)?.label || id).join(", ");
+      const metaParts = [discLabel, modLabels, levelLabels, blockName, objLabels].filter(Boolean);
+      return `
+        <div class="saved-class-card">
+          <div>
+            <strong>${ex.name}</strong>
+            <p class="saved-class-meta">${metaParts.join(" · ")}</p>
+          </div>
+          <div class="saved-class-actions">
+            <button type="button" class="btn-mini btn-remove btn-delete-exercise" data-id="${ex.id}">✕ Quitar</button>
+          </div>
+        </div>`;
+    }).join("");
   }
 
   function allExercises() {
@@ -97,6 +137,14 @@
     if (window.innerWidth < 900) {
       $("#output-panel").scrollIntoView({ behavior: "smooth" });
     }
+  }
+
+  function getRecentExerciseIds(count) {
+    const ids = new Set();
+    getSavedClasses().slice(0, count).forEach(entry => {
+      entry.render.result.forEach(r => r.exercises.forEach(ex => ids.add(ex.id)));
+    });
+    return ids;
   }
 
   function renderSavedClassesList() {
@@ -370,9 +418,12 @@
     let blocksToUse = BLOCKS.filter(b => includeWarmup || !b.optional);
     const weightSum = blocksToUse.reduce((s, b) => s + b.weight, 0);
 
+    const avoidRecent = $("#avoid-recent")?.checked;
+    const recentIds = avoidRecent ? getRecentExerciseIds(3) : new Set();
+
     const result = blocksToUse.map(block => {
       const minutes = Math.max(3, Math.round((block.weight / weightSum) * state.duration));
-      const { pool, fallback } = filterPool(state.discipline, block.id, state.modality, state.level, objectiveId, populationId);
+      const { pool, fallback } = filterPool(state.discipline, block.id, state.modality, state.level, objectiveId, populationId, recentIds);
       const picked = shuffle(pool).slice(0, block.id === 3 ? 3 : 2);
       return { block, minutes, exercises: picked, fallback };
     });
@@ -867,7 +918,18 @@
     if (deleteBtn) { deleteSavedClass(deleteBtn.dataset.id); return; }
   });
 
+  // ---------- mis ejercicios propios: toggle + interacciones ----------
+  $("#toggle-my-exercises").addEventListener("click", () => {
+    $("#my-exercises-panel").classList.toggle("hidden");
+  });
+
+  $("#my-exercises-list").addEventListener("click", (e) => {
+    const deleteBtn = e.target.closest(".btn-delete-exercise");
+    if (deleteBtn) { deleteCustomExercise(deleteBtn.dataset.id); }
+  });
+
   // ---------- init ----------
   refreshFormForDiscipline();
   renderSavedClassesList();
+  renderMyExercisesList();
 })();
