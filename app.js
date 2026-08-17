@@ -1,5 +1,6 @@
 (() => {
   const STORAGE_KEY = "genclases_custom_exercises";
+  const SAVED_KEY = "genclases_saved_classes";
 
   let state = {
     discipline: "pilates",
@@ -33,6 +34,101 @@
 
   function shuffle(arr) {
     return arr.map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(v => v[1]);
+  }
+
+  // ---------- mis clases guardadas ----------
+  function getSavedClasses() {
+    try {
+      return JSON.parse(localStorage.getItem(SAVED_KEY) || "[]");
+    } catch { return []; }
+  }
+
+  function persistSavedClasses(list) {
+    localStorage.setItem(SAVED_KEY, JSON.stringify(list));
+  }
+
+  function saveCurrentClass() {
+    if (!lastRender) return;
+    const saved = getSavedClasses();
+    saved.unshift({
+      id: "saved-" + Date.now(),
+      savedAt: new Date().toISOString(),
+      discipline: state.discipline,
+      modality: state.modality,
+      level: state.level,
+      duration: state.duration,
+      render: lastRender,
+    });
+    persistSavedClasses(saved);
+    renderSavedClassesList();
+
+    const btn = $("#btn-save-class");
+    if (btn) {
+      const original = btn.textContent;
+      btn.textContent = "Guardada ✓";
+      setTimeout(() => { btn.textContent = original; }, 1500);
+    }
+  }
+
+  function deleteSavedClass(id) {
+    persistSavedClasses(getSavedClasses().filter(e => e.id !== id));
+    renderSavedClassesList();
+  }
+
+  function openSavedClass(id) {
+    const entry = getSavedClasses().find(e => e.id === id);
+    if (!entry) return;
+
+    state.discipline = entry.discipline;
+    syncDisciplineButtons(state.discipline);
+    refreshFormForDiscipline();
+
+    state.modality = entry.modality;
+    state.level = entry.level;
+    state.duration = entry.duration;
+
+    $$("#modality-group .pill").forEach(p => p.classList.toggle("is-active", p.dataset.value === state.modality));
+    $$("#level-group .pill").forEach(p => p.classList.toggle("is-active", p.dataset.value === state.level));
+    $$("#duration-group .pill").forEach(p => p.classList.toggle("is-active", Number(p.dataset.value) === state.duration));
+    $("#objective-select").value = entry.render.objectiveId;
+    $("#population-select").value = entry.render.populationId;
+
+    renderClass(entry.render);
+    if (window.innerWidth < 900) {
+      $("#output-panel").scrollIntoView({ behavior: "smooth" });
+    }
+  }
+
+  function renderSavedClassesList() {
+    const list = $("#saved-classes-list");
+    if (!list) return;
+    const saved = getSavedClasses();
+
+    const toggleBtn = $("#toggle-saved-classes");
+    if (toggleBtn) toggleBtn.textContent = `📂 Mis clases guardadas (${saved.length})`;
+
+    if (!saved.length) {
+      list.innerHTML = `<p class="block-empty">Todavía no guardaste ninguna clase. Generá una y tocá "☆ Guardar clase".</p>`;
+      return;
+    }
+
+    list.innerHTML = saved.map(entry => {
+      const dateLabel = new Date(entry.savedAt).toLocaleDateString("es-AR", {
+        day: "2-digit", month: "2-digit", year: "2-digit", hour: "2-digit", minute: "2-digit",
+      });
+      const discLabel = entry.discipline === "pilates" ? "Pilates" : "Yoga";
+      return `
+        <div class="saved-class-card">
+          <div>
+            <strong>${entry.render.objectiveLabel}</strong>
+            <p class="saved-class-meta">${discLabel} · ${entry.duration} min · ${dateLabel}</p>
+          </div>
+          <div class="saved-class-actions">
+            <button type="button" class="btn-mini btn-open-saved" data-id="${entry.id}">Abrir</button>
+            <button type="button" class="btn-mini btn-remove btn-delete-saved" data-id="${entry.id}">✕</button>
+          </div>
+        </div>`;
+    }).join("");
   }
 
   // ---------- ilustraciones de posición (genéricas, decorativas) ----------
@@ -201,19 +297,34 @@
     if (group.id === "duration-group") state.duration = Number(pill.dataset.value);
   });
 
-  // ---------- discipline toggle ----------
+  // ---------- discipline toggle (sincroniza la barra principal y la barra pegajosa) ----------
+  function syncDisciplineButtons(discipline) {
+    $$(".discipline-btn").forEach(b => {
+      const active = b.dataset.discipline === discipline;
+      b.classList.toggle("is-active", active);
+      b.setAttribute("aria-selected", active ? "true" : "false");
+    });
+  }
+
   $$(".discipline-btn").forEach(btn => {
     btn.addEventListener("click", () => {
-      $$(".discipline-btn").forEach(b => { b.classList.remove("is-active"); b.setAttribute("aria-selected", "false"); });
-      btn.classList.add("is-active");
-      btn.setAttribute("aria-selected", "true");
       state.discipline = btn.dataset.discipline;
+      syncDisciplineButtons(state.discipline);
       refreshFormForDiscipline();
       lastRender = null;
       $("#output-content").classList.add("hidden");
       $("#output-empty").classList.remove("hidden");
     });
   });
+
+  // ---------- barra pegajosa: aparece cuando el hero sale de vista ----------
+  const heroSentinel = document.getElementById("hero-sentinel");
+  if (heroSentinel && "IntersectionObserver" in window) {
+    const stickyObserver = new IntersectionObserver(([entry]) => {
+      $("#sticky-bar").classList.toggle("is-visible", !entry.isIntersecting);
+    }, { threshold: 0 });
+    stickyObserver.observe(heroSentinel);
+  }
 
   // ---------- generate class ----------
   function filterPool(discipline, moment, modality, level, objective, populationId, excludeIds = new Set()) {
@@ -397,6 +508,40 @@
     if (el) el.textContent = `${ex.seriesDefault} series`;
   }
 
+  // ---------- gráfico real de reparto de tiempo por bloque ----------
+  const CHART_COLORS = ["var(--chart-1)", "var(--chart-2)", "var(--chart-3)", "var(--chart-4)", "var(--chart-5)", "var(--chart-6)"];
+
+  function renderTimeDonut(result) {
+    const total = result.reduce((s, r) => s + r.minutes, 0) || 1;
+    const radius = 34;
+    const circumference = 2 * Math.PI * radius;
+    let offset = 0;
+
+    const segments = result.map((r, i) => {
+      const frac = r.minutes / total;
+      const segLen = frac * circumference;
+      const dashoffset = -offset;
+      offset += segLen;
+      return `<circle cx="42" cy="42" r="${radius}" fill="none" stroke="${CHART_COLORS[i % CHART_COLORS.length]}" stroke-width="11" stroke-dasharray="${segLen} ${circumference - segLen}" stroke-dashoffset="${dashoffset}" />`;
+    }).join("");
+
+    const legend = result.map((r, i) => `
+      <div class="legend-item">
+        <span class="legend-dot" style="background:${CHART_COLORS[i % CHART_COLORS.length]}"></span>
+        <span>${r.block.name} · ${r.minutes} min</span>
+      </div>`).join("");
+
+    return `
+      <div class="time-donut-row">
+        <svg viewBox="0 0 84 84" width="80" height="80" class="time-donut">
+          <g transform="rotate(-90 42 42)">${segments}</g>
+          <text x="42" y="45" text-anchor="middle" class="time-donut-total">${total}</text>
+          <text x="42" y="57" text-anchor="middle" class="time-donut-unit">MIN</text>
+        </svg>
+        <div class="time-donut-legend">${legend}</div>
+      </div>`;
+  }
+
   // ---------- render de una tarjeta de ejercicio ----------
   function renderExerciseCard(ex, blockId, idx, isPrepOriented) {
     const coaching = getCoaching(ex);
@@ -449,6 +594,84 @@
       </div>`;
   }
 
+  // ---------- modo clase en vivo (cronómetro por ejercicio) ----------
+  let liveState = null; // { steps: [{block, ex}], index, seconds, timerId, paused }
+
+  function buildLiveSteps() {
+    const steps = [];
+    lastRender.result.forEach(({ block, exercises }) => {
+      exercises.forEach(ex => steps.push({ block, ex }));
+    });
+    return steps;
+  }
+
+  function updateLiveTimerDisplay() {
+    const m = String(Math.floor(liveState.seconds / 60)).padStart(2, "0");
+    const s = String(liveState.seconds % 60).padStart(2, "0");
+    $("#live-timer").textContent = `${m}:${s}`;
+  }
+
+  function renderLiveStep() {
+    const { steps, index } = liveState;
+    const { block, ex } = steps[index];
+    $("#live-progress").textContent = `Ejercicio ${index + 1} de ${steps.length}`;
+    $("#live-block-name").textContent = `${block.id}. ${block.name}`;
+    $("#live-ex-position").textContent = ex.position || "";
+    $("#live-ex-name").textContent = ex.name;
+    $("#live-ex-desc").textContent = ex.description || "";
+    $("#live-ex-howto").textContent = getCoaching(ex).verbal;
+
+    liveState.seconds = 0;
+    liveState.paused = false;
+    $("#live-pause").textContent = "Pausar";
+    updateLiveTimerDisplay();
+  }
+
+  function startLiveTimer() {
+    if (liveState.timerId) clearInterval(liveState.timerId);
+    liveState.timerId = setInterval(() => {
+      if (liveState.paused) return;
+      liveState.seconds += 1;
+      updateLiveTimerDisplay();
+    }, 1000);
+  }
+
+  function startLiveMode() {
+    if (!lastRender) return;
+    const steps = buildLiveSteps();
+    if (!steps.length) {
+      alert("Todavía no hay ejercicios en esta clase para iniciar el modo en vivo.");
+      return;
+    }
+    liveState = { steps, index: 0, seconds: 0, timerId: null, paused: false };
+    $("#live-mode").classList.remove("hidden");
+    renderLiveStep();
+    startLiveTimer();
+  }
+
+  function stopLiveMode() {
+    if (liveState && liveState.timerId) clearInterval(liveState.timerId);
+    liveState = null;
+    $("#live-mode").classList.add("hidden");
+  }
+
+  function liveStep(delta) {
+    if (!liveState) return;
+    const next = liveState.index + delta;
+    if (next < 0 || next >= liveState.steps.length) return;
+    liveState.index = next;
+    renderLiveStep();
+  }
+
+  $("#live-close").addEventListener("click", stopLiveMode);
+  $("#live-prev").addEventListener("click", () => liveStep(-1));
+  $("#live-next").addEventListener("click", () => liveStep(1));
+  $("#live-pause").addEventListener("click", () => {
+    if (!liveState) return;
+    liveState.paused = !liveState.paused;
+    $("#live-pause").textContent = liveState.paused ? "Reanudar" : "Pausar";
+  });
+
   function renderClass({ objectiveId, objectiveLabel, populationId, populationLabel, result }) {
     lastRender = { objectiveId, objectiveLabel, populationId, populationLabel, result };
     $("#output-empty").classList.add("hidden");
@@ -457,8 +680,6 @@
 
     const modLabel = MODALITIES[state.discipline].find(m => m.id === state.modality)?.label || state.modality;
     const levelLabel = LEVEL_LABELS[state.level];
-
-    const ribbonColors = ["var(--rosa)", "var(--rosa)", "var(--bordo)", "var(--gold)", "var(--bordo)", "var(--rosa)"];
 
     let html = `
       <div class="class-header">
@@ -470,11 +691,11 @@
           <span class="tag">${state.duration} min</span>
           <span class="tag">${populationLabel}</span>
         </div>
-        <div class="intensity-ribbon">
-          ${result.map((r, i) => `<span style="background:${ribbonColors[i % ribbonColors.length]}"></span>`).join("")}
-        </div>
+        ${renderTimeDonut(result)}
         <div class="actions">
+          <button type="button" class="btn-outline" id="btn-live">▶ Modo clase en vivo</button>
           <button type="button" class="btn-outline" id="btn-pdf">↓ Descargar PDF</button>
+          <button type="button" class="btn-outline" id="btn-save-class">☆ Guardar clase</button>
           <button type="button" class="btn-outline" id="btn-extend">+ 20 min sin repetir</button>
           <button type="button" class="btn-outline" id="btn-regenerate">↻ Regenerar clase</button>
           <button type="button" class="btn-outline" id="btn-copy">⎘ Copiar texto</button>
@@ -533,6 +754,8 @@
     $("#btn-regenerate").addEventListener("click", buildClass);
     $("#btn-extend").addEventListener("click", extendClass);
     $("#btn-pdf").addEventListener("click", downloadPDF);
+    $("#btn-live").addEventListener("click", startLiveMode);
+    $("#btn-save-class").addEventListener("click", saveCurrentClass);
     $("#btn-copy").addEventListener("click", () => {
       navigator.clipboard.writeText(content.innerText).then(() => {
         const b = $("#btn-copy");
@@ -632,6 +855,19 @@
     $("#exercise-form").classList.add("hidden");
   });
 
+  // ---------- mis clases guardadas: toggle + interacciones ----------
+  $("#toggle-saved-classes").addEventListener("click", () => {
+    $("#saved-classes-panel").classList.toggle("hidden");
+  });
+
+  $("#saved-classes-list").addEventListener("click", (e) => {
+    const openBtn = e.target.closest(".btn-open-saved");
+    if (openBtn) { openSavedClass(openBtn.dataset.id); return; }
+    const deleteBtn = e.target.closest(".btn-delete-saved");
+    if (deleteBtn) { deleteSavedClass(deleteBtn.dataset.id); return; }
+  });
+
   // ---------- init ----------
   refreshFormForDiscipline();
+  renderSavedClassesList();
 })();

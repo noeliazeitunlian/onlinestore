@@ -4,13 +4,30 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Armá tu Clase · Generador para Instructoras de Pilates y Yoga</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23B4502C'/%3E%3Cpath d='M14 36c5-12 14-12 18 0s14 12 18 0' stroke='%23F5EAE0' stroke-width='5.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<div class="sticky-bar" id="sticky-bar">
+  <div class="sticky-bar-inner">
+    <span class="sticky-bar-title">Armá tu clase</span>
+    <div class="discipline-toggle discipline-toggle--sticky" id="sticky-discipline-toggle" role="tablist" aria-label="Disciplina">
+      <button class="discipline-btn is-active" data-discipline="pilates" role="tab" aria-selected="true">Pilates</button>
+      <button class="discipline-btn" data-discipline="yoga" role="tab" aria-selected="false">Yoga</button>
+    </div>
+  </div>
+</div>
+
 <header class="hero">
+  <div class="brand-mark" aria-hidden="true">
+    <svg viewBox="0 0 64 64" width="40" height="40">
+      <rect width="64" height="64" rx="16" fill="var(--bordo)"/>
+      <path d="M14 36c5-12 14-12 18 0s14 12 18 0" stroke="var(--blush)" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+    </svg>
+  </div>
   <p class="eyebrow">MÉTODO PROPIO · PILATES &amp; YOGA</p>
   <h1 class="hero-title">Armá tu clase<br><em>en minutos.</em></h1>
   <p class="hero-sub">Elegí las variables, y el sistema arma la secuencia con estructura pedagógica.</p>
@@ -20,6 +37,7 @@
     <button class="discipline-btn" data-discipline="yoga" role="tab" aria-selected="false">Yoga</button>
   </div>
 </header>
+<div id="hero-sentinel"></div>
 
 <main class="layout">
 
@@ -122,6 +140,12 @@
 
       <button type="submit" class="btn btn-accent btn-block">Guardar ejercicio ✦</button>
     </form>
+
+    <button type="button" id="toggle-saved-classes" class="btn btn-ghost btn-block">📂 Mis clases guardadas</button>
+    <div id="saved-classes-panel" class="hidden">
+      <p class="panel-hint">Clases que guardaste para reabrir más tarde, tal como quedaron armadas.</p>
+      <div id="saved-classes-list"></div>
+    </div>
   </aside>
 
   <!-- ---------------- OUTPUT PANEL ---------------- -->
@@ -138,6 +162,26 @@
 <footer class="site-footer">
   <p>Este generador se apoya en tu propio método de planificación de clases. Las adaptaciones por contraindicación son orientativas: siempre individualizá y, ante una condición de salud, trabajá junto al profesional tratante de cada alumna.</p>
 </footer>
+
+<div class="live-mode hidden" id="live-mode">
+  <div class="live-mode-inner">
+    <button type="button" class="live-close" id="live-close" aria-label="Cerrar modo clase en vivo">✕</button>
+    <p class="live-progress" id="live-progress"></p>
+    <h3 class="live-block-name" id="live-block-name"></h3>
+    <div class="live-timer" id="live-timer">00:00</div>
+    <div class="live-exercise">
+      <p class="live-ex-position" id="live-ex-position"></p>
+      <h4 id="live-ex-name"></h4>
+      <p id="live-ex-desc"></p>
+      <p class="live-ex-howto" id="live-ex-howto"></p>
+    </div>
+    <div class="live-controls">
+      <button type="button" class="btn-mini" id="live-prev">‹ Anterior</button>
+      <button type="button" class="btn btn-primary" id="live-pause">Pausar</button>
+      <button type="button" class="btn-mini" id="live-next">Siguiente ›</button>
+    </div>
+  </div>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
