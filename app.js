@@ -604,7 +604,10 @@
 
     return `
       <div class="exercise-card" data-block="${blockId}" data-idx="${idx}">
-        <div class="exercise-illustration">${getPositionIcon(ex.position)}</div>
+        <div class="exercise-illustration">
+          ${ex.image ? `<img src="${ex.image}" alt="${ex.name}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : ""}
+          <div class="exercise-illustration-icon" style="${ex.image ? "display:none;" : "display:flex;"}">${getPositionIcon(ex.position)}</div>
+        </div>
         <div class="exercise-body">
           <div class="exercise-title-row">
             <h5>${ex.name}</h5>

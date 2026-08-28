@@ -80,6 +80,7 @@ const AVOID_TAGS = [
 const EXERCISES = [
   {
     id: "pilates-001",
+    image: "images/exercises/pilates-001.png",
     discipline: "pilates",
     name: "Respiración lateral en cuadrupedia",
     position: "Cuadrupedia",
@@ -105,6 +106,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-002",
+    image: "images/exercises/pilates-002.png",
     discipline: "pilates",
     name: "Rodar hacia abajo (Roll Down)",
     position: "De pie",
@@ -131,6 +133,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-003",
+    image: "images/exercises/pilates-003.png",
     discipline: "pilates",
     name: "Pies en la barra — activación de neutro",
     position: "Supino en el carro",
@@ -144,6 +147,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-004",
+    image: "images/exercises/pilates-004.png",
     discipline: "pilates",
     name: "The Hundred — preparación",
     position: "Supino",
@@ -169,6 +173,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-005",
+    image: "images/exercises/pilates-005.png",
     discipline: "pilates",
     name: "Push Through Bar — remo sentado",
     position: "Sentada en el carro",
@@ -192,6 +197,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-006",
+    image: "images/exercises/pilates-006.png",
     discipline: "pilates",
     name: "Rotación de columna sentada (Spine Twist)",
     position: "Sentada",
@@ -207,6 +213,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-007",
+    image: "images/exercises/pilates-007.png",
     discipline: "pilates",
     name: "Single Leg Stretch — preparación",
     position: "Supino",
@@ -246,6 +253,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-009",
+    image: "images/exercises/pilates-009.png",
     discipline: "pilates",
     name: "The Hundred (completo)",
     position: "Supino",
@@ -272,6 +280,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-010",
+    image: "images/exercises/pilates-010.png",
     discipline: "pilates",
     name: "Chest Expansion (expansión de pecho)",
     position: "De rodillas en el carro",
@@ -311,6 +320,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-012",
+    image: "images/exercises/pilates-012.png",
     discipline: "pilates",
     name: "Triceps Press (elbows into springs)",
     position: "Sentada de espaldas al cabezal",
@@ -324,6 +334,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-013",
+    image: "images/exercises/pilates-013.png",
     discipline: "pilates",
     name: "Saw (Sierra)",
     position: "Sentada, piernas abiertas",
@@ -350,6 +361,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-014",
+    image: "images/exercises/pilates-014.png",
     discipline: "pilates",
     name: "Knee Stretch redondo",
     position: "Cuadrupedia sobre el carro",
@@ -364,6 +376,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-015",
+    image: "images/exercises/pilates-015.png",
     discipline: "pilates",
     name: "Swimming (Natación)",
     position: "Prono",
@@ -390,6 +403,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-016",
+    image: "images/exercises/pilates-016.png",
     discipline: "pilates",
     name: "Long Stretch (plancha en el carro)",
     position: "De pie, manos en la barra, carro móvil",
@@ -417,6 +431,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-017",
+    image: "images/exercises/pilates-017.png",
     discipline: "pilates",
     name: "Push-up modificado sobre rodillas",
     position: "Cuadrupedia",
@@ -430,6 +445,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-018",
+    image: "images/exercises/pilates-018.png",
     discipline: "pilates",
     name: "Postura de descanso (Rest Position)",
     position: "De rodillas",
@@ -456,6 +472,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-019",
+    image: "images/exercises/pilates-019.png",
     discipline: "pilates",
     name: "Respiración final en neutro",
     position: "Supino",
@@ -476,6 +493,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-020",
+    image: "images/exercises/pilates-020.png",
     discipline: "pilates",
     name: "Estiramiento cruzado de cadera en supino",
     position: "Supino",
@@ -491,6 +509,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-021",
+    image: "images/exercises/pilates-021.png",
     discipline: "pilates",
     name: "Protracción y retracción escapular en cuadrupedia",
     position: "Cuadrupedia",
@@ -505,6 +524,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-022",
+    image: "images/exercises/pilates-022.png",
     discipline: "pilates",
     name: "Reloj escapular con brazos elevados",
     position: "Supino",
@@ -518,6 +538,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-023",
+    image: "images/exercises/pilates-023.png",
     discipline: "pilates",
     name: "Arm Springs — remo con control escapular",
     position: "Sentada de espaldas al cabezal",
@@ -531,6 +552,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-024",
+    image: "images/exercises/pilates-024.png",
     discipline: "pilates",
     name: "Deslizamiento de brazos en pared (Wall Slides)",
     position: "De pie, espalda apoyada en la pared",
@@ -545,6 +567,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-025",
+    image: "images/exercises/pilates-025.png",
     discipline: "pilates",
     name: "Plancha alta con foco en omóplatos",
     position: "Prono, apoyo en manos y pies",
@@ -560,6 +583,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-026",
+    image: "images/exercises/pilates-026.png",
     discipline: "pilates",
     name: "Roll Up con brazos alternados",
     position: "Supino",
@@ -574,6 +598,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-027",
+    image: "images/exercises/pilates-027.png",
     discipline: "pilates",
     name: "Footwork con cambio de ritmo en Reformer",
     position: "Supino en el carro",
@@ -587,6 +612,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-028",
+    image: "images/exercises/pilates-028.png",
     discipline: "pilates",
     name: "Criss Cross alternado",
     position: "Supino",
@@ -602,6 +628,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-029",
+    image: "images/exercises/pilates-029.png",
     discipline: "pilates",
     name: "Brazo y pierna cruzados en Reformer",
     position: "Prono sobre el carro, manos en las correas",
@@ -616,6 +643,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-030",
+    image: "images/exercises/pilates-030.png",
     discipline: "pilates",
     name: "Marcha lenta con cambio de apoyo",
     position: "De pie",
@@ -630,6 +658,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-031",
+    image: "images/exercises/pilates-031.png",
     discipline: "pilates",
     name: "Bridging con brazos extendidos",
     position: "Supino",
@@ -644,6 +673,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-032",
+    image: "images/exercises/pilates-032.png",
     discipline: "pilates",
     name: "Mermaid lateral en sedestación",
     position: "Sentada",
@@ -658,6 +688,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-033",
+    image: "images/exercises/pilates-033.png",
     discipline: "pilates",
     name: "Arm Circles con carga liviana en Reformer",
     position: "Sentada de espaldas al cabezal",
@@ -671,6 +702,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-034",
+    image: "images/exercises/pilates-034.png",
     discipline: "pilates",
     name: "Pelvic Clock (reloj pélvico)",
     position: "Supino",
@@ -684,6 +716,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-035",
+    image: "images/exercises/pilates-035.png",
     discipline: "pilates",
     name: "Standing Leg Press en Reformer",
     position: "De pie sobre la plataforma, manos en la barra",
@@ -699,6 +732,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-036",
+    image: "images/exercises/pilates-036.png",
     discipline: "pilates",
     name: "Side Kick — preparación",
     position: "De costado",
@@ -714,6 +748,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-037",
+    image: "images/exercises/pilates-037.png",
     discipline: "pilates",
     name: "Teaser — preparación",
     position: "Supino",
@@ -729,6 +764,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-038",
+    image: "images/exercises/pilates-038.png",
     discipline: "pilates",
     name: "Reverse Plank apoyada en el carro",
     position: "Sentada en el carro, manos detrás de la cadera",
@@ -759,6 +795,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-040",
+    image: "images/exercises/pilates-040.png",
     discipline: "pilates",
     name: "Footwork variado — puntas y talones",
     position: "Supino en el carro",
@@ -772,6 +809,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-041",
+    image: "images/exercises/pilates-041.png",
     discipline: "pilates",
     name: "Mermaid completo en Reformer",
     position: "Sentada de costado al carro",
@@ -785,6 +823,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-042",
+    image: "images/exercises/pilates-042.png",
     discipline: "pilates",
     name: "Estiramiento de columna en posición de niño",
     position: "De rodillas",
@@ -800,6 +839,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-043",
+    image: "images/exercises/pilates-043.png",
     discipline: "pilates",
     name: "Relajación final con escaneo corporal",
     position: "Supino",
@@ -828,6 +868,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-045",
+    image: "images/exercises/pilates-045.png",
     discipline: "pilates",
     name: "Transferencia de peso sentada en silla",
     position: "Sentada en el borde de una silla",
@@ -842,6 +883,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-046",
+    image: "images/exercises/pilates-046.png",
     discipline: "pilates",
     name: "Activación básica del centro en supino",
     position: "Supino",
@@ -855,6 +897,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-047",
+    image: "images/exercises/pilates-047.png",
     discipline: "pilates",
     name: "Balanceo suave de brazos sentada",
     position: "Sentada",
@@ -891,6 +934,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-002",
+    image: "images/exercises/yoga-002.png",
     discipline: "yoga",
     name: "Media torsión sentada suave (Ardha Matsyendrasana simplificada)",
     position: "Sentada",
@@ -917,6 +961,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-003",
+    image: "images/exercises/yoga-003.png",
     discipline: "yoga",
     name: "Mariposa reclinada suave (Supta Baddha Konasana preparación)",
     position: "Supino",
@@ -957,6 +1002,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-005",
+    image: "images/exercises/yoga-005.png",
     discipline: "yoga",
     name: "Postura de la silla (Utkatasana)",
     position: "De pie",
@@ -983,6 +1029,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-006",
+    image: "images/exercises/yoga-006.png",
     discipline: "yoga",
     name: "Perro boca abajo (Adho Mukha Svanasana)",
     position: "Cuadrupedia",
@@ -996,6 +1043,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-007",
+    image: "images/exercises/yoga-007.png",
     discipline: "yoga",
     name: "Plancha lateral con apoyo de rodilla (Vasisthasana modificada)",
     position: "De costado",
@@ -1020,6 +1068,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-008",
+    image: "images/exercises/yoga-008.png",
     discipline: "yoga",
     name: "Guerrero I (Virabhadrasana I)",
     position: "De pie",
@@ -1035,6 +1084,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-009",
+    image: "images/exercises/yoga-009.png",
     discipline: "yoga",
     name: "Triángulo (Trikonasana)",
     position: "De pie",
@@ -1075,6 +1125,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-011",
+    image: "images/exercises/yoga-011.png",
     discipline: "yoga",
     name: "Media luna (Ardha Chandrasana)",
     position: "De pie",
@@ -1101,6 +1152,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-012",
+    image: "images/exercises/yoga-012.png",
     discipline: "yoga",
     name: "Media paloma reclinada con soporte",
     position: "Supino",
@@ -1127,6 +1179,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-013",
+    image: "images/exercises/yoga-013.png",
     discipline: "yoga",
     name: "Águila (Garudasana)",
     position: "De pie",
@@ -1203,6 +1256,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-017",
+    image: "images/exercises/yoga-017.png",
     discipline: "yoga",
     name: "Guerrero II a ángulo lateral extendido",
     position: "De pie",
@@ -1243,6 +1297,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-019",
+    image: "images/exercises/yoga-019.png",
     discipline: "yoga",
     name: "Torsión reclinada suave (Supta Matsyendrasana)",
     position: "Supino",
@@ -1311,6 +1366,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-023",
+    image: "images/exercises/yoga-023.png",
     discipline: "yoga",
     name: "Guerrero III con apoyo (Virabhadrasana III modificada)",
     position: "De pie",
@@ -1325,6 +1381,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-024",
+    image: "images/exercises/yoga-024.png",
     discipline: "yoga",
     name: "Postura del árbol (Vrksasana)",
     position: "De pie",

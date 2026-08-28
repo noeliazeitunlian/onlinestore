@@ -393,12 +393,26 @@ label input, label textarea { margin-top: 6px; font-weight: 400; }
 .exercise-card:first-of-type { border-top: none; }
 
 .exercise-illustration {
+  position: relative;
   flex-shrink: 0;
-  width: 56px; height: 56px;
+  width: 96px; height: 96px;
   border-radius: 12px;
   background: var(--rosa-soft);
   color: var(--bordo);
-  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+
+.exercise-illustration img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.exercise-illustration-icon {
+  position: absolute;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
 }
 
 .exercise-body { flex: 1; min-width: 0; }
