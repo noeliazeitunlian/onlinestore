@@ -404,9 +404,12 @@
     if (withObjective.length) return { pool: withObjective, fallback: false };
     if (pool.length) return { pool, fallback: true };
 
-    // last resort: ignore level
+    // last resort: ignore level, pero la modalidad (mat/reformer) nunca se relaja
     const anyLevel = allExercises().filter(ex =>
-      ex.discipline === discipline && ex.moment === moment && !excludeIds.has(ex.id)
+      ex.discipline === discipline &&
+      ex.moment === moment &&
+      (modality === "mixta" || ex.modality.includes(modality)) &&
+      !excludeIds.has(ex.id)
     );
     return { pool: anyLevel, fallback: true };
   }

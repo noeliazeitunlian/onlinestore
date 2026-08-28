@@ -1,16 +1,16 @@
-/* ===== TOKENS — editorial cálido: terracota y crema ===== */
+/* ===== TOKENS — salvia suave y luminoso ===== */
 :root {
-  --blush:      #F5EAE0;
-  --card:       #FFFCF8;
-  --rosa:       #D9A27C;
-  --rosa-soft:  #F1DFCB;
-  --bordo:      #B4502C;
-  --bordo-deep: #7A331A;
-  --gold:       #B9862F;
-  --gold-soft:  #F1E3C6;
-  --ink:        #2E2620;
-  --ink-muted:  #8C7C6D;
-  --line:       #E6D8C7;
+  --blush:      #F4F1E7;
+  --card:       #FFFEFA;
+  --rosa:       #C3CDAF;
+  --rosa-soft:  #E9EDDF;
+  --bordo:      #5B6E4E;
+  --bordo-deep: #384830;
+  --gold:       #B8903E;
+  --gold-soft:  #EFE4C8;
+  --ink:        #2A2E24;
+  --ink-muted:  #7C8271;
+  --line:       #DCE0D2;
 
   --font-display: "Fraunces", Georgia, serif;
   --font-body: "Plus Jakarta Sans", system-ui, sans-serif;
@@ -19,11 +19,11 @@
   --radius-lg: 16px;
   --radius-cta: 10px;
 
-  /* paleta del gráfico de reparto de tiempo, pensada para verse sobre el header terracota */
-  --chart-1: #F5EAE0;
-  --chart-2: #E8B85A;
-  --chart-3: #E7B896;
-  --chart-4: #2E2620;
+  /* paleta del gráfico de reparto de tiempo, pensada para verse sobre el header salvia */
+  --chart-1: #F4F1E7;
+  --chart-2: #D9B65D;
+  --chart-3: #B9C7A0;
+  --chart-4: #2A2E24;
   --chart-5: #FFFFFF;
   --chart-6: #C97B4A;
 }
@@ -35,7 +35,7 @@ html { scroll-behavior: smooth; }
 body {
   margin: 0;
   background-color: var(--blush);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.18 0 0 0 0 0.15 0 0 0 0 0.13 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.165 0 0 0 0 0.18 0 0 0 0 0.141 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   color: var(--ink);
   font-family: var(--font-body);
   line-height: 1.5;
