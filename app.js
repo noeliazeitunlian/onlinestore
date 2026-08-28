@@ -318,8 +318,8 @@
     renderSelect("#objective-select", OBJECTIVES[d]);
     renderSelect("#population-select", POPULATIONS);
 
-    // exercise-add form groups
-    renderPillGroup("#ex-modality-group", MODALITIES[d], null);
+    // exercise-add form groups: "mixta" no aplica a un ejercicio individual (ver filterPool)
+    renderPillGroup("#ex-modality-group", MODALITIES[d].filter(m => m.id !== "mixta"), null);
     renderPillGroup("#ex-moment-group", BLOCKS.map(b => ({ id: b.id, label: `${b.id}. ${b.name}` })), null, true);
     renderPillGroup("#ex-objective-group", OBJECTIVES[d], null, true);
     renderPillGroup("#ex-avoid-group", AVOID_TAGS.map(t => ({ id: t, label: t })), null, true);
@@ -375,11 +375,14 @@
   }
 
   // ---------- generate class ----------
+  // "mixta" es un tipo de CLASE (combinar mat y reformer), no una etiqueta que un ejercicio
+  // pueda tener a sí mismo: un ejercicio de piso es mat, uno sobre el carro es reformer, nunca ambos.
+  // Por eso "mixta" se resuelve acá como comodín (trae cualquier modalidad) en vez de buscarse en ex.modality.
   function filterPool(discipline, moment, modality, level, objective, populationId, excludeIds = new Set()) {
     let pool = allExercises().filter(ex =>
       ex.discipline === discipline &&
       ex.moment === moment &&
-      (ex.modality.includes(modality) || ex.modality.includes("mixta")) &&
+      (modality === "mixta" || ex.modality.includes(modality)) &&
       ex.level.includes(level) &&
       !excludeIds.has(ex.id)
     );
