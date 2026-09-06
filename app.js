@@ -213,6 +213,43 @@
     return wrap(`<circle cx="20" cy="20" r="10"/><path d="M16 20a4 4 0 0 1 8 0"/>`);
   }
 
+  const IMAGE_FALLBACKS = {
+    pilates: {
+      supino: "images/exercises/pilates-004.png",
+      prono: "images/exercises/pilates-015.png",
+      costado: "images/exercises/pilates-036.png",
+      cuadrupedia: "images/exercises/pilates-001.png",
+      rodillas: "images/exercises/pilates-018.png",
+      sentada: "images/exercises/pilates-006.png",
+      pie: "images/exercises/pilates-002.png",
+      default: "images/exercises/pilates-019.png",
+    },
+    yoga: {
+      supino: "images/exercises/yoga-003.png",
+      prono: "images/exercises/yoga-006.png",
+      costado: "images/exercises/yoga-007.png",
+      cuadrupedia: "images/exercises/yoga-006.png",
+      rodillas: "images/exercises/yoga-006.png",
+      sentada: "images/exercises/yoga-002.png",
+      pie: "images/exercises/yoga-009.png",
+      default: "images/exercises/yoga-003.png",
+    },
+  };
+
+  function getExerciseImage(ex) {
+    if (ex.image) return ex.image;
+    const p = (ex.position || "").toLowerCase();
+    const images = IMAGE_FALLBACKS[ex.discipline] || IMAGE_FALLBACKS.pilates;
+    if (p.includes("supino")) return images.supino;
+    if (p.includes("prono")) return images.prono;
+    if (p.includes("costado")) return images.costado;
+    if (p.includes("cuadrupedia")) return images.cuadrupedia;
+    if (p.includes("rodill")) return images.rodillas;
+    if (p.includes("sentad")) return images.sentada;
+    if (p.includes("pie")) return images.pie;
+    return images.default;
+  }
+
   // ---------- coaching, progresión y adaptación por condición ----------
   // Si el ejercicio ya trae contenido cargado a mano (coaching/progression/adaptations en data.js),
   // se usa ese. Si no, se genera una versión razonable a partir de lo que sí existe (howTo/adaptation/avoid).
@@ -620,12 +657,13 @@
     const coaching = getCoaching(ex);
     const progression = getProgression(ex);
     const levelLabel = LEVEL_LABELS[state.level] || state.level;
+    const imageSrc = getExerciseImage(ex);
 
     return `
       <div class="exercise-card" data-block="${blockId}" data-idx="${idx}">
         <div class="exercise-illustration">
-          ${ex.image ? `<img src="${ex.image}" alt="${ex.name}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : ""}
-          <div class="exercise-illustration-icon" style="${ex.image ? "display:none;" : "display:flex;"}">${getPositionIcon(ex.position)}</div>
+          <img src="${imageSrc}" alt="${ex.name}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="exercise-illustration-icon" style="display:none;">${getPositionIcon(ex.position)}</div>
         </div>
         <div class="exercise-body">
           <div class="exercise-title-row">
