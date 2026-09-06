@@ -387,10 +387,15 @@
   // pueda tener a sí mismo: un ejercicio de piso es mat, uno sobre el carro es reformer, nunca ambos.
   // Por eso "mixta" se resuelve acá como comodín (trae cualquier modalidad) en vez de buscarse en ex.modality.
   function filterPool(discipline, moment, modality, level, objective, populationId, excludeIds = new Set()) {
+    const matchesModality = (ex) =>
+      modality === "mixta" ||
+      ex.modality.includes(modality) ||
+      (state.equipment !== "any" && (ex.equipment || []).includes(state.equipment));
+
     let pool = allExercises().filter(ex =>
       ex.discipline === discipline &&
       ex.moment === moment &&
-      (modality === "mixta" || ex.modality.includes(modality)) &&
+      matchesModality(ex) &&
       ex.level.includes(level) &&
       (state.equipment === "any" || (state.equipment === "none" ? !(ex.equipment || []).length : (ex.equipment || []).includes(state.equipment))) &&
       !excludeIds.has(ex.id)
@@ -413,11 +418,11 @@
     if (withObjective.length) return { pool: withObjective, fallback: false };
     if (pool.length) return { pool, fallback: true };
 
-    // last resort: ignore level, pero la modalidad (mat/reformer) nunca se relaja
+    // last resort: ignore level, manteniendo disciplina, bloque y elemento elegido
     const anyLevel = allExercises().filter(ex =>
       ex.discipline === discipline &&
       ex.moment === moment &&
-      (modality === "mixta" || ex.modality.includes(modality)) &&
+      matchesModality(ex) &&
       (state.equipment === "any" || (state.equipment === "none" ? !(ex.equipment || []).length : (ex.equipment || []).includes(state.equipment))) &&
       !excludeIds.has(ex.id)
     );
