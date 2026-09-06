@@ -5,6 +5,7 @@
   let state = {
     discipline: "pilates",
     modality: null,
+    equipment: "any",
     level: "intermedio",
     duration: 55,
   };
@@ -95,6 +96,7 @@
       savedAt: new Date().toISOString(),
       discipline: state.discipline,
       modality: state.modality,
+      equipment: state.equipment,
       level: state.level,
       duration: state.duration,
       render: lastRender,
@@ -124,10 +126,12 @@
     refreshFormForDiscipline();
 
     state.modality = entry.modality;
+    state.equipment = entry.equipment || "any";
     state.level = entry.level;
     state.duration = entry.duration;
 
     $$("#modality-group .pill").forEach(p => p.classList.toggle("is-active", p.dataset.value === state.modality));
+    $$("#equipment-group .pill").forEach(p => p.classList.toggle("is-active", p.dataset.value === state.equipment));
     $$("#level-group .pill").forEach(p => p.classList.toggle("is-active", p.dataset.value === state.level));
     $$("#duration-group .pill").forEach(p => p.classList.toggle("is-active", Number(p.dataset.value) === state.duration));
     $("#objective-select").value = entry.render.objectiveId;
@@ -314,6 +318,7 @@
     renderPillGroup("#modality-group", MODALITIES[d], null);
     state.modality = MODALITIES[d][0].id;
     $(`#modality-group .pill[data-value="${state.modality}"]`).classList.add("is-active");
+    renderPillGroup("#equipment-group", EQUIPMENT_OPTIONS, state.equipment || "any");
 
     renderSelect("#objective-select", OBJECTIVES[d]);
     renderSelect("#population-select", POPULATIONS);
@@ -323,6 +328,7 @@
     renderPillGroup("#ex-moment-group", BLOCKS.map(b => ({ id: b.id, label: `${b.id}. ${b.name}` })), null, true);
     renderPillGroup("#ex-objective-group", OBJECTIVES[d], null, true);
     renderPillGroup("#ex-avoid-group", AVOID_TAGS.map(t => ({ id: t, label: t })), null, true);
+    renderSelect("#ex-equipment-select", EQUIPMENT_OPTIONS.filter(e => e.id !== "any"));
   }
 
   // ---------- pill click handling (event delegation) ----------
@@ -341,6 +347,7 @@
 
     // sync state for main form
     if (group.id === "modality-group") state.modality = pill.dataset.value;
+    if (group.id === "equipment-group") state.equipment = pill.dataset.value;
     if (group.id === "level-group") state.level = pill.dataset.value;
     if (group.id === "duration-group") state.duration = Number(pill.dataset.value);
   });
@@ -357,6 +364,7 @@
   $$(".discipline-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       state.discipline = btn.dataset.discipline;
+      state.equipment = "any";
       syncDisciplineButtons(state.discipline);
       refreshFormForDiscipline();
       lastRender = null;
@@ -384,6 +392,7 @@
       ex.moment === moment &&
       (modality === "mixta" || ex.modality.includes(modality)) &&
       ex.level.includes(level) &&
+      (state.equipment === "any" || (state.equipment === "none" ? !(ex.equipment || []).length : (ex.equipment || []).includes(state.equipment))) &&
       !excludeIds.has(ex.id)
     );
 
@@ -409,6 +418,7 @@
       ex.discipline === discipline &&
       ex.moment === moment &&
       (modality === "mixta" || ex.modality.includes(modality)) &&
+      (state.equipment === "any" || (state.equipment === "none" ? !(ex.equipment || []).length : (ex.equipment || []).includes(state.equipment))) &&
       !excludeIds.has(ex.id)
     );
     return { pool: anyLevel, fallback: true };
@@ -545,6 +555,7 @@
       description: trimmed,
       position: "",
       modality: [state.modality],
+      equipment: state.equipment === "any" ? [] : [state.equipment],
       level: [state.level],
       moment: blockId,
       objective: [lastRender.objectiveId],
@@ -750,6 +761,7 @@
           <span class="tag">${levelLabel}</span>
           <span class="tag">${state.duration} min</span>
           <span class="tag">${populationLabel}</span>
+          ${state.equipment !== "any" ? `<span class="tag">${EQUIPMENT_OPTIONS.find(e => e.id === state.equipment)?.label || state.equipment}</span>` : ""}
         </div>
         ${renderTimeDonut(result)}
         <div class="actions">
@@ -890,6 +902,7 @@
     const moments = getMultiValues("#ex-moment-group").map(Number);
     const objective = getMultiValues("#ex-objective-group");
     const avoid = getMultiValues("#ex-avoid-group");
+    const equipment = $("#ex-equipment-select")?.value || "none";
 
     if (!modality.length || !level.length || !moments.length) {
       alert("Elegí al menos una modalidad, un nivel y un momento de la clase.");
@@ -905,6 +918,7 @@
         description: $("#ex-description").value.trim(),
         position: $("#ex-position").value.trim(),
         modality, level, moment, objective, avoid,
+        equipment: equipment === "none" ? [] : [equipment],
         seriesDefault: 3,
       });
     });
