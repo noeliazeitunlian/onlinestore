@@ -17,6 +17,15 @@
   const $$ = (sel) => Array.from(document.querySelectorAll(sel));
   const LEVEL_LABELS = { inicial: "Inicial", intermedio: "Intermedio", avanzado: "Avanzado" };
 
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
   function getCustomExercises() {
     try {
       return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
@@ -585,6 +594,30 @@
     renderClass(lastRender);
   }
 
+  function toggleExerciseEditor(card) {
+    const panel = card.querySelector(".exercise-edit-panel");
+    if (panel) panel.classList.toggle("hidden");
+  }
+
+  function saveExerciseEdit(card, blockId, idx) {
+    const entry = findEntry(blockId);
+    const ex = entry?.exercises[idx];
+    if (!ex) return;
+
+    const name = card.querySelector(".edit-exercise-name")?.value.trim();
+    const position = card.querySelector(".edit-exercise-position")?.value.trim();
+    const description = card.querySelector(".edit-exercise-description")?.value.trim();
+    if (!name || !description) {
+      alert("Completá al menos el nombre y la descripción del ejercicio.");
+      return;
+    }
+
+    ex.name = name;
+    ex.position = position;
+    ex.description = description;
+    renderClass(lastRender);
+  }
+
   function quickAddExercise(blockId, name) {
     const trimmed = (name || "").trim();
     if (!trimmed) return;
@@ -673,6 +706,22 @@
           </div>
           <p class="exercise-desc">${ex.description}</p>
 
+          <div class="exercise-edit-panel hidden">
+            <label>Nombre
+              <input class="edit-exercise-name" type="text" value="${escapeHtml(ex.name)}">
+            </label>
+            <label>Posición inicial
+              <input class="edit-exercise-position" type="text" value="${escapeHtml(ex.position || "")}" placeholder="Ej: Supino, de pie, cuadrupedia...">
+            </label>
+            <label>Descripción / consigna
+              <textarea class="edit-exercise-description" rows="4">${escapeHtml(ex.description || "")}</textarea>
+            </label>
+            <div class="exercise-edit-actions">
+              <button type="button" class="btn-mini btn-save-exercise-edit">Guardar cambios</button>
+              <button type="button" class="btn-mini btn-cancel-exercise-edit">Cancelar</button>
+            </div>
+          </div>
+
           <div class="exercise-chips">
             <span class="chip progression-chip">Progresión (${levelLabel}) · ${progression}</span>
             <button type="button" class="chip-btn toggle-coaching">Cómo explicarlo ▾</button>
@@ -702,6 +751,7 @@
               <button type="button" class="step-plus" aria-label="Sumar serie">+</button>
             </div>
             <button type="button" class="btn-mini btn-change">⇄ Cambiar</button>
+            <button type="button" class="btn-mini btn-edit-exercise">✎ Editar</button>
             <button type="button" class="btn-mini btn-remove">✕ Quitar</button>
           </div>
         </div>
@@ -918,6 +968,9 @@
     }
     if (e.target.closest(".step-minus")) { changeSeries(blockId, idx, -1); return; }
     if (e.target.closest(".step-plus")) { changeSeries(blockId, idx, 1); return; }
+    if (e.target.closest(".btn-edit-exercise")) { toggleExerciseEditor(card); return; }
+    if (e.target.closest(".btn-cancel-exercise-edit")) { toggleExerciseEditor(card); return; }
+    if (e.target.closest(".btn-save-exercise-edit")) { saveExerciseEdit(card, blockId, idx); return; }
     if (e.target.closest(".btn-change")) { swapExercise(blockId, idx); return; }
     if (e.target.closest(".btn-remove")) { removeExercise(blockId, idx); return; }
   });

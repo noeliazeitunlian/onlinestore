@@ -440,6 +440,37 @@ label input, label textarea { margin-top: 6px; font-weight: 400; }
 
 .exercise-desc { margin: 0 0 10px; font-size: 0.9rem; color: var(--ink); }
 
+.exercise-edit-panel {
+  display: grid;
+  gap: 9px;
+  margin: 10px 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--blush);
+}
+.exercise-edit-panel label {
+  display: grid;
+  gap: 4px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--bordo);
+}
+.exercise-edit-panel input,
+.exercise-edit-panel textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 8px 10px;
+  background: var(--card);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.84rem;
+}
+.exercise-edit-panel textarea { resize: vertical; min-height: 82px; }
+.exercise-edit-actions { display: flex; flex-wrap: wrap; gap: 7px; }
+
 .exercise-chips { display: flex; flex-wrap: wrap; gap: 6px; font-size: 0.8rem; margin-bottom: 4px; }
 .exercise-chips .chip { background: var(--blush); padding: 5px 10px; border-radius: 8px; color: var(--ink-muted); }
 .exercise-chips .chip.warn { background: #F7E2D3; color: #8C2E12; }
