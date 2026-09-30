@@ -1203,6 +1203,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-060",
+    image: "imagenes/pilates-060.png",
     discipline: "pilates",
     name: "Elevación de brazos con banda liviana",
     equipment: ["band"],
@@ -1264,6 +1265,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-063",
+    image: "imagenes/pilates-063.png",
     discipline: "pilates",
     name: "Remo con banda elástica sentada",
     equipment: ["band"],
@@ -1632,6 +1634,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-081",
+    image: "imagenes/pilates-081.png",
     discipline: "pilates",
     name: "Remo sentado con banda",
     equipment: ["band"],
@@ -2528,6 +2531,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-089",
+    image: "imagenes/pilates-089.png",
     discipline: "pilates",
     name: "Banda: apertura de brazos de pie",
     equipment: ["band"],
@@ -2541,6 +2545,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-090",
+    image: "imagenes/pilates-090.png",
     discipline: "pilates",
     name: "Banda: press de pecho supino",
     equipment: ["band"],
@@ -2554,6 +2559,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-091",
+    image: "imagenes/pilates-091.png",
     discipline: "pilates",
     name: "Banda: puente con abducción",
     equipment: ["band"],
@@ -2568,6 +2574,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-092",
+    image: "imagenes/pilates-092.png",
     discipline: "pilates",
     name: "Banda: patada lateral",
     equipment: ["band"],
@@ -2582,6 +2589,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-093",
+    image: "imagenes/pilates-093.png",
     discipline: "pilates",
     name: "Banda: caminata lateral",
     equipment: ["band"],
@@ -3327,6 +3335,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-114",
+    image: "imagenes/pilates-114.png",
     discipline: "pilates",
     name: "Banda: secuencia de sentadilla y alcance",
     equipment: ["band"],
@@ -3340,6 +3349,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-115",
+    image: "imagenes/pilates-115.png",
     discipline: "pilates",
     name: "Banda: paso lateral integrado",
     equipment: ["band"],
@@ -3353,6 +3363,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-116",
+    image: "imagenes/pilates-116.png",
     discipline: "pilates",
     name: "Banda: estiramiento final de piernas",
     equipment: ["band"],
@@ -3366,6 +3377,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-117",
+    image: "imagenes/pilates-117.png",
     discipline: "pilates",
     name: "Banda: respiración y descarga de hombros",
     equipment: ["band"],
