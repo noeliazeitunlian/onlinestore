@@ -865,6 +865,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-044",
+    image: "imagenes/pilates-044.png",
     discipline: "pilates",
     name: "Puente con pelota entre las rodillas",
     equipment: ["soft-ball"],
@@ -1602,6 +1603,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-079",
+    image: "imagenes/pilates-079.png",
     discipline: "pilates",
     name: "Puente con pies sobre fitball",
     equipment: ["fitball"],
@@ -1618,6 +1620,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-080",
+    image: "imagenes/pilates-080.png",
     discipline: "pilates",
     name: "Plancha con antebrazos sobre fitball",
     equipment: ["fitball"],
@@ -1663,6 +1666,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-083",
+    image: "imagenes/pilates-083.png",
     discipline: "pilates",
     name: "Dead bug con pelota blanda",
     equipment: ["soft-ball"],
@@ -2802,6 +2806,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-099",
+    image: "imagenes/pilates-099.png",
     discipline: "pilates",
     name: "Pelota blanda: equilibrio entre tobillos",
     equipment: ["soft-ball"],
@@ -2815,6 +2820,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-100",
+    image: "imagenes/pilates-100.png",
     discipline: "pilates",
     name: "Pelota blanda: abdominal con apoyo",
     equipment: ["soft-ball"],
@@ -2828,6 +2834,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-101",
+    image: "imagenes/pilates-101.png",
     discipline: "pilates",
     name: "Pelota blanda: círculos de pierna",
     equipment: ["soft-ball"],
@@ -2842,6 +2849,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-102",
+    image: "imagenes/pilates-102.png",
     discipline: "pilates",
     name: "Pelota blanda: rotación sentada",
     equipment: ["soft-ball"],
@@ -2856,6 +2864,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-103",
+    image: "imagenes/pilates-103.png",
     discipline: "pilates",
     name: "Pelota blanda: sentarse y elevar brazos",
     equipment: ["soft-ball"],
@@ -2869,6 +2878,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-057",
+    image: "imagenes/yoga-057.png",
     discipline: "yoga",
     name: "Pelota blanda: apoyo en postura fácil",
     equipment: ["soft-ball"],
@@ -2882,6 +2892,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-058",
+    image: "imagenes/yoga-058.png",
     discipline: "yoga",
     name: "Pelota blanda: cobra apoyada",
     equipment: ["soft-ball"],
@@ -2896,6 +2907,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-059",
+    image: "imagenes/yoga-059.png",
     discipline: "yoga",
     name: "Pelota blanda: torsión de rodillas",
     equipment: ["soft-ball"],
@@ -2910,6 +2922,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-060",
+    image: "imagenes/yoga-060.png",
     discipline: "yoga",
     name: "Pelota blanda: postura del barco asistida",
     equipment: ["soft-ball"],
@@ -2922,6 +2935,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-061",
+    image: "imagenes/yoga-061.png",
     discipline: "yoga",
     name: "Pelota blanda: descanso bajo las rodillas",
     equipment: ["soft-ball"],
@@ -2935,6 +2949,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-104",
+    image: "imagenes/pilates-104.png",
     discipline: "pilates",
     name: "Fitball: marcha sentada",
     equipment: ["fitball"],
@@ -2948,6 +2963,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-105",
+    image: "imagenes/pilates-105.png",
     discipline: "pilates",
     name: "Fitball: puente con apoyo",
     equipment: ["fitball"],
@@ -2961,6 +2977,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-106",
+    image: "imagenes/pilates-106.png",
     discipline: "pilates",
     name: "Fitball: flexión de columna sentada",
     equipment: ["fitball"],
@@ -2975,6 +2992,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-107",
+    image: "imagenes/pilates-107.png",
     discipline: "pilates",
     name: "Fitball: apoyo de manos y rodillas",
     equipment: ["fitball"],
@@ -2989,6 +3007,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-108",
+    image: "imagenes/pilates-108.png",
     discipline: "pilates",
     name: "Fitball: sentadilla contra pared",
     equipment: ["fitball"],
@@ -3003,6 +3022,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-062",
+    image: "imagenes/yoga-062.png",
     discipline: "yoga",
     name: "Fitball: movilidad pélvica sentada",
     equipment: ["fitball"],
@@ -3016,6 +3036,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-063",
+    image: "imagenes/yoga-063.png",
     discipline: "yoga",
     name: "Fitball: flexión hacia adelante apoyada",
     equipment: ["fitball"],
@@ -3030,6 +3051,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-064",
+    image: "imagenes/yoga-064.png",
     discipline: "yoga",
     name: "Fitball: esfinge asistida",
     equipment: ["fitball"],
@@ -3044,6 +3066,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-065",
+    image: "imagenes/yoga-065.png",
     discipline: "yoga",
     name: "Fitball: equilibrio con apoyo",
     equipment: ["fitball"],
@@ -3057,6 +3080,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-066",
+    image: "imagenes/yoga-066.png",
     discipline: "yoga",
     name: "Fitball: relajación de piernas",
     equipment: ["fitball"],
@@ -3443,6 +3467,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-122",
+    image: "imagenes/pilates-122.png",
     discipline: "pilates",
     name: "Pelota blanda: marcha y rotación",
     equipment: ["soft-ball"],
@@ -3456,6 +3481,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-123",
+    image: "imagenes/pilates-123.png",
     discipline: "pilates",
     name: "Pelota blanda: puente y alcance",
     equipment: ["soft-ball"],
@@ -3469,6 +3495,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-124",
+    image: "imagenes/pilates-124.png",
     discipline: "pilates",
     name: "Pelota blanda: descanso de pelvis",
     equipment: ["soft-ball"],
@@ -3482,6 +3509,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-125",
+    image: "imagenes/pilates-125.png",
     discipline: "pilates",
     name: "Pelota blanda: brazos al techo en cierre",
     equipment: ["soft-ball"],
@@ -3495,6 +3523,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-126",
+    image: "imagenes/pilates-126.png",
     discipline: "pilates",
     name: "Fitball: marcha y brazos",
     equipment: ["fitball"],
@@ -3508,6 +3537,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-127",
+    image: "imagenes/pilates-127.png",
     discipline: "pilates",
     name: "Fitball: sentadilla y elevación",
     equipment: ["fitball"],
@@ -3522,6 +3552,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-128",
+    image: "imagenes/pilates-128.png",
     discipline: "pilates",
     name: "Fitball: descanso de columna",
     equipment: ["fitball"],
@@ -3535,6 +3566,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-129",
+    image: "imagenes/pilates-129.png",
     discipline: "pilates",
     name: "Fitball: flexión suave de cadera",
     equipment: ["fitball"],
@@ -3758,6 +3790,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-090",
+    image: "imagenes/yoga-090.png",
     discipline: "yoga",
     name: "Pelota blanda: flujo de equilibrio",
     equipment: ["soft-ball"],
@@ -3771,6 +3804,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-091",
+    image: "imagenes/yoga-091.png",
     discipline: "yoga",
     name: "Pelota blanda: zancada y alcance",
     equipment: ["soft-ball"],
@@ -3784,6 +3818,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-092",
+    image: "imagenes/yoga-092.png",
     discipline: "yoga",
     name: "Pelota blanda: descanso en savasana",
     equipment: ["soft-ball"],
@@ -3797,6 +3832,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-093",
+    image: "imagenes/yoga-093.png",
     discipline: "yoga",
     name: "Pelota blanda: torsión restaurativa",
     equipment: ["soft-ball"],
@@ -3811,6 +3847,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-094",
+    image: "imagenes/yoga-094.png",
     discipline: "yoga",
     name: "Fitball: flujo de sentadilla",
     equipment: ["fitball"],
@@ -3825,6 +3862,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-095",
+    image: "imagenes/yoga-095.png",
     discipline: "yoga",
     name: "Fitball: equilibrio con alcance",
     equipment: ["fitball"],
@@ -3838,6 +3876,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-096",
+    image: "imagenes/yoga-096.png",
     discipline: "yoga",
     name: "Fitball: piernas descansadas",
     equipment: ["fitball"],
@@ -3851,6 +3890,7 @@ const EXERCISES = [
   },
   {
     id: "yoga-097",
+    image: "imagenes/yoga-097.png",
     discipline: "yoga",
     name: "Fitball: torsión suave apoyada",
     equipment: ["fitball"],
