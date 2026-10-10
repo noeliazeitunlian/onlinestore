@@ -131,7 +131,7 @@
     state.duration = entry.duration;
 
     $$("#modality-group .pill").forEach(p => p.classList.toggle("is-active", p.dataset.value === state.modality));
-    $$("#equipment-group .pill").forEach(p => p.classList.toggle("is-active", p.dataset.value === state.equipment));
+    refreshEquipmentPills();
     $$("#level-group .pill").forEach(p => p.classList.toggle("is-active", p.dataset.value === state.level));
     $$("#duration-group .pill").forEach(p => p.classList.toggle("is-active", Number(p.dataset.value) === state.duration));
     $("#objective-select").value = entry.render.objectiveId;
@@ -350,12 +350,28 @@
     el.innerHTML = options.map(o => `<option value="${o.id}">${o.label}</option>`).join("");
   }
 
+  // fitball, pelota blanda y bloques son solo de mat: no se ofrecen en una clase o ejercicio de reformer
+  function equipmentForModality(modality) {
+    return EQUIPMENT_OPTIONS.filter(e => !(e.matOnly && modality === "reformer"));
+  }
+
+  function refreshEquipmentPills() {
+    const options = equipmentForModality(state.modality);
+    if (!options.some(o => o.id === state.equipment)) state.equipment = "any";
+    renderPillGroup("#equipment-group", options, state.equipment);
+  }
+
+  function refreshExEquipmentSelect() {
+    const exModality = $("#ex-modality-group .pill.is-active")?.dataset.value;
+    renderSelect("#ex-equipment-select", equipmentForModality(exModality).filter(e => e.id !== "any"));
+  }
+
   function refreshFormForDiscipline() {
     const d = state.discipline;
     renderPillGroup("#modality-group", MODALITIES[d], null);
     state.modality = MODALITIES[d][0].id;
     $(`#modality-group .pill[data-value="${state.modality}"]`).classList.add("is-active");
-    renderPillGroup("#equipment-group", EQUIPMENT_OPTIONS, state.equipment || "any");
+    refreshEquipmentPills();
 
     renderSelect("#objective-select", OBJECTIVES[d]);
     renderSelect("#population-select", POPULATIONS);
@@ -365,7 +381,7 @@
     renderPillGroup("#ex-moment-group", BLOCKS.map(b => ({ id: b.id, label: `${b.id}. ${b.name}` })), null, true);
     renderPillGroup("#ex-objective-group", OBJECTIVES[d], null, true);
     renderPillGroup("#ex-avoid-group", AVOID_TAGS.map(t => ({ id: t, label: t })), null, true);
-    renderSelect("#ex-equipment-select", EQUIPMENT_OPTIONS.filter(e => e.id !== "any"));
+    refreshExEquipmentSelect();
   }
 
   // ---------- pill click handling (event delegation) ----------
@@ -383,7 +399,11 @@
     }
 
     // sync state for main form
-    if (group.id === "modality-group") state.modality = pill.dataset.value;
+    if (group.id === "modality-group") {
+      state.modality = pill.dataset.value;
+      refreshEquipmentPills();
+    }
+    if (group.id === "ex-modality-group") refreshExEquipmentSelect();
     if (group.id === "equipment-group") state.equipment = pill.dataset.value;
     if (group.id === "level-group") state.level = pill.dataset.value;
     if (group.id === "duration-group") state.duration = Number(pill.dataset.value);
@@ -423,11 +443,12 @@
   // "mixta" es un tipo de CLASE (combinar mat y reformer), no una etiqueta que un ejercicio
   // pueda tener a sí mismo: un ejercicio de piso es mat, uno sobre el carro es reformer, nunca ambos.
   // Por eso "mixta" se resuelve acá como comodín (trae cualquier modalidad) en vez de buscarse en ex.modality.
+  // El elemento elegido nunca habilita otra modalidad: si no hay ejercicios de reformer con ese
+  // elemento, el bloque queda vacío (con su aviso) en vez de mezclar ejercicios de mat.
   function filterPool(discipline, moment, modality, level, objective, populationId, excludeIds = new Set()) {
     const matchesModality = (ex) =>
       modality === "mixta" ||
-      ex.modality.includes(modality) ||
-      (state.equipment !== "any" && (ex.equipment || []).includes(state.equipment));
+      ex.modality.includes(modality);
 
     let pool = allExercises().filter(ex =>
       ex.discipline === discipline &&
@@ -969,6 +990,7 @@
     alert("Ejercicio guardado. Ya está disponible en el generador.");
     e.target.reset();
     $$("#exercise-form .pill.is-active").forEach(p => p.classList.remove("is-active"));
+    refreshExEquipmentSelect();
     $("#exercise-form").classList.add("hidden");
   });
 
