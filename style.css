@@ -440,6 +440,27 @@ label input, label textarea { margin-top: 6px; font-weight: 400; }
 
 .exercise-desc { margin: 0 0 10px; font-size: 0.9rem; color: var(--ink); }
 
+.level-guide {
+  margin: 0 0 10px;
+  padding: 9px 12px;
+  background: var(--rosa-soft);
+  border-left: 3px solid var(--bordo);
+  border-radius: 8px;
+  font-size: 0.84rem;
+  color: var(--ink);
+}
+.level-guide-title {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 700;
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--bordo);
+}
+.level-guide ul { margin: 0; padding-left: 18px; }
+.level-guide li + li { margin-top: 2px; }
+
 .exercise-edit-panel {
   display: grid;
   gap: 9px;
@@ -474,7 +495,6 @@ label input, label textarea { margin-top: 6px; font-weight: 400; }
 .exercise-chips { display: flex; flex-wrap: wrap; gap: 6px; font-size: 0.8rem; margin-bottom: 4px; }
 .exercise-chips .chip { background: var(--blush); padding: 5px 10px; border-radius: 8px; color: var(--ink-muted); }
 .exercise-chips .chip.warn { background: #F7E2D3; color: #8C2E12; }
-.exercise-chips .chip.progression-chip { color: var(--bordo); font-weight: 600; }
 
 .chip-btn {
   background: var(--blush);

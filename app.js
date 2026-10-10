@@ -73,10 +73,6 @@
     return EXERCISES.concat(getCustomExercises());
   }
 
-  function shuffle(arr) {
-    return arr.map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(v => v[1]);
-  }
-
   // ---------- mis clases guardadas ----------
   function getSavedClasses() {
     try {
@@ -263,13 +259,115 @@
     };
   }
 
-  function getProgression(ex) {
-    if (ex.progression) return ex.progression;
-    const levelLabel = LEVEL_LABELS[state.level] || state.level;
-    if (ex.level.length > 1) {
-      return `sostené esta versión para nivel ${levelLabel.toLowerCase()}; para variar, ajustá rango, velocidad o apoyo`;
+  // ---------- diferencias por nivel ----------
+  // Un mismo ejercicio puede servir para varios niveles; lo que cambia es la dosis (series, repeticiones,
+  // respiraciones), el ritmo, el rango, la carga/apoyo y la variante. Todo se arma a partir de los datos
+  // del ejercicio, así aplica a toda la base (y a los ejercicios propios) sin cargar texto a mano.
+  const isCalmMoment = (ex) => ex.moment === 1 || ex.moment === 6 || (ex.modality || []).includes("restaurativo");
+
+  const LEVEL_DOSE = {
+    inicial:    { reps: "6 a 8 repeticiones",   breaths: "3 a 4 respiraciones", hold: "3 respiraciones",      tempo: "ritmo lento, con una pausa para reorganizarse entre repeticiones", range: "rango reducido y cómodo, priorizando la alineación", yogaTempo: "entrada y salida lentas, con una pausa entre lados" },
+    intermedio: { reps: "8 a 10 repeticiones",  breaths: "5 a 6 respiraciones", hold: "5 respiraciones",      tempo: "ritmo continuo y controlado",                                      range: "recorrido completo", yogaTempo: "transiciones continuas, sincronizadas con la respiración" },
+    avanzado:   { reps: "10 a 12 repeticiones", breaths: "6 a 8 respiraciones", hold: "6 a 8 respiraciones",  tempo: "ritmo fluido, con una pausa de 2 tiempos al final del recorrido",  range: "recorrido completo, con más exigencia de control", yogaTempo: "transiciones fluidas, sosteniendo la postura activa hasta la última respiración" },
+  };
+
+  // Si el "cómo explicarlo" ya trae un rango ("6 a 8 repeticiones"), inicial toma el mínimo y avanzado el máximo.
+  function levelAmount(ex, level) {
+    const m = (ex.howTo || "").match(/(\d+)\s*a\s*(\d+)\s*(repeticiones|respiraciones|alternancias|ciclos respiratorios|ciclos|círculos|empujes|rotaciones|exhalaciones)(\s+por lado)?/);
+    if (m) {
+      const [, lo, hi, rawUnit, perSide = ""] = m;
+      const unit = rawUnit + perSide;
+      if (level === "inicial") return `${lo} ${unit}`;
+      if (level === "avanzado") return `${hi} ${unit}`;
+      return `${lo} a ${hi} ${unit}`;
     }
-    return `pensado específicamente para nivel ${levelLabel.toLowerCase()}`;
+    const dose = LEVEL_DOSE[level];
+    if (isCalmMoment(ex)) return dose.breaths;
+    return ex.discipline === "yoga" ? `sostener ${dose.hold}` : dose.reps;
+  }
+
+  function levelSetup(ex, level) {
+    const modality = state.modality !== "mixta" && (ex.modality || []).includes(state.modality) ? state.modality : (ex.modality || [])[0];
+    if (modality === "reformer") {
+      if (level === "inicial") return "Resortes medios o pesados: el carro se mueve menos y da más estabilidad.";
+      if (level === "intermedio") return "Resortes medios.";
+      return (ex.objective || []).includes("tren-superior")
+        ? "Más resorte para sumar fuerza, sin perder la organización escapular."
+        : "Resortes más livianos: el carro queda más inestable y exige más control del centro.";
+    }
+    if (modality === "mat") {
+      if (level === "inicial") return "Con más base de apoyo: cabeza apoyada, rodillas flexionadas o manos en el piso según la posición.";
+      if (level === "intermedio") return "Versión estándar del ejercicio.";
+      return "Con menos apoyo: palancas más largas (piernas o brazos extendidos) o sin ayuda de las manos.";
+    }
+    // yoga
+    if (level === "inicial") return "Usá apoyos (bloques, manta o pared) y entrá solo hasta la primera sensación de estiramiento.";
+    if (level === "intermedio") return "Postura completa, con apoyos solo si hacen falta.";
+    return isCalmMoment(ex)
+      ? "Más tiempo de permanencia, soltando un poco más en cada exhalación."
+      : "Sin apoyos, buscando la expresión completa de la postura y transiciones más fluidas.";
+  }
+
+  const EQUIPMENT_BY_LEVEL = {
+    band:          { inicial: "Banda larga o de baja resistencia.",                  avanzado: "Acortá la banda o usá una de mayor resistencia." },
+    "magic-circle":{ inicial: "Presión suave y sostenida sobre el círculo.",         avanzado: "Presión sostenida con pequeños pulsos al final del recorrido." },
+    "soft-ball":   { inicial: "La pelota como guía de alineación, con presión suave.", avanzado: "Presión constante sobre la pelota durante todo el recorrido." },
+    fitball:       { inicial: "Pies bien separados en el piso para ampliar la base.", avanzado: "Base más angosta o un pie elevado para sumar inestabilidad." },
+    blocks:        { inicial: "Bloques en su altura máxima y cerca del cuerpo.",      avanzado: "Bloques más bajos, o sin bloques si el rango lo permite." },
+    "foam-roller": { inicial: "Rodillo bien apoyado y con base amplia.",              avanzado: "Menos puntos de apoyo sobre el rodillo para sumar inestabilidad." },
+  };
+
+  // Las progresiones cargadas suelen tener la forma "versión de entrada; progresá ...": la primera
+  // parte es la variante de inicial y la segunda la de avanzado.
+  function splitProgression(text) {
+    if (!text) return null;
+    const [first, ...rest] = text.split(/;\s*/);
+    const easy = first.replace(/^variante más fácil:\s*/i, "");
+    let hard = rest.join("; ").replace(/^para progresar[^,]*,\s*/i, "");
+    if (/no requiere|sin necesidad|no necesita/i.test(hard + first)) hard = "";
+    return { easy, hard };
+  }
+
+  const capitalize = (s) => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+
+  function getLevelGuide(ex, level = state.level) {
+    const dose = LEVEL_DOSE[level] || LEVEL_DOSE.intermedio;
+    const lines = [];
+    lines.push(`${capitalize(levelAmount(ex, level))} · ${isCalmMoment(ex) ? (level === "inicial" ? "respiración guiada y sin apuro" : level === "avanzado" ? "más tiempo de permanencia" : "respiración pausada") : ex.discipline === "yoga" ? dose.yogaTempo : `${dose.tempo}, ${dose.range}`}.`);
+    lines.push(levelSetup(ex, level));
+    (ex.equipment || []).forEach(eq => {
+      const tip = EQUIPMENT_BY_LEVEL[eq]?.[level];
+      if (tip) lines.push(tip);
+    });
+    const prog = splitProgression(ex.progression);
+    if (prog) {
+      if (level === "inicial") lines.push(`Variante: ${prog.easy}.`);
+      if (level === "intermedio" && prog.hard) lines.push(`Cuando esté estable, ${prog.hard}.`);
+      if (level === "avanzado" && prog.hard) lines.push(/^progres/i.test(prog.hard) ? `${capitalize(prog.hard)}.` : `Progresión: ${prog.hard}.`);
+    }
+    if (ex.level.length === 1 && ex.level[0] === level) lines.push(`Ejercicio pensado específicamente para nivel ${(LEVEL_LABELS[level] || level).toLowerCase()}.`);
+    return lines;
+  }
+
+  // series por nivel: inicial una menos, avanzado una más (salvo preparación y cierre, que no suman intensidad)
+  function levelSeries(ex, level = state.level) {
+    const base = ex.seriesDefault || 1;
+    if (isCalmMoment(ex)) return base;
+    if (level === "inicial") return Math.max(1, base - 1);
+    if (level === "avanzado") return base + 1;
+    return base;
+  }
+
+  // copia del ejercicio con la dosis del nivel: así cambiar series en una clase no modifica la base
+  const withLevel = (ex) => ({ ...ex, seriesDefault: levelSeries(ex) });
+
+  // mezcla priorizando los ejercicios propios del nivel elegido (los de un solo nivel salen más seguido
+  // que los que sirven para los tres), para que inicial, intermedio y avanzado no traigan la misma clase
+  function levelWeightedShuffle(pool) {
+    return pool
+      .map(ex => ({ ex, key: Math.pow(Math.random(), 1 / (4 - Math.min(3, (ex.level || []).length))) }))
+      .sort((a, b) => b.key - a.key)
+      .map(o => o.ex);
   }
 
   // Principio general de seguridad por condición + cómo aplicarlo en el ejercicio puntual.
@@ -503,7 +601,7 @@
     const result = blocksToUse.map(block => {
       const minutes = Math.max(3, Math.round((block.weight / weightSum) * state.duration));
       const { pool, fallback } = filterPool(state.discipline, block.id, state.modality, state.level, objectiveId, populationId, recentIds);
-      const picked = shuffle(pool).slice(0, block.id === 3 ? 3 : 2);
+      const picked = levelWeightedShuffle(pool).slice(0, block.id === 3 ? 3 : 2).map(withLevel);
       return { block, minutes, exercises: picked, fallback };
     });
 
@@ -528,7 +626,7 @@
       const previous = lastRender.result.find(r => r.block.id === block.id);
       const extraCount = block.id === 3 ? 2 : 1;
       const { pool, fallback } = filterPool(state.discipline, block.id, state.modality, state.level, objectiveId, populationId, usedIds);
-      const extras = shuffle(pool).slice(0, extraCount);
+      const extras = levelWeightedShuffle(pool).slice(0, extraCount).map(withLevel);
       extras.forEach(ex => usedIds.add(ex.id));
       const exercises = (previous ? previous.exercises : []).concat(extras);
       return {
@@ -590,12 +688,12 @@
     if (!entry) return;
     const excludeIds = new Set(lastRender.result.flatMap(r => r.exercises.map(ex => ex.id)));
     const { pool } = filterPool(state.discipline, blockId, state.modality, state.level, lastRender.objectiveId, lastRender.populationId, excludeIds);
-    const options = shuffle(pool);
+    const options = levelWeightedShuffle(pool);
     if (!options.length) {
       alert("No hay otro ejercicio disponible para reemplazar este, con los filtros actuales.");
       return;
     }
-    entry.exercises[idx] = options[0];
+    entry.exercises[idx] = withLevel(options[0]);
     renderClass(lastRender);
   }
 
@@ -676,7 +774,6 @@
   // ---------- render de una tarjeta de ejercicio ----------
   function renderExerciseCard(ex, blockId, idx, isPrepOriented) {
     const coaching = getCoaching(ex);
-    const progression = getProgression(ex);
     const levelLabel = LEVEL_LABELS[state.level] || state.level;
     const imageSrc = getExerciseImage(ex);
 
@@ -694,8 +791,12 @@
           </div>
           <p class="exercise-desc">${ex.description}</p>
 
+          <div class="level-guide">
+            <span class="level-guide-title">Nivel ${levelLabel}</span>
+            <ul>${getLevelGuide(ex).map(line => `<li>${line}</li>`).join("")}</ul>
+          </div>
+
           <div class="exercise-chips">
-            <span class="chip progression-chip">Progresión (${levelLabel}) · ${progression}</span>
             <button type="button" class="chip-btn toggle-coaching">Cómo explicarlo ▾</button>
             <button type="button" class="chip-btn toggle-adaptation">+ Adaptación por patología ▾</button>
             ${(ex.avoid && ex.avoid.length) ? `<span class="chip warn">Evitar en: ${ex.avoid.join(", ")}</span>` : ""}
@@ -754,7 +855,7 @@
     $("#live-ex-position").textContent = ex.position || "";
     $("#live-ex-name").textContent = ex.name;
     $("#live-ex-desc").textContent = ex.description || "";
-    $("#live-ex-howto").textContent = getCoaching(ex).verbal;
+    $("#live-ex-howto").textContent = `${getCoaching(ex).verbal} ${getLevelGuide(ex).join(" ")}`;
 
     liveState.seconds = 0;
     liveState.paused = false;
