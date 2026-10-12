@@ -557,17 +557,14 @@
       !excludeIds.has(ex.id)
     );
 
-    // avoid contraindicated for population
-    const popLabelMap = {
-      embarazo: "Embarazo / posparto",
-      mayores: null,
-      principiantes: null,
-      general: null,
-    };
-    const avoidLabel = popLabelMap[populationId];
-    if (avoidLabel) {
-      pool = pool.filter(ex => !(ex.avoid || []).includes(avoidLabel));
-    }
+    // población: solo ejercicios marcados como aptos para la población elegida (campo "population").
+    // Es un filtro estricto, también en el último recurso: por seguridad nunca se cae a ejercicios no aptos.
+    // Los ejercicios propios sin "population" se consideran aptos (los cargó la instructora).
+    const fitsPopulation = (ex) =>
+      !populationId || populationId === "general" ||
+      (ex.population ? ex.population.includes(populationId)
+        : !(populationId === "embarazo" && (ex.avoid || []).includes("Embarazo / posparto")));
+    pool = pool.filter(fitsPopulation);
 
     // prefer matching objective, but fall back if empty
     const withObjective = pool.filter(ex => ex.objective.includes(objective));
@@ -580,6 +577,7 @@
       ex.moment === moment &&
       matchesModality(ex) &&
       (state.equipment === "any" || (state.equipment === "none" ? !(ex.equipment || []).length : (ex.equipment || []).includes(state.equipment))) &&
+      fitsPopulation(ex) &&
       !excludeIds.has(ex.id)
     );
     return { pool: anyLevel, fallback: true };
@@ -957,7 +955,9 @@
         </div>`;
 
       if (!exercises.length) {
-        html += `<p class="block-empty">Todavía no cargaste ejercicios para esta combinación en este bloque. Sumalos con "+ Agregar ejercicio propio" o con el campo de acá abajo.</p>`;
+        html += populationId && populationId !== "general"
+          ? `<p class="block-empty">No hay ejercicios de la base marcados como aptos para ${populationLabel.toLowerCase()} en este bloque con este elemento. Probá con otro elemento o sumá uno propio acá abajo.</p>`
+          : `<p class="block-empty">Todavía no cargaste ejercicios para esta combinación en este bloque. Sumalos con "+ Agregar ejercicio propio" o con el campo de acá abajo.</p>`;
       } else {
         if (fallback) {
           html += `<p class="block-empty">Mostrando ejercicios similares (no hay carga exacta para este objetivo/nivel en este bloque todavía).</p>`;
