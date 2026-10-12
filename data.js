@@ -6563,8 +6563,7 @@ const EXERCISES = [
    EJERCICIOS EXTRA — ampliación de la base
    ------------------------------------------------------------
    Cargar DESPUÉS del archivo principal de ejercicios:
-     <script src="ejercicios.js"></script>
-     <script src="ejercicios-extra.js"></script>
+     (ya integrado en este mismo archivo)
 
    Qué hace:
    1) Corrige 4 ejercicios de la base original (moment faltante,
@@ -12879,3 +12878,6 @@ const EXERCISES = [
     if (!existingIds.has(ex.id)) EXERCISES.push(ex);
   });
 })();
+
+// Marca de versión: abrí la consola del navegador (F12) para ver qué base se cargó.
+console.info("[Armá tu clase] data.js versión 2026-10-11 cargado: " + EXERCISES.length + " ejercicios");
