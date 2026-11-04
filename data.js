@@ -344,6 +344,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-011",
+    image: "images/exercises/pilates-011.png",
     discipline: "pilates",
     name: "Single Leg Circles",
     position: "Supino",
@@ -1014,6 +1015,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-039",
+    image: "images/exercises/pilates-039.png",
     discipline: "pilates",
     name: "Roll Over — preparación",
     position: "Supino",
@@ -1534,6 +1536,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-061",
+    image: "images/exercises/pilates-061.png",
     discipline: "pilates",
     name: "Secuencia simple de brazos y piernas alternados",
     position: "Supino",
@@ -1555,6 +1558,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-062",
+    image: "images/exercises/pilates-062.png",
     discipline: "pilates",
     name: "Flexión de brazos en pared",
     position: "De pie, manos apoyadas en la pared",
@@ -1599,6 +1603,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-064",
+    image: "images/exercises/pilates-064.png",
     discipline: "pilates",
     name: "Marcha cruzada en cuadrupedia (Bird dog)",
     position: "Cuadrupedia",
@@ -1625,6 +1630,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-065",
+    image: "images/exercises/pilates-065.png",
     discipline: "pilates",
     name: "Sentadilla asistida con apoyo",
     position: "De pie, sosteniendo el respaldo de una silla",
@@ -1647,6 +1653,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-066",
+    image: "images/exercises/pilates-066.png",
     discipline: "pilates",
     name: "Teaser completo",
     position: "Supino",
@@ -1673,6 +1680,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-067",
+    image: "images/exercises/pilates-067.png",
     discipline: "pilates",
     name: "Estiramiento de cuádriceps de pie",
     position: "De pie",
@@ -1884,6 +1892,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-076",
+    image: "images/exercises/pilates-076.png",
     discipline: "pilates",
     name: "Respiración con círculo mágico",
     position: "Supino",
@@ -1905,6 +1914,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-077",
+    image: "images/exercises/pilates-077.png",
     discipline: "pilates",
     name: "Puente con círculo mágico entre las rodillas",
     position: "Supino",
@@ -1926,6 +1936,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-078",
+    image: "images/exercises/pilates-078.png",
     discipline: "pilates",
     name: "Apertura lateral de piernas con círculo mágico",
     position: "Supino",
@@ -2024,6 +2035,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-082",
+    image: "images/exercises/pilates-082.png",
     discipline: "pilates",
     name: "Apertura de brazos con círculo mágico",
     equipment: ["magic-circle"],
@@ -3065,6 +3077,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-084",
+    image: "images/exercises/pilates-084.png",
     discipline: "pilates",
     name: "Deslizamiento de talones",
     position: "Supino",
@@ -3084,6 +3097,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-085",
+    image: "images/exercises/pilates-085.png",
     discipline: "pilates",
     name: "Círculos de brazos en supino",
     position: "Supino",
@@ -3103,6 +3117,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-086",
+    image: "images/exercises/pilates-086.png",
     discipline: "pilates",
     name: "Clam de costado",
     position: "De costado",
@@ -3126,6 +3141,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-087",
+    image: "images/exercises/pilates-087.png",
     discipline: "pilates",
     name: "Extensión de cadera en cuadrupedia",
     position: "Cuadrupedia",
@@ -3145,6 +3161,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-088",
+    image: "images/exercises/pilates-088.png",
     discipline: "pilates",
     name: "Elevación lateral de pierna",
     position: "De costado",
@@ -3487,6 +3504,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-094",
+    image: "images/exercises/pilates-094.png",
     discipline: "pilates",
     name: "Círculo mágico: presión entre manos",
     equipment: ["magic-circle"],
@@ -3507,6 +3525,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-095",
+    image: "images/exercises/pilates-095.png",
     discipline: "pilates",
     name: "Círculo mágico: aducción de piernas",
     equipment: ["magic-circle"],
@@ -3527,6 +3546,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-096",
+    image: "images/exercises/pilates-096.png",
     discipline: "pilates",
     name: "Círculo mágico: brazos detrás de la cabeza",
     equipment: ["magic-circle"],
@@ -3547,6 +3567,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-097",
+    image: "images/exercises/pilates-097.png",
     discipline: "pilates",
     name: "Círculo mágico: elevación de piernas",
     equipment: ["magic-circle"],
@@ -3571,6 +3592,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-098",
+    image: "images/exercises/pilates-098.png",
     discipline: "pilates",
     name: "Círculo mágico: sentadilla con apoyo",
     equipment: ["magic-circle"],
@@ -4370,6 +4392,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-109",
+    image: "images/exercises/pilates-109.png",
     discipline: "pilates",
     name: "Foam roller: movilidad torácica",
     equipment: ["foam-roller"],
@@ -4390,6 +4413,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-110",
+    image: "images/exercises/pilates-110.png",
     discipline: "pilates",
     name: "Foam roller: puente con eje inestable",
     equipment: ["foam-roller"],
@@ -4410,6 +4434,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-111",
+    image: "images/exercises/pilates-111.png",
     discipline: "pilates",
     name: "Foam roller: marcha en supino",
     equipment: ["foam-roller"],
@@ -4430,6 +4455,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-112",
+    image: "images/exercises/pilates-112.png",
     discipline: "pilates",
     name: "Foam roller: plancha con apoyo de manos",
     equipment: ["foam-roller"],
@@ -4455,6 +4481,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-113",
+    image: "images/exercises/pilates-113.png",
     discipline: "pilates",
     name: "Foam roller: estiramiento de cadena posterior",
     equipment: ["foam-roller"],
@@ -4659,6 +4686,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-118",
+    image: "images/exercises/pilates-118.png",
     discipline: "pilates",
     name: "Círculo mágico: caminata con presión",
     equipment: ["magic-circle"],
@@ -4679,6 +4707,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-119",
+    image: "images/exercises/pilates-119.png",
     discipline: "pilates",
     name: "Círculo mágico: zancada con brazos",
     equipment: ["magic-circle"],
@@ -4699,6 +4728,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-120",
+    image: "images/exercises/pilates-120.png",
     discipline: "pilates",
     name: "Círculo mágico: apertura de cadera en descanso",
     equipment: ["magic-circle"],
@@ -4719,6 +4749,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-121",
+    image: "images/exercises/pilates-121.png",
     discipline: "pilates",
     name: "Círculo mágico: cierre de brazos y respiración",
     equipment: ["magic-circle"],
@@ -4911,6 +4942,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-130",
+    image: "images/exercises/pilates-130.png",
     discipline: "pilates",
     name: "Bloques: secuencia de zancada",
     equipment: ["blocks"],
@@ -4931,6 +4963,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-131",
+    image: "images/exercises/pilates-131.png",
     discipline: "pilates",
     name: "Bloques: sentadilla con alcance",
     equipment: ["blocks"],
@@ -4955,6 +4988,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-132",
+    image: "images/exercises/pilates-132.png",
     discipline: "pilates",
     name: "Bloques: piernas elevadas en supino",
     equipment: ["blocks"],
@@ -4975,6 +5009,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-133",
+    image: "images/exercises/pilates-133.png",
     discipline: "pilates",
     name: "Bloques: apertura de pecho final",
     equipment: ["blocks"],
@@ -4995,6 +5030,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-134",
+    image: "images/exercises/pilates-134.png",
     discipline: "pilates",
     name: "Foam roller: caminata de manos",
     equipment: ["foam-roller"],
@@ -5015,6 +5051,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-135",
+    image: "images/exercises/pilates-135.png",
     discipline: "pilates",
     name: "Foam roller: puente y rodillas alternadas",
     equipment: ["foam-roller"],
@@ -5035,6 +5072,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-136",
+    image: "images/exercises/pilates-136.png",
     discipline: "pilates",
     name: "Foam roller: descarga de espalda",
     equipment: ["foam-roller"],
@@ -5055,6 +5093,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-137",
+    image: "images/exercises/pilates-137.png",
     discipline: "pilates",
     name: "Foam roller: respiración con brazos abiertos",
     equipment: ["foam-roller"],
@@ -5578,6 +5617,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-138",
+    image: "images/exercises/pilates-138.png",
     discipline: "pilates",
     name: "Bloques: respiración con apoyo de manos",
     equipment: ["blocks"],
@@ -5598,6 +5638,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-139",
+    image: "images/exercises/pilates-139.png",
     discipline: "pilates",
     name: "Bloques: movilidad escapular",
     equipment: ["blocks"],
@@ -5618,6 +5659,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-140",
+    image: "images/exercises/pilates-140.png",
     discipline: "pilates",
     name: "Bloques: puente con pies elevados",
     equipment: ["blocks"],
@@ -5638,6 +5680,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-141",
+    image: "images/exercises/pilates-141.png",
     discipline: "pilates",
     name: "Bloques: brazos al techo en supino",
     equipment: ["blocks"],
@@ -5658,6 +5701,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-142",
+    image: "images/exercises/pilates-142.png",
     discipline: "pilates",
     name: "Bloques: plancha inclinada",
     equipment: ["blocks"],
@@ -5683,6 +5727,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-143",
+    image: "images/exercises/pilates-143.png",
     discipline: "pilates",
     name: "Bloques: zancada con rotación",
     equipment: ["blocks"],
@@ -5707,6 +5752,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-144",
+    image: "images/exercises/pilates-144.png",
     discipline: "pilates",
     name: "Bloques: transferencia de peso lateral",
     equipment: ["blocks"],
@@ -5727,6 +5773,7 @@ const EXERCISES = [
   },
   {
     id: "pilates-145",
+    image: "images/exercises/pilates-145.png",
     discipline: "pilates",
     name: "Bloques: plancha lateral asistida",
     equipment: ["blocks"],
@@ -6598,6 +6645,7 @@ const EXERCISES = [
     /* ===================== PILATES MAT · BANDA ===================== */
     {
       id: "pilates-181",
+      image: "images/exercises/pilates-181.png",
       discipline: "pilates",
       name: "Banda: roll back con banda en los pies",
       equipment: ["band"],
@@ -6625,6 +6673,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-182",
+      image: "images/exercises/pilates-182.png",
       discipline: "pilates",
       name: "Banda: hundred con banda en los pies",
       equipment: ["band"],
@@ -6654,6 +6703,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-183",
+      image: "images/exercises/pilates-183.png",
       discipline: "pilates",
       name: "Banda: teaser asistido con banda",
       equipment: ["band"],
@@ -6682,6 +6732,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-184",
+      image: "images/exercises/pilates-184.png",
       discipline: "pilates",
       name: "Banda: swan con apertura de banda",
       equipment: ["band"],
@@ -6709,6 +6760,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-185",
+      image: "images/exercises/pilates-185.png",
       discipline: "pilates",
       name: "Banda: plancha con pasos de manos",
       equipment: ["band"],
@@ -6737,6 +6789,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-186",
+      image: "images/exercises/pilates-186.png",
       discipline: "pilates",
       name: "Banda: estiramiento de pecho detrás de la espalda",
       equipment: ["band"],
@@ -6758,6 +6811,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-187",
+      image: "images/exercises/pilates-187.png",
       discipline: "pilates",
       name: "Banda: side kick en plancha lateral de antebrazo",
       equipment: ["band"],
@@ -6786,6 +6840,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-188",
+      image: "images/exercises/pilates-188.png",
       discipline: "pilates",
       name: "Banda: rotación diagonal anclada (chop)",
       equipment: ["band"],
@@ -6813,6 +6868,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-189",
+      image: "images/exercises/pilates-189.png",
       discipline: "pilates",
       name: "Banda: dead bug con tensión cruzada",
       equipment: ["band"],
@@ -6837,6 +6893,7 @@ const EXERCISES = [
     /* ================= PILATES MAT · CÍRCULO MÁGICO ================= */
     {
       id: "pilates-190",
+      image: "images/exercises/pilates-190.png",
       discipline: "pilates",
       name: "Círculo mágico: roll up con aro",
       equipment: ["magic-circle"],
@@ -6865,6 +6922,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-191",
+      image: "images/exercises/pilates-191.png",
       discipline: "pilates",
       name: "Círculo mágico: teaser con aro entre las manos",
       equipment: ["magic-circle"],
@@ -6893,6 +6951,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-192",
+      image: "images/exercises/pilates-192.png",
       discipline: "pilates",
       name: "Círculo mágico: plancha lateral con aro entre tobillos",
       equipment: ["magic-circle"],
@@ -6921,6 +6980,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-193",
+      image: "images/exercises/pilates-193.png",
       discipline: "pilates",
       name: "Círculo mágico: swan con aro bajo las manos",
       equipment: ["magic-circle"],
@@ -6947,6 +7007,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-194",
+      image: "images/exercises/pilates-194.png",
       discipline: "pilates",
       name: "Círculo mágico: puente con aro y marcha",
       equipment: ["magic-circle"],
@@ -6969,6 +7030,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-195",
+      image: "images/exercises/pilates-195.png",
       discipline: "pilates",
       name: "Círculo mágico: rotación sentada con presión",
       equipment: ["magic-circle"],
@@ -6995,6 +7057,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-196",
+      image: "images/exercises/pilates-196.png",
       discipline: "pilates",
       name: "Círculo mágico: presión sobre la cabeza de pie",
       equipment: ["magic-circle"],
@@ -7017,6 +7080,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-197",
+      image: "images/exercises/pilates-197.png",
       discipline: "pilates",
       name: "Círculo mágico: estiramiento de isquiotibiales con aro",
       equipment: ["magic-circle"],
@@ -7040,6 +7104,7 @@ const EXERCISES = [
     /* ================= PILATES MAT · PELOTA BLANDA ================= */
     {
       id: "pilates-198",
+      image: "images/exercises/pilates-198.png",
       discipline: "pilates",
       name: "Pelota blanda: roll up con pelota",
       equipment: ["soft-ball"],
@@ -7067,6 +7132,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-199",
+      image: "images/exercises/pilates-199.png",
       discipline: "pilates",
       name: "Pelota blanda: plancha con una mano sobre la pelota",
       equipment: ["soft-ball"],
@@ -7094,6 +7160,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-200",
+      image: "images/exercises/pilates-200.png",
       discipline: "pilates",
       name: "Pelota blanda: teaser con pelota entre las manos",
       equipment: ["soft-ball"],
@@ -7121,6 +7188,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-201",
+      image: "images/exercises/pilates-201.png",
       discipline: "pilates",
       name: "Pelota blanda: puente unipodal con pie sobre la pelota",
       equipment: ["soft-ball"],
@@ -7143,6 +7211,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-202",
+      image: "images/exercises/pilates-202.png",
       discipline: "pilates",
       name: "Pelota blanda: swan con pelota bajo las manos",
       equipment: ["soft-ball"],
@@ -7168,6 +7237,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-203",
+      image: "images/exercises/pilates-203.png",
       discipline: "pilates",
       name: "Pelota blanda: elevación lateral con pelota entre tobillos",
       equipment: ["soft-ball"],
@@ -7194,6 +7264,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-204",
+      image: "images/exercises/pilates-204.png",
       discipline: "pilates",
       name: "Pelota blanda: rodar la pelota en cuadrupedia",
       equipment: ["soft-ball"],
@@ -7216,6 +7287,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-205",
+      image: "images/exercises/pilates-205.png",
       discipline: "pilates",
       name: "Pelota blanda: apertura de pecho con pelota bajo la espalda alta",
       equipment: ["soft-ball"],
@@ -7237,6 +7309,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-206",
+      image: "images/exercises/pilates-206.png",
       discipline: "pilates",
       name: "Pelota blanda: criss cross con pase de pelota",
       equipment: ["soft-ball"],
@@ -7266,6 +7339,7 @@ const EXERCISES = [
     /* ===================== PILATES MAT · FITBALL ===================== */
     {
       id: "pilates-207",
+      image: "images/exercises/pilates-207.png",
       discipline: "pilates",
       name: "Fitball: roll out de rodillas",
       equipment: ["fitball"],
@@ -7293,6 +7367,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-208",
+      image: "images/exercises/pilates-208.png",
       discipline: "pilates",
       name: "Fitball: pike en plancha",
       equipment: ["fitball"],
@@ -7320,6 +7395,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-209",
+      image: "images/exercises/pilates-209.png",
       discipline: "pilates",
       name: "Fitball: curl de isquiotibiales en puente",
       equipment: ["fitball"],
@@ -7342,6 +7418,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-210",
+      image: "images/exercises/pilates-210.png",
       discipline: "pilates",
       name: "Fitball: extensión de espalda sobre la pelota",
       equipment: ["fitball"],
@@ -7367,6 +7444,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-211",
+      image: "images/exercises/pilates-211.png",
       discipline: "pilates",
       name: "Fitball: rodillas al pecho en plancha",
       equipment: ["fitball"],
@@ -7394,6 +7472,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-212",
+      image: "images/exercises/pilates-212.png",
       discipline: "pilates",
       name: "Fitball: mesa invertida con extensión de pierna",
       equipment: ["fitball"],
@@ -7416,6 +7495,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-213",
+      image: "images/exercises/pilates-213.png",
       discipline: "pilates",
       name: "Fitball: rebote suave con activación",
       equipment: ["fitball"],
@@ -7441,6 +7521,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-214",
+      image: "images/exercises/pilates-214.png",
       discipline: "pilates",
       name: "Fitball: estiramiento lateral sobre la pelota",
       equipment: ["fitball"],
@@ -7462,6 +7543,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-215",
+      image: "images/exercises/pilates-215.png",
       discipline: "pilates",
       name: "Fitball: flexión de brazos con pies sobre la pelota",
       equipment: ["fitball"],
@@ -7492,6 +7574,7 @@ const EXERCISES = [
     /* ===================== PILATES MAT · BLOQUES ===================== */
     {
       id: "pilates-216",
+      image: "images/exercises/pilates-216.png",
       discipline: "pilates",
       name: "Bloques: teaser con bloque entre las manos",
       equipment: ["blocks"],
@@ -7518,6 +7601,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-217",
+      image: "images/exercises/pilates-217.png",
       discipline: "pilates",
       name: "Bloques: puente unipodal con pie sobre bloque",
       equipment: ["blocks"],
@@ -7540,6 +7624,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-218",
+      image: "images/exercises/pilates-218.png",
       discipline: "pilates",
       name: "Bloques: flexión de brazos con manos sobre bloques",
       equipment: ["blocks"],
@@ -7567,6 +7652,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-219",
+      image: "images/exercises/pilates-219.png",
       discipline: "pilates",
       name: "Bloques: roll down de pie hasta los bloques",
       equipment: ["blocks"],
@@ -7593,6 +7679,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-220",
+      image: "images/exercises/pilates-220.png",
       discipline: "pilates",
       name: "Bloques: roll up con bloque entre los muslos",
       equipment: ["blocks"],
@@ -7620,6 +7707,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-221",
+      image: "images/exercises/pilates-221.png",
       discipline: "pilates",
       name: "Bloques: hundred con bloque entre los tobillos",
       equipment: ["blocks"],
@@ -7648,6 +7736,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-222",
+      image: "images/exercises/pilates-222.png",
       discipline: "pilates",
       name: "Bloques: estiramiento de flexores de cadera",
       equipment: ["blocks"],
@@ -7675,6 +7764,7 @@ const EXERCISES = [
     /* =================== PILATES MAT · FOAM ROLLER =================== */
     {
       id: "pilates-223",
+      image: "images/exercises/pilates-223.png",
       discipline: "pilates",
       name: "Foam roller: dead bug sobre el roller",
       equipment: ["foam-roller"],
@@ -7697,6 +7787,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-224",
+      image: "images/exercises/pilates-224.png",
       discipline: "pilates",
       name: "Foam roller: puente unipodal con pie sobre el roller",
       equipment: ["foam-roller"],
@@ -7719,6 +7810,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-225",
+      image: "images/exercises/pilates-225.png",
       discipline: "pilates",
       name: "Foam roller: báscula pélvica sobre el roller",
       equipment: ["foam-roller"],
@@ -7740,6 +7832,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-226",
+      image: "images/exercises/pilates-226.png",
       discipline: "pilates",
       name: "Foam roller: single leg stretch sobre el roller",
       equipment: ["foam-roller"],
@@ -7762,6 +7855,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-227",
+      image: "images/exercises/pilates-227.png",
       discipline: "pilates",
       name: "Foam roller: rodillas al pecho en plancha",
       equipment: ["foam-roller"],
@@ -7789,6 +7883,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-228",
+      image: "images/exercises/pilates-228.png",
       discipline: "pilates",
       name: "Foam roller: swan con antebrazos sobre el roller",
       equipment: ["foam-roller"],
@@ -7814,6 +7909,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-229",
+      image: "images/exercises/pilates-229.png",
       discipline: "pilates",
       name: "Foam roller: puente con piernas extendidas",
       equipment: ["foam-roller"],
@@ -7836,6 +7932,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-230",
+      image: "images/exercises/pilates-230.png",
       discipline: "pilates",
       name: "Foam roller: brazo y pierna cruzados sobre el roller",
       equipment: ["foam-roller"],
@@ -7857,6 +7954,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-231",
+      image: "images/exercises/pilates-231.png",
       discipline: "pilates",
       name: "Foam roller: estiramiento de flexor de cadera con sacro elevado",
       equipment: ["foam-roller"],
@@ -7878,6 +7976,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-232",
+      image: "images/exercises/pilates-232.png",
       discipline: "pilates",
       name: "Foam roller: deslizamiento de antebrazos de rodillas",
       equipment: ["foam-roller"],
@@ -7905,6 +8004,7 @@ const EXERCISES = [
     /* ================ PILATES REFORMER · CÍRCULO MÁGICO ================ */
     {
       id: "pilates-233",
+      image: "images/exercises/pilates-233.png",
       discipline: "pilates",
       name: "Círculo mágico: footwork con aro entre los muslos",
       equipment: ["magic-circle"],
@@ -7926,6 +8026,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-234",
+      image: "images/exercises/pilates-234.png",
       discipline: "pilates",
       name: "Círculo mágico: puente en el carro con aro",
       equipment: ["magic-circle"],
@@ -7947,6 +8048,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-235",
+      image: "images/exercises/pilates-235.png",
       discipline: "pilates",
       name: "Círculo mágico: correas de brazos con aro entre tobillos",
       equipment: ["magic-circle"],
@@ -7969,6 +8071,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-236",
+      image: "images/exercises/pilates-236.png",
       discipline: "pilates",
       name: "Círculo mágico: short box con aro",
       equipment: ["magic-circle"],
@@ -7995,6 +8098,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-237",
+      image: "images/exercises/pilates-237.png",
       discipline: "pilates",
       name: "Círculo mágico: knee stretch con aro entre los muslos",
       equipment: ["magic-circle"],
@@ -8020,6 +8124,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-238",
+      image: "images/exercises/pilates-238.png",
       discipline: "pilates",
       name: "Círculo mágico: coordinación con aro entre tobillos",
       equipment: ["magic-circle"],
@@ -8045,6 +8150,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-239",
+      image: "images/exercises/pilates-239.png",
       discipline: "pilates",
       name: "Círculo mágico: mermaid con aro",
       equipment: ["magic-circle"],
@@ -8069,6 +8175,7 @@ const EXERCISES = [
     /* =============== PILATES REFORMER · SIN ELEMENTOS (avanzado) =============== */
     {
       id: "pilates-242",
+      image: "images/exercises/pilates-242.png",
       discipline: "pilates",
       name: "Short Spine (columna corta)",
       position: "Supino en el carro, pies en las correas",
@@ -8096,6 +8203,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-243",
+      image: "images/exercises/pilates-243.png",
       discipline: "pilates",
       name: "Snake (serpiente) — preparación",
       position: "Plancha girada, manos en la plataforma y pies en el carro",
@@ -8121,6 +8229,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-244",
+      image: "images/exercises/pilates-244.png",
       discipline: "pilates",
       name: "Star — preparación (plancha lateral en el carro)",
       position: "Plancha lateral, mano en la plataforma y pies en el carro",
@@ -8146,6 +8255,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-245",
+      image: "images/exercises/pilates-245.png",
       discipline: "pilates",
       name: "Tendon Stretch",
       position: "Sentada sobre la plataforma, manos en la plataforma y pies en la barra",
@@ -8171,6 +8281,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-246",
+      image: "images/exercises/pilates-246.png",
       discipline: "pilates",
       name: "Balance Control Front",
       position: "Plancha, manos en la barra y pies en el carro",
@@ -8196,6 +8307,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-247",
+      image: "images/exercises/pilates-247.png",
       discipline: "pilates",
       name: "Long Spine Massage — preparación",
       position: "Supino en el carro, pies en las correas",
@@ -8222,6 +8334,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-248",
+      image: "images/exercises/pilates-248.png",
       discipline: "pilates",
       name: "Footwork en relevé con pulsos",
       position: "Supino en el carro, antepiés en la barra",
@@ -8242,6 +8355,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-249",
+      image: "images/exercises/pilates-249.png",
       discipline: "pilates",
       name: "Swan en la caja larga",
       position: "Prono sobre la caja larga, manos en la barra",
@@ -8268,6 +8382,7 @@ const EXERCISES = [
     /* =============== PILATES MAT · SIN ELEMENTOS (avanzado) =============== */
     {
       id: "pilates-250",
+      image: "images/exercises/pilates-250.png",
       discipline: "pilates",
       name: "Corkscrew (sacacorchos)",
       position: "Supino, piernas al techo",
@@ -8294,6 +8409,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-251",
+      image: "images/exercises/pilates-251.png",
       discipline: "pilates",
       name: "Swan Dive — preparación",
       position: "Prono",
@@ -8319,6 +8435,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-252",
+      image: "images/exercises/pilates-252.png",
       discipline: "pilates",
       name: "Side Bend (plancha lateral con arco)",
       position: "Sentada de costado, mano de apoyo en el piso",
@@ -8344,6 +8461,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-253",
+      image: "images/exercises/pilates-253.png",
       discipline: "pilates",
       name: "Leg Pull Front (plancha con elevación de pierna)",
       position: "Plancha alta",
@@ -8370,6 +8488,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-254",
+      image: "images/exercises/pilates-254.png",
       discipline: "pilates",
       name: "Open Leg Rocker",
       position: "Sentada en equilibrio, manos en los tobillos",
@@ -8396,6 +8515,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-255",
+      image: "images/exercises/pilates-255.png",
       discipline: "pilates",
       name: "Spine Stretch Forward",
       position: "Sentada, piernas abiertas",
@@ -8421,6 +8541,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-256",
+      image: "images/exercises/pilates-256.png",
       discipline: "pilates",
       name: "Double Leg Stretch",
       position: "Supino",
@@ -8447,6 +8568,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-257",
+      image: "images/exercises/pilates-257.png",
       discipline: "pilates",
       name: "Jackknife — preparación",
       position: "Supino, piernas al techo",
@@ -9755,6 +9877,7 @@ const EXERCISES = [
     /* ============ HUECOS DE NIVEL INICIAL (todos los elementos) ============ */
     {
       id: "pilates-258",
+      image: "images/exercises/pilates-258.png",
       discipline: "pilates",
       name: "Círculo mágico: puente bajo con presión sostenida",
       equipment: ["magic-circle"],
@@ -9777,6 +9900,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-259",
+      image: "images/exercises/pilates-259.png",
       discipline: "pilates",
       name: "Círculo mágico: apertura de brazos en supino",
       equipment: ["magic-circle"],
@@ -9798,6 +9922,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-260",
+      image: "images/exercises/pilates-260.png",
       discipline: "pilates",
       name: "Fitball: elevación de brazo sentada sobre la pelota",
       equipment: ["fitball"],
@@ -9820,6 +9945,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-261",
+      image: "images/exercises/pilates-261.png",
       discipline: "pilates",
       name: "Bloques: puente con bloque entre los muslos",
       equipment: ["blocks"],
@@ -9841,6 +9967,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-262",
+      image: "images/exercises/pilates-262.png",
       discipline: "pilates",
       name: "Foam roller: marcha con roller bajo los pies",
       equipment: ["foam-roller"],
@@ -9862,6 +9989,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-263",
+      image: "images/exercises/pilates-263.png",
       discipline: "pilates",
       name: "Foam roller: puente bajo con pies sobre el roller",
       equipment: ["foam-roller"],
@@ -9884,6 +10012,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-264",
+      image: "images/exercises/pilates-264.png",
       discipline: "pilates",
       name: "Foam roller: deslizamiento de brazos en cuadrupedia",
       equipment: ["foam-roller"],
@@ -9905,6 +10034,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-265",
+      image: "images/exercises/pilates-265.png",
       discipline: "pilates",
       name: "Foam roller: secuencia de brazos y respiración de pie",
       equipment: ["foam-roller"],
@@ -10059,6 +10189,7 @@ const EXERCISES = [
     /* ====== TANDA 3: Reformer con banda y círculo + Mat con elementos (objetivos flojos) ====== */
     {
       id: "pilates-266",
+      image: "images/exercises/pilates-266.png",
       discipline: "pilates",
       name: "Banda: movilidad de hombros sentada en el carro",
       equipment: ["band"],
@@ -10081,6 +10212,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-267",
+      image: "images/exercises/pilates-267.png",
       discipline: "pilates",
       name: "Banda: rotación torácica sentada en el carro",
       equipment: ["band"],
@@ -10107,6 +10239,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-268",
+      image: "images/exercises/pilates-268.png",
       discipline: "pilates",
       name: "Banda: apertura horizontal en supino sobre el carro",
       equipment: ["band"],
@@ -10129,6 +10262,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-269",
+      image: "images/exercises/pilates-269.png",
       discipline: "pilates",
       name: "Banda: footwork con apertura de banda",
       equipment: ["band"],
@@ -10151,6 +10285,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-270",
+      image: "images/exercises/pilates-270.png",
       discipline: "pilates",
       name: "Banda: puente articulado con empuje del carro",
       equipment: ["band"],
@@ -10173,6 +10308,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-271",
+      image: "images/exercises/pilates-271.png",
       discipline: "pilates",
       name: "Banda: abdominal en mesa con banda entre las manos",
       equipment: ["band"],
@@ -10199,6 +10335,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-272",
+      image: "images/exercises/pilates-272.png",
       discipline: "pilates",
       name: "Banda: almeja lateral sobre el carro",
       equipment: ["band"],
@@ -10225,6 +10362,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-273",
+      image: "images/exercises/pilates-273.png",
       discipline: "pilates",
       name: "Banda: remo arrodillada en el carro",
       equipment: ["band"],
@@ -10251,6 +10389,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-274",
+      image: "images/exercises/pilates-274.png",
       discipline: "pilates",
       name: "Banda: rotación diagonal sentada en el carro",
       equipment: ["band"],
@@ -10277,6 +10416,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-275",
+      image: "images/exercises/pilates-275.png",
       discipline: "pilates",
       name: "Banda: footwork con brazos sobre la cabeza",
       equipment: ["band"],
@@ -10299,6 +10439,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-276",
+      image: "images/exercises/pilates-276.png",
       discipline: "pilates",
       name: "Banda: secuencia de brazos arrodillada en el carro",
       equipment: ["band"],
@@ -10325,6 +10466,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-277",
+      image: "images/exercises/pilates-277.png",
       discipline: "pilates",
       name: "Banda: estiramiento de pecho y costados en el carro",
       equipment: ["band"],
@@ -10346,6 +10488,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-278",
+      image: "images/exercises/pilates-278.png",
       discipline: "pilates",
       name: "Círculo mágico: activación de brazos sentada en el carro",
       equipment: ["magic-circle"],
@@ -10367,6 +10510,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-279",
+      image: "images/exercises/pilates-279.png",
       discipline: "pilates",
       name: "Círculo mágico: respiración con brazos coordinados en supino",
       equipment: ["magic-circle"],
@@ -10389,6 +10533,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-280",
+      image: "images/exercises/pilates-280.png",
       discipline: "pilates",
       name: "Círculo mágico: press de brazos en supino sobre el carro",
       equipment: ["magic-circle"],
@@ -10411,6 +10556,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-281",
+      image: "images/exercises/pilates-281.png",
       discipline: "pilates",
       name: "Círculo mágico: footwork con cambio de ritmo",
       equipment: ["magic-circle"],
@@ -10433,6 +10579,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-282",
+      image: "images/exercises/pilates-282.png",
       discipline: "pilates",
       name: "Círculo mágico: puente con aro y empuje del carro",
       equipment: ["magic-circle"],
@@ -10455,6 +10602,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-283",
+      image: "images/exercises/pilates-283.png",
       discipline: "pilates",
       name: "Círculo mágico: remo bajo con aro entre los muslos",
       equipment: ["magic-circle"],
@@ -10477,6 +10625,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-284",
+      image: "images/exercises/pilates-284.png",
       discipline: "pilates",
       name: "Círculo mágico: abdominal en mesa con aro entre las manos",
       equipment: ["magic-circle"],
@@ -10503,6 +10652,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-285",
+      image: "images/exercises/pilates-285.png",
       discipline: "pilates",
       name: "Círculo mágico: elevación lateral de piernas sobre el carro",
       equipment: ["magic-circle"],
@@ -10529,6 +10679,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-286",
+      image: "images/exercises/pilates-286.png",
       discipline: "pilates",
       name: "Círculo mágico: chest expansion con aro entre los muslos",
       equipment: ["magic-circle"],
@@ -10555,6 +10706,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-287",
+      image: "images/exercises/pilates-287.png",
       discipline: "pilates",
       name: "Círculo mágico: inclinación lateral en la caja corta",
       equipment: ["magic-circle"],
@@ -10581,6 +10733,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-288",
+      image: "images/exercises/pilates-288.png",
       discipline: "pilates",
       name: "Círculo mágico: footwork de integración con brazos",
       equipment: ["magic-circle"],
@@ -10603,6 +10756,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-289",
+      image: "images/exercises/pilates-289.png",
       discipline: "pilates",
       name: "Círculo mágico: estiramiento lateral con aro en la barra",
       equipment: ["magic-circle"],
@@ -10625,6 +10779,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-290",
+      image: "images/exercises/pilates-290.png",
       discipline: "pilates",
       name: "Círculo mágico: caída lateral de rodillas con aro",
       equipment: ["magic-circle"],
@@ -10650,6 +10805,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-291",
+      image: "images/exercises/pilates-291.png",
       discipline: "pilates",
       name: "Círculo mágico: apertura de pecho sentada con aro",
       equipment: ["magic-circle"],
@@ -10671,6 +10827,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-292",
+      image: "images/exercises/pilates-292.png",
       discipline: "pilates",
       name: "Banda: apertura horizontal en supino",
       equipment: ["band"],
@@ -10693,6 +10850,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-293",
+      image: "images/exercises/pilates-293.png",
       discipline: "pilates",
       name: "Banda: movilidad de columna sentada con banda sobre la cabeza",
       equipment: ["band"],
@@ -10715,6 +10873,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-294",
+      image: "images/exercises/pilates-294.png",
       discipline: "pilates",
       name: "Banda: remo inclinado de pie",
       equipment: ["band"],
@@ -10741,6 +10900,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-295",
+      image: "images/exercises/pilates-295.png",
       discipline: "pilates",
       name: "Banda: spine stretch con banda en los pies",
       equipment: ["band"],
@@ -10767,6 +10927,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-296",
+      image: "images/exercises/pilates-296.png",
       discipline: "pilates",
       name: "Banda: press sobre la cabeza sentada",
       equipment: ["band"],
@@ -10789,6 +10950,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-297",
+      image: "images/exercises/pilates-297.png",
       discipline: "pilates",
       name: "Banda: saw con banda",
       equipment: ["band"],
@@ -10816,6 +10978,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-298",
+      image: "images/exercises/pilates-298.png",
       discipline: "pilates",
       name: "Banda: sentadilla con remo",
       equipment: ["band"],
@@ -10842,6 +11005,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-299",
+      image: "images/exercises/pilates-299.png",
       discipline: "pilates",
       name: "Banda: estocada con rotación",
       equipment: ["band"],
@@ -10868,6 +11032,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-300",
+      image: "images/exercises/pilates-300.png",
       discipline: "pilates",
       name: "Círculo mágico: press de pecho en supino",
       equipment: ["magic-circle"],
@@ -10890,6 +11055,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-301",
+      image: "images/exercises/pilates-301.png",
       discipline: "pilates",
       name: "Círculo mágico: roll down de pie con aro",
       equipment: ["magic-circle"],
@@ -10917,6 +11083,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-302",
+      image: "images/exercises/pilates-302.png",
       discipline: "pilates",
       name: "Círculo mágico: presión contra el piso en cuadrupedia",
       equipment: ["magic-circle"],
@@ -10939,6 +11106,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-303",
+      image: "images/exercises/pilates-303.png",
       discipline: "pilates",
       name: "Círculo mágico: roll back sentada con aro",
       equipment: ["magic-circle"],
@@ -10965,6 +11133,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-304",
+      image: "images/exercises/pilates-304.png",
       discipline: "pilates",
       name: "Círculo mágico: presión lateral de brazo de pie",
       equipment: ["magic-circle"],
@@ -10987,6 +11156,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-305",
+      image: "images/exercises/pilates-305.png",
       discipline: "pilates",
       name: "Círculo mágico: rotación de pie con aro al frente",
       equipment: ["magic-circle"],
@@ -11013,6 +11183,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-306",
+      image: "images/exercises/pilates-306.png",
       discipline: "pilates",
       name: "Círculo mágico: flujo de pie con flexión lateral",
       equipment: ["magic-circle"],
@@ -11035,6 +11206,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-307",
+      image: "images/exercises/pilates-307.png",
       discipline: "pilates",
       name: "Pelota blanda: círculos de brazos en supino",
       equipment: ["soft-ball"],
@@ -11057,6 +11229,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-308",
+      image: "images/exercises/pilates-308.png",
       discipline: "pilates",
       name: "Pelota blanda: movilidad de columna sentada con pelota arriba",
       equipment: ["soft-ball"],
@@ -11079,6 +11252,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-309",
+      image: "images/exercises/pilates-309.png",
       discipline: "pilates",
       name: "Pelota blanda: flexión de brazos en pared con pelota",
       equipment: ["soft-ball"],
@@ -11101,6 +11275,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-310",
+      image: "images/exercises/pilates-310.png",
       discipline: "pilates",
       name: "Pelota blanda: spine stretch rodando la pelota",
       equipment: ["soft-ball"],
@@ -11127,6 +11302,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-311",
+      image: "images/exercises/pilates-311.png",
       discipline: "pilates",
       name: "Pelota blanda: plancha con presión de pelota",
       equipment: ["soft-ball"],
@@ -11154,6 +11330,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-312",
+      image: "images/exercises/pilates-312.png",
       discipline: "pilates",
       name: "Pelota blanda: rotación en cuadrupedia pasando la pelota",
       equipment: ["soft-ball"],
@@ -11176,6 +11353,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-313",
+      image: "images/exercises/pilates-313.png",
       discipline: "pilates",
       name: "Pelota blanda: sentadilla y press sobre la cabeza",
       equipment: ["soft-ball"],
@@ -11202,6 +11380,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-314",
+      image: "images/exercises/pilates-314.png",
       discipline: "pilates",
       name: "Pelota blanda: estocada con rotación y pelota",
       equipment: ["soft-ball"],
@@ -11228,6 +11407,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-315",
+      image: "images/exercises/pilates-315.png",
       discipline: "pilates",
       name: "Fitball: brazos en W e Y sentada sobre la pelota",
       equipment: ["fitball"],
@@ -11250,6 +11430,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-316",
+      image: "images/exercises/pilates-316.png",
       discipline: "pilates",
       name: "Fitball: báscula pélvica y rotación sentada",
       equipment: ["fitball"],
@@ -11272,6 +11453,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-317",
+      image: "images/exercises/pilates-317.png",
       discipline: "pilates",
       name: "Fitball: flexión de brazos con pelota contra la pared",
       equipment: ["fitball"],
@@ -11294,6 +11476,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-318",
+      image: "images/exercises/pilates-318.png",
       discipline: "pilates",
       name: "Fitball: roll down sentada sobre la pelota",
       equipment: ["fitball"],
@@ -11320,6 +11503,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-319",
+      image: "images/exercises/pilates-319.png",
       discipline: "pilates",
       name: "Fitball: Y-T-W prono sobre la pelota",
       equipment: ["fitball"],
@@ -11346,6 +11530,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-320",
+      image: "images/exercises/pilates-320.png",
       discipline: "pilates",
       name: "Fitball: rotación sentada con brazos abiertos",
       equipment: ["fitball"],
@@ -11372,6 +11557,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-321",
+      image: "images/exercises/pilates-321.png",
       discipline: "pilates",
       name: "Fitball: caminata de manos desde la pelota",
       equipment: ["fitball"],
@@ -11399,6 +11585,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-322",
+      image: "images/exercises/pilates-322.png",
       discipline: "pilates",
       name: "Fitball: rebote suave con brazos en apertura",
       equipment: ["fitball"],
@@ -11425,6 +11612,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-323",
+      image: "images/exercises/pilates-323.png",
       discipline: "pilates",
       name: "Fitball: flujo sentada de flexión lateral",
       equipment: ["fitball"],
@@ -11447,6 +11635,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-324",
+      image: "images/exercises/pilates-324.png",
       discipline: "pilates",
       name: "Bloques: press de pecho en supino con bloques",
       equipment: ["blocks"],
@@ -11469,6 +11658,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-325",
+      image: "images/exercises/pilates-325.png",
       discipline: "pilates",
       name: "Bloques: gato-vaca con manos sobre bloques",
       equipment: ["blocks"],
@@ -11490,6 +11680,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-326",
+      image: "images/exercises/pilates-326.png",
       discipline: "pilates",
       name: "Bloques: plancha de rodillas con alcance",
       equipment: ["blocks"],
@@ -11516,6 +11707,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-327",
+      image: "images/exercises/pilates-327.png",
       discipline: "pilates",
       name: "Bloques: libro abierto con bloque bajo la rodilla",
       equipment: ["blocks"],
@@ -11537,6 +11729,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-328",
+      image: "images/exercises/pilates-328.png",
       discipline: "pilates",
       name: "Bloques: mesa invertida con manos sobre bloques",
       equipment: ["blocks"],
@@ -11559,6 +11752,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-329",
+      image: "images/exercises/pilates-329.png",
       discipline: "pilates",
       name: "Bloques: spine stretch sentada sobre bloque",
       equipment: ["blocks"],
@@ -11584,6 +11778,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-330",
+      image: "images/exercises/pilates-330.png",
       discipline: "pilates",
       name: "Bloques: caminata de manos a plancha",
       equipment: ["blocks"],
@@ -11611,6 +11806,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-331",
+      image: "images/exercises/pilates-331.png",
       discipline: "pilates",
       name: "Bloques: estocada con rotación y mano en bloque",
       equipment: ["blocks"],
@@ -11637,6 +11833,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-332",
+      image: "images/exercises/pilates-332.png",
       discipline: "pilates",
       name: "Foam roller: ángeles sobre el roller",
       equipment: ["foam-roller"],
@@ -11659,6 +11856,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-333",
+      image: "images/exercises/pilates-333.png",
       discipline: "pilates",
       name: "Foam roller: libro abierto con roller",
       equipment: ["foam-roller"],
@@ -11680,6 +11878,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-334",
+      image: "images/exercises/pilates-334.png",
       discipline: "pilates",
       name: "Foam roller: protracción de brazos sobre el roller",
       equipment: ["foam-roller"],
@@ -11702,6 +11901,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-335",
+      image: "images/exercises/pilates-335.png",
       discipline: "pilates",
       name: "Foam roller: gato-vaca con manos sobre el roller",
       equipment: ["foam-roller"],
@@ -11723,6 +11923,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-336",
+      image: "images/exercises/pilates-336.png",
       discipline: "pilates",
       name: "Foam roller: flexión de brazos con manos sobre el roller",
       equipment: ["foam-roller"],
@@ -11750,6 +11951,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-337",
+      image: "images/exercises/pilates-337.png",
       discipline: "pilates",
       name: "Foam roller: extensión torácica con roller transversal",
       equipment: ["foam-roller"],
@@ -11775,6 +11977,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-338",
+      image: "images/exercises/pilates-338.png",
       discipline: "pilates",
       name: "Foam roller: cuadrupedia a plancha rodando el roller",
       equipment: ["foam-roller"],
@@ -11802,6 +12005,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-339",
+      image: "images/exercises/pilates-339.png",
       discipline: "pilates",
       name: "Foam roller: roll down de pie con roller en las manos",
       equipment: ["foam-roller"],
@@ -11829,6 +12033,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-340",
+      image: "images/exercises/pilates-340.png",
       discipline: "pilates",
       name: "Pelota blanda: remo sentada con pelota entre las rodillas",
       equipment: ["soft-ball"],
@@ -11853,6 +12058,7 @@ const EXERCISES = [
     /* ====== TANDA 4: Reformer + círculo mágico en profundidad ====== */
     {
       id: "pilates-341",
+      image: "images/exercises/pilates-341.png",
       discipline: "pilates",
       name: "Círculo mágico: respiración con aro entre los muslos",
       equipment: ["magic-circle"],
@@ -11875,6 +12081,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-342",
+      image: "images/exercises/pilates-342.png",
       discipline: "pilates",
       name: "Círculo mágico: báscula pélvica con aro entre las rodillas",
       equipment: ["magic-circle"],
@@ -11897,6 +12104,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-343",
+      image: "images/exercises/pilates-343.png",
       discipline: "pilates",
       name: "Círculo mágico: activación escapular con aro al techo",
       equipment: ["magic-circle"],
@@ -11919,6 +12127,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-344",
+      image: "images/exercises/pilates-344.png",
       discipline: "pilates",
       name: "Círculo mágico: remo suave sentada con aro entre los muslos",
       equipment: ["magic-circle"],
@@ -11941,6 +12150,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-345",
+      image: "images/exercises/pilates-345.png",
       discipline: "pilates",
       name: "Círculo mágico: rotación torácica sentada con aro",
       equipment: ["magic-circle"],
@@ -11967,6 +12177,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-346",
+      image: "images/exercises/pilates-346.png",
       discipline: "pilates",
       name: "Círculo mágico: despertar de columna con puente bajo",
       equipment: ["magic-circle"],
@@ -11989,6 +12200,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-347",
+      image: "images/exercises/pilates-347.png",
       discipline: "pilates",
       name: "Círculo mágico: footwork en V con aro entre los tobillos",
       equipment: ["magic-circle"],
@@ -12015,6 +12227,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-348",
+      image: "images/exercises/pilates-348.png",
       discipline: "pilates",
       name: "Círculo mágico: footwork en talones con aro entre los muslos",
       equipment: ["magic-circle"],
@@ -12037,6 +12250,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-349",
+      image: "images/exercises/pilates-349.png",
       discipline: "pilates",
       name: "Círculo mágico: bajada de brazos en correas con aro entre las rodillas",
       equipment: ["magic-circle"],
@@ -12059,6 +12273,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-350",
+      image: "images/exercises/pilates-350.png",
       discipline: "pilates",
       name: "Círculo mágico: tríceps en supino con aro entre los muslos",
       equipment: ["magic-circle"],
@@ -12081,6 +12296,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-351",
+      image: "images/exercises/pilates-351.png",
       discipline: "pilates",
       name: "Círculo mágico: puente segmentado con pausa",
       equipment: ["magic-circle"],
@@ -12103,6 +12319,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-352",
+      image: "images/exercises/pilates-352.png",
       discipline: "pilates",
       name: "Círculo mágico: footwork alternando apoyos con aro",
       equipment: ["magic-circle"],
