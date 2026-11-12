@@ -12342,6 +12342,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-353",
+      image: "images/exercises/pilates-353.png",
       discipline: "pilates",
       name: "Círculo mágico: hundred con aro entre los tobillos",
       equipment: ["magic-circle"],
@@ -12370,6 +12371,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-354",
+      image: "images/exercises/pilates-354.png",
       discipline: "pilates",
       name: "Círculo mágico: bajada de piernas en correas con aro",
       equipment: ["magic-circle"],
@@ -12396,6 +12398,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-355",
+      image: "images/exercises/pilates-355.png",
       discipline: "pilates",
       name: "Círculo mágico: remo al frente con aro entre los muslos",
       equipment: ["magic-circle"],
@@ -12418,6 +12421,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-356",
+      image: "images/exercises/pilates-356.png",
       discipline: "pilates",
       name: "Círculo mágico: abrazo al árbol con aro entre los muslos",
       equipment: ["magic-circle"],
@@ -12440,6 +12444,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-357",
+      image: "images/exercises/pilates-357.png",
       discipline: "pilates",
       name: "Círculo mágico: espalda plana en la caja corta con aro",
       equipment: ["magic-circle"],
@@ -12466,6 +12471,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-358",
+      image: "images/exercises/pilates-358.png",
       discipline: "pilates",
       name: "Círculo mágico: rotación en la caja corta con aro",
       equipment: ["magic-circle"],
@@ -12493,6 +12499,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-359",
+      image: "images/exercises/pilates-359.png",
       discipline: "pilates",
       name: "Círculo mágico: círculos de piernas en correas con aro",
       equipment: ["magic-circle"],
@@ -12519,6 +12526,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-360",
+      image: "images/exercises/pilates-360.png",
       discipline: "pilates",
       name: "Círculo mágico: knee stretch plano con aro entre los muslos",
       equipment: ["magic-circle"],
@@ -12545,6 +12553,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-361",
+      image: "images/exercises/pilates-361.png",
       discipline: "pilates",
       name: "Círculo mágico: remo hacia atrás con aro entre los muslos",
       equipment: ["magic-circle"],
@@ -12567,6 +12576,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-362",
+      image: "images/exercises/pilates-362.png",
       discipline: "pilates",
       name: "Círculo mágico: brazos arrodillada de frente con aro",
       equipment: ["magic-circle"],
@@ -12593,6 +12603,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-363",
+      image: "images/exercises/pilates-363.png",
       discipline: "pilates",
       name: "Círculo mágico: swan en la caja larga con aro entre los tobillos",
       equipment: ["magic-circle"],
@@ -12619,6 +12630,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-364",
+      image: "images/exercises/pilates-364.png",
       discipline: "pilates",
       name: "Círculo mágico: pulling straps con aro entre los tobillos",
       equipment: ["magic-circle"],
@@ -12645,6 +12657,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-365",
+      image: "images/exercises/pilates-365.png",
       discipline: "pilates",
       name: "Círculo mágico: footwork en V con brazos al techo",
       equipment: ["magic-circle"],
@@ -12667,6 +12680,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-366",
+      image: "images/exercises/pilates-366.png",
       discipline: "pilates",
       name: "Círculo mágico: coordinación simple con aro entre las rodillas",
       equipment: ["magic-circle"],
@@ -12693,6 +12707,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-367",
+      image: "images/exercises/pilates-367.png",
       discipline: "pilates",
       name: "Círculo mágico: secuencia de remo sentada",
       equipment: ["magic-circle"],
@@ -12715,6 +12730,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-368",
+      image: "images/exercises/pilates-368.png",
       discipline: "pilates",
       name: "Círculo mágico: secuencia de brazos arrodillada con aro",
       equipment: ["magic-circle"],
@@ -12741,6 +12757,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-369",
+      image: "images/exercises/pilates-369.png",
       discipline: "pilates",
       name: "Círculo mágico: flujo de columna en la caja corta",
       equipment: ["magic-circle"],
@@ -12768,6 +12785,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-370",
+      image: "images/exercises/pilates-370.png",
       discipline: "pilates",
       name: "Círculo mágico: puente articulado con brazos sobre la cabeza",
       equipment: ["magic-circle"],
@@ -12790,6 +12808,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-371",
+      image: "images/exercises/pilates-371.png",
       discipline: "pilates",
       name: "Círculo mágico: respiración final con aro entre los muslos",
       equipment: ["magic-circle"],
@@ -12811,6 +12830,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-372",
+      image: "images/exercises/pilates-372.png",
       discipline: "pilates",
       name: "Círculo mágico: rodillas al pecho con aro",
       equipment: ["magic-circle"],
@@ -12836,6 +12856,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-373",
+      image: "images/exercises/pilates-373.png",
       discipline: "pilates",
       name: "Círculo mágico: estiramiento de hombros sentada con aro",
       equipment: ["magic-circle"],
@@ -12857,6 +12878,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-374",
+      image: "images/exercises/pilates-374.png",
       discipline: "pilates",
       name: "Círculo mágico: apertura de pecho en supino con aro",
       equipment: ["magic-circle"],
@@ -12878,6 +12900,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-375",
+      image: "images/exercises/pilates-375.png",
       discipline: "pilates",
       name: "Círculo mágico: torsión sentada final con aro",
       equipment: ["magic-circle"],
@@ -12903,6 +12926,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-376",
+      image: "images/exercises/pilates-376.png",
       discipline: "pilates",
       name: "Círculo mágico: postura del niño sobre el carro con aro",
       equipment: ["magic-circle"],
@@ -12930,6 +12954,7 @@ const EXERCISES = [
     /* ====== TANDA 4b: Reformer + círculo mágico (ajuste fino) ====== */
     {
       id: "pilates-377",
+      image: "images/exercises/pilates-377.png",
       discipline: "pilates",
       name: "Círculo mágico: footwork con respiración coordinada",
       equipment: ["magic-circle"],
@@ -12952,6 +12977,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-378",
+      image: "images/exercises/pilates-378.png",
       discipline: "pilates",
       name: "Círculo mágico: báscula y puente con brazos coordinados",
       equipment: ["magic-circle"],
@@ -12974,6 +13000,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-379",
+      image: "images/exercises/pilates-379.png",
       discipline: "pilates",
       name: "Círculo mágico: puente con marcha y aro entre las rodillas",
       equipment: ["magic-circle"],
@@ -12996,6 +13023,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-380",
+      image: "images/exercises/pilates-380.png",
       discipline: "pilates",
       name: "Círculo mágico: rotación arrodillada con correa y aro",
       equipment: ["magic-circle"],
@@ -13023,6 +13051,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-381",
+      image: "images/exercises/pilates-381.png",
       discipline: "pilates",
       name: "Círculo mágico: bíceps sentada con aro entre los muslos",
       equipment: ["magic-circle"],
@@ -13045,6 +13074,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-382",
+      image: "images/exercises/pilates-382.png",
       discipline: "pilates",
       name: "Círculo mágico: puente unipodal con aro entre los muslos",
       equipment: ["magic-circle"],
@@ -13067,6 +13097,7 @@ const EXERCISES = [
     },
     {
       id: "pilates-383",
+      image: "images/exercises/pilates-383.png",
       discipline: "pilates",
       name: "Círculo mágico: integración de footwork y puente",
       equipment: ["magic-circle"],

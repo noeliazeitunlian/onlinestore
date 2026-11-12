@@ -1,14 +1,35 @@
 (() => {
   const STORAGE_KEY = "genclases_custom_exercises";
   const SAVED_KEY = "genclases_saved_classes";
+  const FAV_KEY = "genclases_favorites";
+  const HIDDEN_KEY = "genclases_hidden";
 
   let state = {
     discipline: "pilates",
     modality: null,
-    equipment: "any",
+    accesorios: [],      // vacío = sin preferencia
+    upperFocus: "mixto", // solo aplica con objetivo "tren-superior"
     level: "intermedio",
     duration: 55,
   };
+
+  // ---------- almacenamiento local seguro (modo privado / storage bloqueado) ----------
+  function readJSON(key, fallback) {
+    try { return JSON.parse(localStorage.getItem(key) || "null") ?? fallback; } catch { return fallback; }
+  }
+  function writeJSON(key, value) {
+    try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* sin storage: se pierde al recargar */ }
+  }
+
+  // favoritos y "nunca mostrar": listas de ids
+  const getFavorites = () => new Set(readJSON(FAV_KEY, []));
+  const getHidden = () => new Set(readJSON(HIDDEN_KEY, []));
+  function toggleInSet(key, id) {
+    const set = new Set(readJSON(key, []));
+    set.has(id) ? set.delete(id) : set.add(id);
+    writeJSON(key, [...set]);
+    return set.has(id);
+  }
 
   let lastRender = null; // { objectiveId, objectiveLabel, populationId, populationLabel, result } de la clase mostrada actualmente
 
@@ -17,23 +38,72 @@
   const $$ = (sel) => Array.from(document.querySelectorAll(sel));
   const LEVEL_LABELS = { inicial: "Inicial", intermedio: "Intermedio", avanzado: "Avanzado" };
 
+  // los ejercicios propios pasan por el mismo enriquecido que la base (accesorio, posición, patrón, nivel)
   function getCustomExercises() {
-    try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-    } catch { return []; }
+    const list = readJSON(STORAGE_KEY, []);
+    return Array.isArray(list) ? list.map(ex => window.enrichExercise ? window.enrichExercise(ex) : ex) : [];
+  }
+
+  function rawCustomExercises() {
+    const list = readJSON(STORAGE_KEY, []);
+    return Array.isArray(list) ? list : [];
   }
 
   function saveCustomExercise(ex) {
-    const all = getCustomExercises();
+    const all = rawCustomExercises();
     all.push(ex);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+    writeJSON(STORAGE_KEY, all);
     renderMyExercisesList();
   }
 
   function deleteCustomExercise(id) {
-    const remaining = getCustomExercises().filter(ex => ex.id !== id);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(remaining));
+    writeJSON(STORAGE_KEY, rawCustomExercises().filter(ex => ex.id !== id));
     renderMyExercisesList();
+  }
+
+  function exportCustomExercises() {
+    const data = { app: "generador-de-clases", version: 1, exportedAt: new Date().toISOString(), exercises: rawCustomExercises() };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `mis-ejercicios-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+  }
+
+  function importCustomExercises(file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const parsed = JSON.parse(reader.result);
+        const incoming = Array.isArray(parsed) ? parsed : parsed.exercises;
+        if (!Array.isArray(incoming)) throw new Error("formato");
+        const valid = incoming.filter(ex => ex && ex.name && ex.discipline && ex.moment);
+        const current = rawCustomExercises();
+        const ids = new Set(current.map(ex => ex.id));
+        const added = valid.filter(ex => !ids.has(ex.id));
+        writeJSON(STORAGE_KEY, current.concat(added));
+        renderMyExercisesList();
+        alert(`Importados ${added.length} ejercicios${valid.length - added.length ? ` (${valid.length - added.length} ya estaban)` : ""}.`);
+      } catch {
+        alert("No pude leer el archivo. Tiene que ser un JSON exportado desde \"Mis ejercicios\".");
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  function renderHiddenBox() {
+    const box = $("#hidden-exercises-box");
+    if (!box) return;
+    const hidden = getHidden();
+    if (!hidden.size) { box.innerHTML = ""; return; }
+    const names = allExercises(true).filter(ex => hidden.has(ex.id)).map(ex => ex.name);
+    box.innerHTML = `
+      <p class="panel-hint">Ejercicios que marcaste como "no mostrar" (${hidden.size}): ${names.slice(0, 6).join(", ")}${names.length > 6 ? "…" : ""}</p>
+      <button type="button" class="btn-mini" id="btn-restore-hidden">↺ Volver a mostrarlos</button>`;
   }
 
   function renderMyExercisesList() {
@@ -44,6 +114,8 @@
     const toggleBtn = $("#toggle-my-exercises");
     if (toggleBtn) toggleBtn.textContent = `🗂️ Mis ejercicios propios (${mine.length})`;
 
+    renderHiddenBox();
+
     if (!mine.length) {
       list.innerHTML = `<p class="block-empty">Todavía no cargaste ningún ejercicio propio.</p>`;
       return;
@@ -52,10 +124,11 @@
     list.innerHTML = mine.map(ex => {
       const discLabel = ex.discipline === "pilates" ? "Pilates" : "Yoga";
       const modLabels = (ex.modality || []).map(id => MODALITIES[ex.discipline]?.find(m => m.id === id)?.label || id).join(", ");
-      const levelLabels = (ex.level || []).map(id => LEVEL_LABELS[id] || id).join(", ");
+      const levelLabels = `desde ${(LEVEL_LABELS[ex.nivelMin] || ex.nivelMin || "").toLowerCase()}`;
       const blockName = BLOCKS.find(b => b.id === ex.moment)?.name || `Bloque ${ex.moment}`;
       const objLabels = (ex.objective || []).map(id => OBJECTIVES[ex.discipline]?.find(o => o.id === id)?.label || id).join(", ");
-      const metaParts = [discLabel, modLabels, levelLabels, blockName, objLabels].filter(Boolean);
+      const accLabels = (ex.accesorio || []).map(a => ACCESORIO_LABELS[a] || a).join(", ");
+      const metaParts = [discLabel, modLabels, levelLabels, blockName, objLabels, accLabels].filter(Boolean);
       return `
         <div class="saved-class-card">
           <div>
@@ -69,8 +142,10 @@
     }).join("");
   }
 
-  function allExercises() {
-    return EXERCISES.concat(getCustomExercises());
+  // includeAll=true ignora el interruptor "Incluir mis ejercicios" (para listados, no para generar)
+  function allExercises(includeAll = false) {
+    const mine = includeAll || $("#include-mine")?.checked !== false ? getCustomExercises() : [];
+    return EXERCISES.concat(mine);
   }
 
   // ---------- mis clases guardadas ----------
@@ -92,7 +167,8 @@
       savedAt: new Date().toISOString(),
       discipline: state.discipline,
       modality: state.modality,
-      equipment: state.equipment,
+      accesorios: state.accesorios.slice(),
+      upperFocus: state.upperFocus,
       level: state.level,
       duration: state.duration,
       render: lastRender,
@@ -122,16 +198,18 @@
     refreshFormForDiscipline();
 
     state.modality = entry.modality;
-    state.equipment = entry.equipment || "any";
+    state.accesorios = Array.isArray(entry.accesorios) ? entry.accesorios.slice() : [];
+    state.upperFocus = entry.upperFocus || "mixto";
     state.level = entry.level;
     state.duration = entry.duration;
 
     $$("#modality-group .pill").forEach(p => p.classList.toggle("is-active", p.dataset.value === state.modality));
-    refreshEquipmentPills();
+    refreshAccesorioPills();
     $$("#level-group .pill").forEach(p => p.classList.toggle("is-active", p.dataset.value === state.level));
     $$("#duration-group .pill").forEach(p => p.classList.toggle("is-active", Number(p.dataset.value) === state.duration));
     $("#objective-select").value = entry.render.objectiveId;
     $("#population-select").value = entry.render.populationId;
+    refreshFocusVisibility();
 
     renderClass(entry.render);
     if (window.innerWidth < 900) {
@@ -289,11 +367,11 @@
   function levelSetup(ex, level) {
     const modality = state.modality !== "mixta" && (ex.modality || []).includes(state.modality) ? state.modality : (ex.modality || [])[0];
     if (modality === "reformer") {
-      if (level === "inicial") return "Resortes medios o pesados: el carro se mueve menos y da más estabilidad.";
-      if (level === "intermedio") return "Resortes medios.";
+      if (level === "inicial") return "Resorte rojo o verde: el carro se mueve menos y da más estabilidad.";
+      if (level === "intermedio") return "Resorte azul o rojo.";
       return (ex.objective || []).includes("tren-superior")
-        ? "Más resorte para sumar fuerza, sin perder la organización escapular."
-        : "Resortes más livianos: el carro queda más inestable y exige más control del centro.";
+        ? "Un color más pesado para sumar fuerza, sin perder la organización escapular."
+        : "Un color más liviano: el carro queda más inestable y exige más control del centro.";
     }
     if (modality === "mat") {
       if (level === "inicial") return "Con más base de apoyo: cabeza apoyada, rodillas flexionadas o manos en el piso según la posición.";
@@ -317,37 +395,47 @@
     "foam-roller": { inicial: "Rodillo bien apoyado y con base amplia.",              avanzado: "Menos puntos de apoyo sobre el rodillo para sumar inestabilidad." },
   };
 
-  // Las progresiones cargadas suelen tener la forma "versión de entrada; progresá ...": la primera
-  // parte es la variante de inicial y la segunda la de avanzado.
-  function splitProgression(text) {
-    if (!text) return null;
-    const [first, ...rest] = text.split(/;\s*/);
-    const easy = first.replace(/^variante más fácil:\s*/i, "");
-    let hard = rest.join("; ").replace(/^para progresar[^,]*,\s*/i, "");
-    if (/no requiere|sin necesidad|no necesita/i.test(hard + first)) hard = "";
-    return { easy, hard };
-  }
-
   const capitalize = (s) => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
 
+  const endDot = (s) => (s && !/[.!?]$/.test(s.trim()) ? s.trim() + "." : s);
+
+  // Cada línea es {label, text} para poder mostrarla con su rótulo en la tarjeta.
   function getLevelGuide(ex, level = state.level) {
     const dose = LEVEL_DOSE[level] || LEVEL_DOSE.intermedio;
     const lines = [];
-    lines.push(`${capitalize(levelAmount(ex, level))} · ${isCalmMoment(ex) ? (level === "inicial" ? "respiración guiada y sin apuro" : level === "avanzado" ? "más tiempo de permanencia" : "respiración pausada") : ex.discipline === "yoga" ? dose.yogaTempo : `${dose.tempo}, ${dose.range}`}.`);
-    lines.push(levelSetup(ex, level));
+    lines.push({ label: "Dosis", text: `${capitalize(levelAmount(ex, level))} · ${isCalmMoment(ex) ? (level === "inicial" ? "respiración guiada y sin apuro" : level === "avanzado" ? "más tiempo de permanencia" : "respiración pausada") : ex.discipline === "yoga" ? dose.yogaTempo : `${dose.tempo}, ${dose.range}`}.` });
+
+    // un ejercicio cargado como mat y reformer no muestra resortes en una clase de mat
+    if (ex.resortes && state.modality !== "mat") {
+      // escala del estudio: amarillo < azul < rojo < verde. Con verde no hay color más pesado,
+      // y en "carro firme" o barra fija el resorte no se toca.
+      const isMax = /^verde/i.test(ex.resortes);
+      const isFixed = /trabado|firme|no carga|torre/i.test(ex.resortes);
+      const wantsStrength = (ex.patron || []).some(p => p === "empuje" || p === "traccion");
+      const tip = isFixed ? ""
+        : level === "inicial" ? (isMax ? "" : " Si el carro se mueve de más, pasá al color siguiente (más pesado).")
+        : level === "avanzado" ? (wantsStrength ? (isMax ? "" : " Para más fuerza, subí un color (más pesado).") : " Para más control de centro, bajá un color (más liviano).")
+        : "";
+      lines.push({ label: "Resortes", text: endDot(ex.resortes) + tip });
+    } else {
+      lines.push({ label: "Armado", text: levelSetup(ex, level) });
+    }
+
     (ex.equipment || []).forEach(eq => {
       const tip = EQUIPMENT_BY_LEVEL[eq]?.[level];
-      if (tip) lines.push(tip);
+      if (tip) lines.push({ label: "Elemento", text: tip });
     });
-    const prog = splitProgression(ex.progression);
-    if (prog) {
-      if (level === "inicial") lines.push(`Variante: ${prog.easy}.`);
-      if (level === "intermedio" && prog.hard) lines.push(`Cuando esté estable, ${prog.hard}.`);
-      if (level === "avanzado" && prog.hard) lines.push(/^progres/i.test(prog.hard) ? `${capitalize(prog.hard)}.` : `Progresión: ${prog.hard}.`);
-    }
-    if (ex.level.length === 1 && ex.level[0] === level) lines.push(`Ejercicio pensado específicamente para nivel ${(LEVEL_LABELS[level] || level).toLowerCase()}.`);
+
+    const coaching = getCoaching(ex);
+    const cues = [coaching.verbal, ex.cue].filter(Boolean);
+    if (cues.length) lines.push({ label: "Cue", text: cues.slice(0, 2).map(endDot).join(" ") });
+
+    if (level === "inicial" && ex.regresion) lines.push({ label: "Regresión", text: endDot(ex.regresion) });
+    if (level === "intermedio" && ex.progresion) lines.push({ label: "Cuando esté estable", text: endDot(ex.progresion) });
+    if (level === "avanzado" && ex.progresion) lines.push({ label: "Progresión", text: endDot(ex.progresion) });
     return lines;
   }
+  const levelGuideText = (ex, level) => getLevelGuide(ex, level).map(l => `${l.label}: ${l.text}`);
 
   // series por nivel: inicial una menos, avanzado una más (salvo preparación y cierre, que no suman intensidad)
   function levelSeries(ex, level = state.level) {
@@ -361,11 +449,33 @@
   // copia del ejercicio con la dosis del nivel: así cambiar series en una clase no modifica la base
   const withLevel = (ex) => ({ ...ex, seriesDefault: levelSeries(ex) });
 
-  // mezcla priorizando los ejercicios propios del nivel elegido (los de un solo nivel salen más seguido
-  // que los que sirven para los tres), para que inicial, intermedio y avanzado no traigan la misma clase
-  function levelWeightedShuffle(pool) {
+  // ---------- prioridades para el sorteo ----------
+  // El nivel es "nivel mínimo": avanzado puede usar cualquier ejercicio, pero prioriza los de su nivel,
+  // así inicial, intermedio y avanzado no traen la misma clase.
+  const LEVEL_INDEX = { inicial: 0, intermedio: 1, avanzado: 2 };
+  const PROP_ACC = ["banda", "aro", "pelota", "fitball", "bloques", "foam_roller"];
+
+  function exerciseWeight(ex, ctx) {
+    const dist = (LEVEL_INDEX[ctx.level] ?? 1) - (LEVEL_INDEX[ex.nivelMin] ?? 0);
+    let w = [3, 1.2, 0.5][Math.max(0, Math.min(2, dist))];
+
+    // Reformer + tren superior sin accesorio elegido: lo propio del reformer (correas en manos,
+    // arrodillada, de pie sobre el carro) va antes que la pelota, el aro o la banda.
+    if (ctx.modality === "reformer" && ctx.objective === "tren-superior" && !ctx.accesorios.length) {
+      const acc = ex.accesorio || [];
+      const hasProp = acc.some(a => PROP_ACC.includes(a));
+      if (!hasProp && (acc.includes("correas_manos") || ["arrodillado", "de_pie_en_carro"].includes(ex.posicion))) w *= 3;
+      else if (hasProp) w *= 0.35;
+    }
+    // enfoque de tren superior: en los bloques que no son el principal, el patrón elegido tiene prioridad
+    if (ctx.focusPatron && (ex.patron || []).includes(ctx.focusPatron)) w *= 3;
+    if (ctx.favorites && ctx.favorites.has(ex.id)) w *= 2.5;
+    return w;
+  }
+
+  function weightedShuffle(pool, ctx) {
     return pool
-      .map(ex => ({ ex, key: Math.pow(Math.random(), 1 / (4 - Math.min(3, (ex.level || []).length))) }))
+      .map(ex => ({ ex, key: Math.pow(Math.random(), 1 / exerciseWeight(ex, ctx)) }))
       .sort((a, b) => b.key - a.key)
       .map(o => o.ex);
   }
@@ -448,20 +558,37 @@
     el.innerHTML = options.map(o => `<option value="${o.id}">${o.label}</option>`).join("");
   }
 
-  // fitball, pelota blanda y bloques son solo de mat: no se ofrecen en una clase o ejercicio de reformer
-  function equipmentForModality(modality) {
-    return EQUIPMENT_OPTIONS.filter(e => !(e.matOnly && modality === "reformer"));
+  // Accesorios ofrecidos: solo los que existen en la base para esa disciplina y modalidad,
+  // en un orden fijo (primero lo propio del reformer, después los elementos).
+  const ACC_ORDER = ["correas_manos", "correas_pies", "barra", "box", "carro", "torre", "ninguno", "banda", "aro", "pelota", "fitball", "bloques", "foam_roller"];
+  function accesoriosFor(discipline, modality) {
+    const present = new Set();
+    EXERCISES.forEach(ex => {
+      if (ex.discipline !== discipline) return;
+      if (modality && modality !== "mixta" && !(ex.modality || []).includes(modality)) return;
+      (ex.accesorio || []).forEach(a => present.add(a));
+    });
+    return ACC_ORDER.filter(a => present.has(a)).map(id => ({ id, label: ACCESORIO_LABELS[id] || id }));
   }
 
-  function refreshEquipmentPills() {
-    const options = equipmentForModality(state.modality);
-    if (!options.some(o => o.id === state.equipment)) state.equipment = "any";
-    renderPillGroup("#equipment-group", options, state.equipment);
+  function refreshAccesorioPills() {
+    const options = accesoriosFor(state.discipline, state.modality);
+    state.accesorios = state.accesorios.filter(a => options.some(o => o.id === a));
+    renderPillGroup("#accesorio-group", options, null, true);
+    state.accesorios.forEach(a => $(`#accesorio-group .pill[data-value="${a}"]`)?.classList.add("is-active"));
   }
 
-  function refreshExEquipmentSelect() {
+  function refreshFocusVisibility() {
+    const show = state.discipline === "pilates" && $("#objective-select")?.value === "tren-superior";
+    $("#focus-fieldset")?.classList.toggle("hidden", !show);
+    if (!show) return;
+    renderPillGroup("#focus-group", UPPER_FOCUS, state.upperFocus);
+  }
+
+  function refreshExAccesorioPills() {
     const exModality = $("#ex-modality-group .pill.is-active")?.dataset.value;
-    renderSelect("#ex-equipment-select", equipmentForModality(exModality).filter(e => e.id !== "any"));
+    renderPillGroup("#ex-accesorio-group", accesoriosFor(state.discipline, exModality), null, true);
+    $("#ex-resortes-label")?.classList.toggle("hidden", exModality !== "reformer");
   }
 
   function refreshFormForDiscipline() {
@@ -469,17 +596,22 @@
     renderPillGroup("#modality-group", MODALITIES[d], null);
     state.modality = MODALITIES[d][0].id;
     $(`#modality-group .pill[data-value="${state.modality}"]`).classList.add("is-active");
-    refreshEquipmentPills();
+    state.accesorios = [];
+    refreshAccesorioPills();
 
     renderSelect("#objective-select", OBJECTIVES[d]);
     renderSelect("#population-select", POPULATIONS);
+    state.upperFocus = "mixto";
+    refreshFocusVisibility();
 
     // exercise-add form groups: "mixta" no aplica a un ejercicio individual (ver filterPool)
     renderPillGroup("#ex-modality-group", MODALITIES[d].filter(m => m.id !== "mixta"), null);
     renderPillGroup("#ex-moment-group", BLOCKS.map(b => ({ id: b.id, label: `${b.id}. ${b.name}` })), null, true);
     renderPillGroup("#ex-objective-group", OBJECTIVES[d], null, true);
     renderPillGroup("#ex-avoid-group", AVOID_TAGS.map(t => ({ id: t, label: t })), null, true);
-    refreshExEquipmentSelect();
+    renderPillGroup("#ex-patron-group", Object.keys(PATRON_LABELS).map(id => ({ id, label: PATRON_LABELS[id] })), null, true);
+    renderSelect("#ex-posicion-select", POSICION_ORDER.map(id => ({ id, label: POSICION_LABELS[id] })));
+    refreshExAccesorioPills();
   }
 
   // ---------- pill click handling (event delegation) ----------
@@ -499,10 +631,11 @@
     // sync state for main form
     if (group.id === "modality-group") {
       state.modality = pill.dataset.value;
-      refreshEquipmentPills();
+      refreshAccesorioPills();
     }
-    if (group.id === "ex-modality-group") refreshExEquipmentSelect();
-    if (group.id === "equipment-group") state.equipment = pill.dataset.value;
+    if (group.id === "ex-modality-group") refreshExAccesorioPills();
+    if (group.id === "accesorio-group") state.accesorios = $$("#accesorio-group .pill.is-active").map(p => p.dataset.value);
+    if (group.id === "focus-group") state.upperFocus = pill.dataset.value;
     if (group.id === "level-group") state.level = pill.dataset.value;
     if (group.id === "duration-group") state.duration = Number(pill.dataset.value);
   });
@@ -519,7 +652,7 @@
   $$(".discipline-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       state.discipline = btn.dataset.discipline;
-      state.equipment = "any";
+      state.accesorios = [];
       syncDisciplineButtons(state.discipline);
       refreshFormForDiscipline();
       lastRender = null;
@@ -538,49 +671,142 @@
   }
 
   // ---------- generate class ----------
-  // "mixta" es un tipo de CLASE (combinar mat y reformer), no una etiqueta que un ejercicio
-  // pueda tener a sí mismo: un ejercicio de piso es mat, uno sobre el carro es reformer, nunca ambos.
-  // Por eso "mixta" se resuelve acá como comodín (trae cualquier modalidad) en vez de buscarse en ex.modality.
-  // El elemento elegido nunca habilita otra modalidad: si no hay ejercicios de reformer con ese
-  // elemento, el bloque queda vacío (con su aviso) en vez de mezclar ejercicios de mat.
-  function filterPool(discipline, moment, modality, level, objective, populationId, excludeIds = new Set()) {
-    const matchesModality = (ex) =>
-      modality === "mixta" ||
-      ex.modality.includes(modality);
+  // Filtros DUROS: disciplina, bloque, modalidad, nivel (mínimo), accesorio, población, ocultos.
+  // El objetivo también es duro en los bloques de trabajo (2 a 5). En preparación (1) y cierre (6)
+  // se prefieren los del objetivo y, si no alcanzan, se completa con movilidad / vuelta a la calma
+  // general del mismo nivel y accesorio: esos bloques cumplen una función, no trabajan el objetivo.
+  // Nunca se relaja el nivel ni el accesorio: si no hay suficientes, la clase sale más corta con aviso.
+  //
+  // "mixta" es un tipo de CLASE (combinar mat y reformer), no una etiqueta de un ejercicio:
+  // se resuelve acá como comodín.
+  const SETUP_ACC = ["correas_manos", "correas_pies", "barra", "box", "carro", "torre"];
 
-    let pool = allExercises().filter(ex =>
+  function matchesAccesorio(ex, selected) {
+    if (!selected.length) return true;
+    const acc = ex.accesorio || [];
+    // los elementos sueltos (banda, aro, pelota...) tienen que estar todos elegidos;
+    // las configuraciones del reformer (correas, barra, box) alcanza con que coincida una
+    const props = acc.filter(a => !SETUP_ACC.includes(a));
+    if (props.some(a => !selected.includes(a))) return false;
+    return acc.some(a => selected.includes(a));
+  }
+
+  function fitsPopulation(ex, populationId) {
+    if (!populationId || populationId === "general") return true;
+    return ex.population ? ex.population.includes(populationId)
+      : !(populationId === "embarazo" && (ex.avoid || []).includes("Embarazo / posparto"));
+  }
+
+  function filterPool({ discipline, moment, modality, level, objective, populationId, accesorios, excludeIds = new Set(), excludeNames = new Set() }) {
+    const hidden = getHidden();
+    const base = allExercises().filter(ex =>
       ex.discipline === discipline &&
       ex.moment === moment &&
-      matchesModality(ex) &&
-      ex.level.includes(level) &&
-      (state.equipment === "any" || (state.equipment === "none" ? !(ex.equipment || []).length : (ex.equipment || []).includes(state.equipment))) &&
-      !excludeIds.has(ex.id)
+      (modality === "mixta" || (ex.modality || []).includes(modality)) &&
+      (ex.level || []).includes(level) &&
+      matchesAccesorio(ex, accesorios) &&
+      fitsPopulation(ex, populationId) &&
+      !hidden.has(ex.id) &&
+      !excludeIds.has(ex.id) &&
+      !excludeNames.has(ex.name)
     );
+    const withObjective = base.filter(ex => (ex.objective || []).includes(objective));
+    const isFrame = moment === 1 || moment === 6;
+    return { pool: withObjective, general: isFrame ? base.filter(ex => !withObjective.includes(ex)) : [] };
+  }
 
-    // población: solo ejercicios marcados como aptos para la población elegida (campo "population").
-    // Es un filtro estricto, también en el último recurso: por seguridad nunca se cae a ejercicios no aptos.
-    // Los ejercicios propios sin "population" se consideran aptos (los cargó la instructora).
-    const fitsPopulation = (ex) =>
-      !populationId || populationId === "general" ||
-      (ex.population ? ex.population.includes(populationId)
-        : !(populationId === "embarazo" && (ex.avoid || []).includes("Embarazo / posparto")));
-    pool = pool.filter(fitsPopulation);
+  // cantidad de ejercicios coherente con la duración: ~3,6 min por ejercicio (50 min ≈ 14)
+  function exerciseCountFor(duration) {
+    return Math.max(8, Math.round(duration / 3.6));
+  }
 
-    // prefer matching objective, but fall back if empty
-    const withObjective = pool.filter(ex => ex.objective.includes(objective));
-    if (withObjective.length) return { pool: withObjective, fallback: false };
-    if (pool.length) return { pool, fallback: true };
+  function allocateCounts(blocks, total) {
+    const weightSum = blocks.reduce((s, b) => s + b.weight, 0);
+    const counts = blocks.map(b => Math.max(1, Math.round((b.weight / weightSum) * total)));
+    // ajustar al total exacto sumando o restando en el bloque principal
+    let diff = total - counts.reduce((s, n) => s + n, 0);
+    const mainIdx = Math.max(0, blocks.findIndex(b => b.id === 3));
+    counts[mainIdx] = Math.max(1, counts[mainIdx] + diff);
+    return counts;
+  }
 
-    // last resort: ignore level, manteniendo disciplina, bloque y elemento elegido
-    const anyLevel = allExercises().filter(ex =>
-      ex.discipline === discipline &&
-      ex.moment === moment &&
-      matchesModality(ex) &&
-      (state.equipment === "any" || (state.equipment === "none" ? !(ex.equipment || []).length : (ex.equipment || []).includes(state.equipment))) &&
-      fitsPopulation(ex) &&
-      !excludeIds.has(ex.id)
-    );
-    return { pool: anyLevel, fallback: true };
+  // minutos por bloque que suman exactamente la duración (método del mayor resto, mínimo 3 por bloque)
+  function allocateMinutes(blocks, duration) {
+    const weightSum = blocks.reduce((s, b) => s + b.weight, 0);
+    const raw = blocks.map(b => Math.max(3, (b.weight / weightSum) * duration));
+    const mins = raw.map(Math.floor);
+    let left = duration - mins.reduce((s, n) => s + n, 0);
+    raw.map((r, i) => ({ i, frac: r - Math.floor(r) }))
+      .sort((a, b) => b.frac - a.frac)
+      .forEach(({ i }) => { if (left > 0) { mins[i] += 1; left -= 1; } });
+    return mins;
+  }
+
+  // orden dentro del bloque: en reformer se agrupa por configuración del carro (barra, correas en pies,
+  // correas en manos, box) para no cambiar resortes a cada rato; después por posición
+  // (supino → costado → prono → plancha → cuadrupedia → arrodillada → sentada → de pie)
+  function sortForFlow(list) {
+    const posRank = (ex) => { const i = POSICION_ORDER.indexOf(ex.posicion); return i < 0 ? 99 : i; };
+    const modRank = (ex) => ((ex.modality || []).includes("reformer") ? 1 : 0);
+    return list.slice().sort((a, b) =>
+      modRank(a) - modRank(b) ||
+      (a.setupGroup || "").localeCompare(b.setupGroup || "") ||
+      posRank(a) - posRank(b));
+  }
+
+  function generationContext(objectiveId, populationId) {
+    const focus = state.discipline === "pilates" && objectiveId === "tren-superior"
+      ? (UPPER_FOCUS.find(f => f.id === state.upperFocus) || UPPER_FOCUS[0]) : UPPER_FOCUS[0];
+    return {
+      discipline: state.discipline, modality: state.modality, level: state.level,
+      objective: objectiveId, populationId, accesorios: state.accesorios.slice(),
+      focus, favorites: getFavorites(),
+    };
+  }
+
+  // elige `count` ejercicios para un bloque. Con un enfoque de tren superior, en los bloques
+  // principales (3 y 4) al menos dos tercios salen de ese patrón si la base lo permite.
+  function pickForBlock(block, count, ctx, used) {
+    const { pool, general } = filterPool({
+      discipline: ctx.discipline, moment: block.id, modality: ctx.modality, level: ctx.level,
+      objective: ctx.objective, populationId: ctx.populationId, accesorios: ctx.accesorios,
+      excludeIds: used.ids, excludeNames: used.names,
+    });
+    const focusPatron = ctx.focus.patron;
+    const isMain = block.id === 3 || block.id === 4;
+    const shuffleCtx = { ...ctx, focusPatron: isMain ? null : focusPatron };
+    let picked = [];
+    let focusShort = false;
+
+    if (focusPatron && isMain) {
+      const inFocus = weightedShuffle(pool.filter(ex => (ex.patron || []).includes(focusPatron)), shuffleCtx);
+      const needed = Math.max(1, Math.ceil(count * 2 / 3));
+      picked = inFocus.slice(0, count);
+      if (picked.length < needed) focusShort = true;
+      if (picked.length < count) {
+        const rest = weightedShuffle(pool.filter(ex => !picked.includes(ex)), shuffleCtx);
+        picked = picked.concat(rest.slice(0, count - picked.length));
+      }
+    } else {
+      picked = weightedShuffle(pool, shuffleCtx).slice(0, count);
+    }
+
+    let generalCount = 0;
+    if (picked.length < count && general.length) {
+      const extra = weightedShuffle(general, shuffleCtx).slice(0, count - picked.length);
+      generalCount = extra.length;
+      picked = picked.concat(extra);
+    }
+
+    // sin repetir: ni el mismo id ni el mismo nombre (los propios guardan una copia por bloque)
+    const unique = [];
+    picked.forEach(ex => {
+      if (used.ids.has(ex.id) || used.names.has(ex.name)) return;
+      used.ids.add(ex.id); used.names.add(ex.name);
+      unique.push(withLevel(ex));
+    });
+
+    return { exercises: unique, requested: count, short: unique.length < count, focusShort, generalCount };
   }
 
   function buildClass() {
@@ -590,20 +816,22 @@
     const populationLabel = POPULATIONS.find(p => p.id === populationId)?.label || populationId;
     const includeWarmup = $("#include-warmup").checked;
 
-    let blocksToUse = BLOCKS.filter(b => includeWarmup || !b.optional);
-    const weightSum = blocksToUse.reduce((s, b) => s + b.weight, 0);
+    const blocksToUse = BLOCKS.filter(b => includeWarmup || !b.optional);
+    const blockMinutes = allocateMinutes(blocksToUse, state.duration);
+    const counts = allocateCounts(blocksToUse, exerciseCountFor(state.duration));
 
     const avoidRecent = $("#avoid-recent")?.checked;
     const recentIds = avoidRecent ? getRecentExerciseIds(3) : new Set();
+    const ctx = generationContext(objectiveId, populationId);
+    const used = { ids: new Set(recentIds), names: new Set() };
 
-    const result = blocksToUse.map(block => {
-      const minutes = Math.max(3, Math.round((block.weight / weightSum) * state.duration));
-      const { pool, fallback } = filterPool(state.discipline, block.id, state.modality, state.level, objectiveId, populationId, recentIds);
-      const picked = levelWeightedShuffle(pool).slice(0, block.id === 3 ? 3 : 2).map(withLevel);
-      return { block, minutes, exercises: picked, fallback };
+    const result = blocksToUse.map((block, i) => {
+      const minutes = blockMinutes[i];
+      const pick = pickForBlock(block, counts[i], ctx, used);
+      return { block, minutes, ...pick, exercises: sortForFlow(pick.exercises) };
     });
 
-    renderClass({ objectiveId, objectiveLabel, populationId, populationLabel, result });
+    renderClass({ objectiveId, objectiveLabel, populationId, populationLabel, result, focusId: ctx.focus.id });
   }
 
   // ---------- extender clase sin repetir ejercicios ----------
@@ -613,30 +841,32 @@
 
     const { objectiveId, objectiveLabel, populationId, populationLabel } = lastRender;
     const includeWarmup = $("#include-warmup").checked;
-
     const blocksToUse = BLOCKS.filter(b => includeWarmup || !b.optional);
-    const weightSum = blocksToUse.reduce((s, b) => s + b.weight, 0);
+    const blockMinutes = allocateMinutes(blocksToUse, state.duration);
+    const extraCounts = allocateCounts(blocksToUse, exerciseCountFor(20));
 
-    const usedIds = new Set(lastRender.result.flatMap(r => r.exercises.map(ex => ex.id)));
+    const ctx = generationContext(objectiveId, populationId);
+    const used = {
+      ids: new Set(lastRender.result.flatMap(r => r.exercises.map(ex => ex.id))),
+      names: new Set(lastRender.result.flatMap(r => r.exercises.map(ex => ex.name))),
+    };
 
-    const result = blocksToUse.map(block => {
-      const minutes = Math.max(3, Math.round((block.weight / weightSum) * state.duration));
+    const result = blocksToUse.map((block, i) => {
+      const minutes = blockMinutes[i];
       const previous = lastRender.result.find(r => r.block.id === block.id);
-      const extraCount = block.id === 3 ? 2 : 1;
-      const { pool, fallback } = filterPool(state.discipline, block.id, state.modality, state.level, objectiveId, populationId, usedIds);
-      const extras = levelWeightedShuffle(pool).slice(0, extraCount).map(withLevel);
-      extras.forEach(ex => usedIds.add(ex.id));
-      const exercises = (previous ? previous.exercises : []).concat(extras);
+      const pick = pickForBlock(block, extraCounts[i], ctx, used);
+      const exercises = sortForFlow((previous ? previous.exercises : []).concat(pick.exercises));
       return {
-        block,
-        minutes,
-        exercises,
-        fallback: previous ? previous.fallback : fallback,
-        noExtra: !!previous && exercises.length > 0 && extras.length === 0,
+        block, minutes, exercises,
+        requested: (previous?.requested || 0) + extraCounts[i],
+        short: exercises.length < (previous?.requested || 0) + extraCounts[i],
+        focusShort: previous?.focusShort || pick.focusShort,
+        generalCount: (previous?.generalCount || 0) + pick.generalCount,
+        noExtra: !!previous && exercises.length > 0 && pick.exercises.length === 0,
       };
     });
 
-    renderClass({ objectiveId, objectiveLabel, populationId, populationLabel, result });
+    renderClass({ objectiveId, objectiveLabel, populationId, populationLabel, result, focusId: ctx.focus.id });
   }
 
   // ---------- descargar clase en PDF ----------
@@ -765,15 +995,45 @@
   function swapExercise(blockId, idx) {
     const entry = findEntry(blockId);
     if (!entry) return;
+    const current = entry.exercises[idx];
     const excludeIds = new Set(lastRender.result.flatMap(r => r.exercises.map(ex => ex.id)));
-    const { pool } = filterPool(state.discipline, blockId, state.modality, state.level, lastRender.objectiveId, lastRender.populationId, excludeIds);
-    const options = levelWeightedShuffle(pool);
+    const excludeNames = new Set(lastRender.result.flatMap(r => r.exercises.map(ex => ex.name)));
+    const ctx = generationContext(lastRender.objectiveId, lastRender.populationId);
+    const { pool, general } = filterPool({
+      discipline: state.discipline, moment: blockId, modality: state.modality, level: state.level,
+      objective: lastRender.objectiveId, populationId: lastRender.populationId, accesorios: ctx.accesorios,
+      excludeIds, excludeNames,
+    });
+    // preferimos un reemplazo con la misma configuración y posición, para no romper el orden del bloque
+    const candidates = weightedShuffle(pool.length ? pool : general, ctx);
+    const same = candidates.find(ex => ex.setupGroup === current?.setupGroup && ex.posicion === current?.posicion);
+    const options = same ? [same] : candidates;
     if (!options.length) {
-      alert("No hay otro ejercicio disponible para reemplazar este, con los filtros actuales.");
+      alert("No hay otro ejercicio disponible para reemplazar este con los filtros actuales. Probá ampliando accesorios o nivel.");
       return;
     }
     entry.exercises[idx] = withLevel(options[0]);
+    entry.exercises = sortForFlow(entry.exercises);
     renderClass(lastRender);
+  }
+
+  // "Nunca mostrar": lo oculta para siempre (se puede restaurar en Mis ejercicios) y lo reemplaza
+  function hideExercise(blockId, idx) {
+    const entry = findEntry(blockId);
+    const ex = entry?.exercises[idx];
+    if (!ex) return;
+    if (!confirm(`¿Ocultar "${ex.name}" de todas tus próximas clases? Lo podés volver a mostrar desde "Mis ejercicios".`)) return;
+    toggleInSet(HIDDEN_KEY, ex.id);
+    renderHiddenBox();
+    swapExercise(blockId, idx);
+  }
+
+  function toggleFavorite(blockId, idx, btn) {
+    const ex = findEntry(blockId)?.exercises[idx];
+    if (!ex) return;
+    const isFav = toggleInSet(FAV_KEY, ex.id);
+    btn.classList.toggle("is-active", isFav);
+    btn.textContent = isFav ? "★ Favorito" : "☆ Favorito";
   }
 
   function removeExercise(blockId, idx) {
@@ -794,15 +1054,16 @@
       name: trimmed,
       description: trimmed,
       position: "",
-      modality: [state.modality],
-      equipment: state.equipment === "any" ? [] : [state.equipment],
-      level: [state.level],
+      modality: [state.modality === "mixta" ? MODALITIES[state.discipline][0].id : state.modality],
+      equipment: [],
+      accesorio: state.accesorios.length ? state.accesorios.slice() : undefined,
+      nivelMin: state.level,
       moment: blockId,
       objective: [lastRender.objectiveId],
       seriesDefault: 1,
     };
     saveCustomExercise(ex);
-    entry.exercises.push(ex);
+    entry.exercises.push(window.enrichExercise ? window.enrichExercise({ ...ex }) : ex);
     renderClass(lastRender);
   }
 
@@ -851,10 +1112,16 @@
   }
 
   // ---------- render de una tarjeta de ejercicio ----------
-  function renderExerciseCard(ex, blockId, idx, isPrepOriented) {
+  function renderExerciseCard(ex, blockId, idx, isPrepOriented, minutesEach) {
     const coaching = getCoaching(ex);
     const levelLabel = LEVEL_LABELS[state.level] || state.level;
     const imageSrc = getExerciseImage(ex);
+    const isFav = getFavorites().has(ex.id);
+    const metaChips = [
+      minutesEach ? `≈ ${minutesEach} min` : "",
+      ...(ex.accesorio || []).filter(a => a !== "ninguno").map(a => ACCESORIO_LABELS[a] || a),
+      ...(ex.patron || []).slice(0, 2).map(p => PATRON_LABELS[p] || p),
+    ].filter(Boolean);
 
     return `
       <div class="exercise-card" data-block="${blockId}" data-idx="${idx}">
@@ -868,11 +1135,12 @@
             ${ex.position ? `<span class="position">${ex.position}</span>` : ""}
             ${isPrepOriented ? `<span class="badge-prep">PREP ORIENTADA</span>` : ""}
           </div>
+          ${metaChips.length ? `<div class="exercise-meta">${metaChips.map(c => `<span class="meta-chip">${c}</span>`).join("")}</div>` : ""}
           <p class="exercise-desc">${ex.description}</p>
 
           <div class="level-guide">
             <span class="level-guide-title">Nivel ${levelLabel}</span>
-            <ul>${getLevelGuide(ex).map(line => `<li>${line}</li>`).join("")}</ul>
+            <ul>${getLevelGuide(ex).map(line => `<li><strong>${line.label}:</strong> ${line.text}</li>`).join("")}</ul>
           </div>
 
           <div class="exercise-chips">
@@ -904,6 +1172,8 @@
             </div>
             <button type="button" class="btn-mini btn-change">⇄ Cambiar</button>
             <button type="button" class="btn-mini btn-remove">✕ Quitar</button>
+            <button type="button" class="btn-mini btn-fav${isFav ? " is-active" : ""}">${isFav ? "★" : "☆"} Favorito</button>
+            <button type="button" class="btn-mini btn-hide" title="No volver a mostrar este ejercicio">🚫 No mostrar</button>
           </div>
         </div>
       </div>`;
@@ -934,7 +1204,7 @@
     $("#live-ex-position").textContent = ex.position || "";
     $("#live-ex-name").textContent = ex.name;
     $("#live-ex-desc").textContent = ex.description || "";
-    $("#live-ex-howto").textContent = `${getCoaching(ex).verbal} ${getLevelGuide(ex).join(" ")}`;
+    $("#live-ex-howto").textContent = levelGuideText(ex).join(" · ");
 
     liveState.seconds = 0;
     liveState.paused = false;
@@ -987,8 +1257,18 @@
     $("#live-pause").textContent = liveState.paused ? "Reanudar" : "Pausar";
   });
 
-  function renderClass({ objectiveId, objectiveLabel, populationId, populationLabel, result }) {
-    lastRender = { objectiveId, objectiveLabel, populationId, populationLabel, result };
+  // qué filtro conviene ampliar cuando un bloque queda corto
+  function widenHint() {
+    const hints = [];
+    if (state.accesorios.length) hints.push("sumar accesorios o quitar el filtro de accesorio");
+    if (state.level === "inicial") hints.push("probar con nivel intermedio");
+    if (state.upperFocus !== "mixto") hints.push("cambiar el enfoque a Mixto");
+    hints.push("cargar tus propios ejercicios");
+    return hints.join(", ");
+  }
+
+  function renderClass({ objectiveId, objectiveLabel, populationId, populationLabel, result, focusId }) {
+    lastRender = { objectiveId, objectiveLabel, populationId, populationLabel, result, focusId };
     $("#output-empty").classList.add("hidden");
     const content = $("#output-content");
     content.classList.remove("hidden");
@@ -1005,7 +1285,8 @@
           <span class="tag">${levelLabel}</span>
           <span class="tag">${state.duration} min</span>
           <span class="tag">${populationLabel}</span>
-          ${state.equipment !== "any" ? `<span class="tag">${EQUIPMENT_OPTIONS.find(e => e.id === state.equipment)?.label || state.equipment}</span>` : ""}
+          ${state.accesorios.map(a => `<span class="tag">${ACCESORIO_LABELS[a] || a}</span>`).join("")}
+          ${focusId && focusId !== "mixto" ? `<span class="tag">${UPPER_FOCUS.find(f => f.id === focusId)?.label || focusId}</span>` : ""}
         </div>
         ${renderTimeDonut(result)}
         <div class="actions">
@@ -1024,7 +1305,17 @@
       </div>
     `;
 
-    result.forEach(({ block, minutes, exercises, fallback, noExtra }) => {
+    if (state.modality !== "mat" && state.discipline === "pilates" && window.RESORTES_LEYENDA) {
+      html += `<p class="block-note resortes-leyenda">${window.RESORTES_LEYENDA}</p>`;
+    }
+
+    const shortBlocks = result.filter(r => r.short && r.requested);
+    if (shortBlocks.length) {
+      const missing = shortBlocks.reduce((s, r) => s + (r.requested - r.exercises.length), 0);
+      html += `<p class="class-warning">Hay pocos ejercicios para esta combinación: ${missing === 1 ? "falta 1 ejercicio" : `faltan ${missing} ejercicios`} para completar ${shortBlocks.length === 1 ? "un bloque" : `${shortBlocks.length} bloques`}. No relleno con ejercicios que no corresponden. Para una clase más completa podés ${widenHint()}.</p>`;
+    }
+
+    result.forEach(({ block, minutes, exercises, noExtra, focusShort, generalCount }) => {
       html += `<div class="block">
         <div class="block-head">
           <div class="block-num">${block.id}</div>
@@ -1040,15 +1331,19 @@
           ? `<p class="block-empty">No hay ejercicios de la base marcados como aptos para ${populationLabel.toLowerCase()} en este bloque con este elemento. Probá con otro elemento o sumá uno propio acá abajo.</p>`
           : `<p class="block-empty">Todavía no cargaste ejercicios para esta combinación en este bloque. Sumalos con "+ Agregar ejercicio propio" o con el campo de acá abajo.</p>`;
       } else {
-        if (fallback) {
-          html += `<p class="block-empty">Mostrando ejercicios similares (no hay carga exacta para este objetivo/nivel en este bloque todavía).</p>`;
+        if (generalCount) {
+          html += `<p class="block-note">${block.id === 1 ? "Incluye movilidad general" : "Incluye vuelta a la calma general"} (del mismo nivel y accesorio) para completar el bloque.</p>`;
+        }
+        if (focusShort) {
+          html += `<p class="block-note">Hay pocos ejercicios de ${(UPPER_FOCUS.find(f => f.id === focusId)?.label || "").toLowerCase()} con estos filtros: el bloque se completa con otros de tren superior.</p>`;
         }
         if (noExtra) {
           html += `<p class="block-empty">No hay más ejercicios nuevos para sumar en este bloque sin repetir.</p>`;
         }
+        const minutesEach = Math.max(1, Math.round(minutes / exercises.length));
         exercises.forEach((ex, idx) => {
-          const isPrepOriented = !!block.optional && !fallback && ex.objective.includes(objectiveId);
-          html += renderExerciseCard(ex, block.id, idx, isPrepOriented);
+          const isPrepOriented = !!block.optional && (ex.objective || []).includes(objectiveId);
+          html += renderExerciseCard(ex, block.id, idx, isPrepOriented, minutesEach);
         });
       }
 
@@ -1060,7 +1355,13 @@
       </div>`;
     });
 
+    const totalMinutes = result.reduce((s, r) => s + (r.exercises.length ? r.minutes : 0), 0);
+    const totalExercises = result.reduce((s, r) => s + r.exercises.length, 0);
     html += `
+      <div class="class-summary">
+        <strong>Tiempo total estimado: ${totalMinutes} min</strong>
+        <span>${totalExercises} ejercicios · ${result.filter(r => r.exercises.length).length} bloques${totalMinutes < state.duration ? ` · ${state.duration - totalMinutes} min sin cubrir por falta de ejercicios` : ""}</span>
+      </div>
       <div class="intent-box" style="background:var(--gold-soft); color:var(--bordo-deep);">
         <span class="label">Frase de cierre — decila en los últimos 30 segundos</span>
         "Hoy trabajamos ${objectiveLabel.toLowerCase()}. La próxima clase vamos a seguir construyendo sobre esta base."
@@ -1123,6 +1424,9 @@
     if (e.target.closest(".step-plus")) { changeSeries(blockId, idx, 1); return; }
     if (e.target.closest(".btn-change")) { swapExercise(blockId, idx); return; }
     if (e.target.closest(".btn-remove")) { removeExercise(blockId, idx); return; }
+    const favBtn = e.target.closest(".btn-fav");
+    if (favBtn) { toggleFavorite(blockId, idx, favBtn); return; }
+    if (e.target.closest(".btn-hide")) { hideExercise(blockId, idx); return; }
   });
 
   $("#class-form").addEventListener("submit", (e) => {
@@ -1144,37 +1448,67 @@
     const getMultiValues = (id) => $$(`${id} .pill.is-active`).map(p => p.dataset.value);
 
     const modality = getMultiValues("#ex-modality-group");
-    const level = getMultiValues("#ex-level-group");
+    const nivelMin = getMultiValues("#ex-level-group")[0];
     const moments = getMultiValues("#ex-moment-group").map(Number);
     const objective = getMultiValues("#ex-objective-group");
     const avoid = getMultiValues("#ex-avoid-group");
-    const equipment = $("#ex-equipment-select")?.value || "none";
+    const accesorio = getMultiValues("#ex-accesorio-group");
+    const patron = getMultiValues("#ex-patron-group");
+    const val = (id) => ($(id)?.value || "").trim();
 
-    if (!modality.length || !level.length || !moments.length) {
-      alert("Elegí al menos una modalidad, un nivel y un momento de la clase.");
+    if (!modality.length || !nivelMin || !moments.length) {
+      alert("Elegí la modalidad, el nivel mínimo y al menos un momento de la clase.");
       return;
     }
+
+    // compatibilidad con el filtro de elementos que usa la guía de nivel
+    const ACC_TO_EQUIP = { banda: "band", aro: "magic-circle", pelota: "soft-ball", fitball: "fitball", bloques: "blocks", foam_roller: "foam-roller" };
+    const isReformer = modality.includes("reformer");
 
     // un ejercicio propio puede aplicar a varios momentos: guardamos una entrada por momento
     moments.forEach((moment, idx) => {
       saveCustomExercise({
         id: "custom-" + Date.now() + "-" + idx,
         discipline: state.discipline,
-        name: $("#ex-name").value.trim(),
-        description: $("#ex-description").value.trim(),
-        position: $("#ex-position").value.trim(),
-        modality, level, moment, objective, avoid,
-        equipment: equipment === "none" ? [] : [equipment],
-        seriesDefault: 3,
+        name: val("#ex-name"),
+        description: val("#ex-description"),
+        position: val("#ex-position") || POSICION_LABELS[val("#ex-posicion-select")] || "",
+        posicion: val("#ex-posicion-select") || undefined,
+        modality, nivelMin, moment, objective, avoid,
+        accesorio: accesorio.length ? accesorio : (isReformer ? undefined : ["ninguno"]),
+        equipment: accesorio.map(a => ACC_TO_EQUIP[a]).filter(Boolean),
+        patron: patron.length ? patron : undefined,
+        howTo: val("#ex-howto") || undefined,
+        resortes: isReformer ? (val("#ex-resortes") || undefined) : undefined,
+        cue: val("#ex-cue") || undefined,
+        regresion: val("#ex-regresion") || undefined,
+        progresion: val("#ex-progresion") || undefined,
+        seriesDefault: 2,
       });
     });
 
     alert("Ejercicio guardado. Ya está disponible en el generador.");
     e.target.reset();
     $$("#exercise-form .pill.is-active").forEach(p => p.classList.remove("is-active"));
-    refreshExEquipmentSelect();
+    refreshExAccesorioPills();
     $("#exercise-form").classList.add("hidden");
   });
+
+  // ---------- exportar / importar / restaurar ocultos ----------
+  $("#btn-export-mine")?.addEventListener("click", exportCustomExercises);
+  $("#import-mine-input")?.addEventListener("change", (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) importCustomExercises(file);
+    e.target.value = "";
+  });
+  $("#my-exercises-panel")?.addEventListener("click", (e) => {
+    if (!e.target.closest("#btn-restore-hidden")) return;
+    writeJSON(HIDDEN_KEY, []);
+    renderHiddenBox();
+  });
+
+  // el enfoque de tren superior solo aparece con ese objetivo
+  $("#objective-select").addEventListener("change", refreshFocusVisibility);
 
   // ---------- mis clases guardadas: toggle + interacciones ----------
   $("#toggle-saved-classes").addEventListener("click", () => {

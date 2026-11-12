@@ -54,14 +54,20 @@
       </fieldset>
 
       <fieldset>
-        <legend>Elemento</legend>
-        <div class="pill-group" id="equipment-group"></div>
-        <p class="field-hint">Elegí el material disponible para esta clase.</p>
+        <legend>Accesorio (opcional)</legend>
+        <div class="pill-group multi" id="accesorio-group"></div>
+        <p class="field-hint">Elegí uno o varios. Sin selección, el generador usa cualquiera. Solo salen ejercicios con lo que marques.</p>
       </fieldset>
 
       <fieldset>
         <legend>Objetivo de la clase</legend>
         <select id="objective-select"></select>
+      </fieldset>
+
+      <fieldset id="focus-fieldset" class="hidden">
+        <legend>Enfoque de tren superior</legend>
+        <div class="pill-group" id="focus-group"></div>
+        <p class="field-hint">El bloque principal de la clase se arma con ese patrón de movimiento.</p>
       </fieldset>
 
       <fieldset>
@@ -99,6 +105,11 @@
         <span>Evitar ejercicios de mis últimas 3 clases guardadas</span>
       </label>
 
+      <label class="checkbox-row">
+        <input type="checkbox" id="include-mine" checked>
+        <span>Incluir mis ejercicios propios</span>
+      </label>
+
       <button type="submit" class="btn btn-primary btn-block">Armar mi clase ✦</button>
     </form>
 
@@ -122,12 +133,13 @@
       </fieldset>
 
       <fieldset>
-        <legend>Nivel (uno o varios)</legend>
-        <div class="pill-group multi" id="ex-level-group">
+        <legend>Nivel mínimo</legend>
+        <div class="pill-group" id="ex-level-group">
           <button type="button" class="pill" data-value="inicial">Inicial</button>
           <button type="button" class="pill" data-value="intermedio">Intermedio</button>
           <button type="button" class="pill" data-value="avanzado">Avanzado</button>
         </div>
+        <p class="field-hint">Inicial sale en las tres clases; intermedio en intermedio y avanzado; avanzado solo en avanzado.</p>
       </fieldset>
 
       <fieldset>
@@ -140,12 +152,42 @@
         <div class="pill-group multi" id="ex-objective-group"></div>
       </fieldset>
 
-      <label>Posición (opcional)
-        <input type="text" id="ex-position" placeholder="Ej: Supino, sentada, cuadrupedia...">
+      <label>Posición
+        <select id="ex-posicion-select"></select>
       </label>
 
-      <label>Elemento (opcional)
-        <select id="ex-equipment-select"></select>
+      <label>Detalle de la posición (opcional)
+        <input type="text" id="ex-position" placeholder="Ej: Sentada de espaldas a las poleas, correas en las manos">
+      </label>
+
+      <fieldset>
+        <legend>Accesorio</legend>
+        <div class="pill-group multi" id="ex-accesorio-group"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Patrón de movimiento</legend>
+        <div class="pill-group multi" id="ex-patron-group"></div>
+      </fieldset>
+
+      <label>Repeticiones o tiempo (opcional)
+        <input type="text" id="ex-howto" placeholder="Ej: 8 a 10 repeticiones">
+      </label>
+
+      <label id="ex-resortes-label">Resortes sugeridos (reformer)
+        <input type="text" id="ex-resortes" placeholder="Ej: Azul (liviano a medio)">
+      </label>
+
+      <label>Cue técnica (opcional)
+        <input type="text" id="ex-cue" placeholder="Ej: Que los omóplatos bajen antes de mover los brazos">
+      </label>
+
+      <label>Regresión (opcional)
+        <input type="text" id="ex-regresion" placeholder="Cómo hacerlo más fácil">
+      </label>
+
+      <label>Progresión (opcional)
+        <input type="text" id="ex-progresion" placeholder="Cómo hacerlo más exigente">
       </label>
 
       <fieldset>
@@ -158,8 +200,13 @@
 
     <button type="button" id="toggle-my-exercises" class="btn btn-ghost btn-block">🗂️ Mis ejercicios propios</button>
     <div id="my-exercises-panel" class="hidden">
-      <p class="panel-hint">Ejercicios que cargaste vos, desde el formulario o el "+ Sumar" rápido dentro de una clase.</p>
+      <p class="panel-hint">Ejercicios que cargaste vos, desde el formulario o el "+ Sumar" rápido dentro de una clase. Se guardan en este dispositivo: exportalos para no perderlos.</p>
+      <div class="my-ex-tools">
+        <button type="button" class="btn-mini" id="btn-export-mine">↓ Exportar JSON</button>
+        <label class="btn-mini btn-file">↑ Importar JSON<input type="file" id="import-mine-input" accept="application/json,.json" hidden></label>
+      </div>
       <div id="my-exercises-list"></div>
+      <div id="hidden-exercises-box"></div>
     </div>
 
     <button type="button" id="toggle-saved-classes" class="btn btn-ghost btn-block">📂 Mis clases guardadas</button>
@@ -207,6 +254,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="data.js"></script>
+<script src="data-extra-2.js"></script>
+<script src="data-meta.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
