@@ -566,7 +566,8 @@
     EXERCISES.forEach(ex => {
       if (ex.discipline !== discipline) return;
       if (modality && modality !== "mixta" && !(ex.modality || []).includes(modality)) return;
-      (ex.accesorio || []).forEach(a => present.add(a));
+      // en mat no se ofrecen las configuraciones del reformer (algunos ejercicios sirven para las dos modalidades)
+      (ex.accesorio || []).forEach(a => { if (!(modality === "mat" && SETUP_ACC.includes(a))) present.add(a); });
     });
     return ACC_ORDER.filter(a => present.has(a)).map(id => ({ id, label: ACCESORIO_LABELS[id] || id }));
   }
