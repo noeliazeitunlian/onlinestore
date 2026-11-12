@@ -640,14 +640,83 @@
   }
 
   // ---------- descargar clase en PDF ----------
+  const IS_MOBILE =
+    /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1); // iPad con iPadOS
+
+  // En mobile las fotos con loading="lazy" que no están en pantalla no se cargan,
+  // y saldrían vacías en el PDF: las forzamos a cargar antes de capturar.
+  function loadAllImages(root) {
+    const imgs = Array.from(root.querySelectorAll("img"));
+    return Promise.all(imgs.map(img => {
+      img.loading = "eager";
+      if (img.complete && img.naturalWidth) return Promise.resolve();
+      return new Promise(resolve => {
+        img.addEventListener("load", resolve, { once: true });
+        img.addEventListener("error", resolve, { once: true });
+        setTimeout(resolve, 8000);
+      });
+    }));
+  }
+
+  // Los celulares tienen un tope de tamaño de canvas (~16 millones de píxeles en iOS);
+  // si se pasa, el canvas sale en blanco. Ajustamos la escala para no superarlo.
+  function safeCanvasScale(el) {
+    const w = el.scrollWidth || 1;
+    const h = el.scrollHeight || 1;
+    const maxArea = IS_MOBILE ? 14_000_000 : 60_000_000;
+    const maxSide = IS_MOBILE ? 16_000 : 32_000;
+    const byArea = Math.sqrt(maxArea / (w * h));
+    const bySide = maxSide / Math.max(w, h);
+    return Math.max(0.5, Math.min(2, byArea, bySide));
+  }
+
+  // iOS/Android no respetan la descarga "invisible" de pdf.save().
+  // Tras generar el PDF, el botón pasa a ser un link real que la persona toca
+  // (un toque nuevo sí habilita abrir/compartir/descargar en Safari).
+  function offerPdfOnMobile(btn, blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const file = typeof File !== "undefined" ? new File([blob], filename, { type: "application/pdf" }) : null;
+    const canShare = file && navigator.canShare && navigator.canShare({ files: [file] });
+
+    const link = document.createElement("a");
+    link.className = btn.className;
+    link.id = "btn-pdf-ready";
+    link.href = url;
+    link.download = filename;
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.textContent = canShare ? "↓ Guardar / compartir PDF" : "↓ Abrir PDF";
+    link.addEventListener("click", e => {
+      if (!canShare) return; // deja que el link abra el PDF
+      e.preventDefault();
+      navigator.share({ files: [file], title: filename }).catch(err => {
+        if (err && err.name !== "AbortError") window.open(url, "_blank");
+      });
+    });
+    btn.replaceWith(link);
+  }
+
   function downloadPDF() {
     const btn = $("#btn-pdf");
-    if (!btn || typeof html2canvas === "undefined" || !window.jspdf) return;
+    const target = $("#output-content");
+    if (!btn || !target) return;
+    if (typeof html2canvas === "undefined" || !window.jspdf) {
+      alert("No se pudo cargar el generador de PDF. Revisá tu conexión y probá de nuevo.");
+      return;
+    }
     const original = btn.textContent;
     btn.textContent = "Generando…";
     btn.disabled = true;
+    const filename = `clase-${state.discipline}-${Date.now()}.pdf`;
+    let ok = false;
 
-    html2canvas($("#output-content"), { scale: 2, backgroundColor: "#FBF1EE" })
+    loadAllImages(target)
+      .then(() => html2canvas(target, {
+        scale: safeCanvasScale(target),
+        backgroundColor: "#FBF1EE",
+        useCORS: true,
+      }))
       .then(canvas => {
         const { jsPDF } = window.jspdf;
         const pdf = new jsPDF({ unit: "pt", format: "a4" });
@@ -655,24 +724,36 @@
         const pageHeight = pdf.internal.pageSize.getHeight();
         const imgWidth = pageWidth;
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
-        const imgData = canvas.toDataURL("image/png");
+        // JPEG pesa mucho menos que PNG: evita quedarse sin memoria en el celular.
+        const imgData = canvas.toDataURL("image/jpeg", 0.88);
 
         let heightLeft = imgHeight;
         let position = 0;
-        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+        pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
         heightLeft -= pageHeight;
         while (heightLeft > 0) {
           position = heightLeft - imgHeight;
           pdf.addPage();
-          pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+          pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
           heightLeft -= pageHeight;
         }
-        pdf.save(`clase-${state.discipline}-${Date.now()}.pdf`);
+
+        if (IS_MOBILE) {
+          offerPdfOnMobile(btn, pdf.output("blob"), filename);
+        } else {
+          pdf.save(filename);
+        }
+        ok = true;
       })
-      .catch(() => alert("No se pudo generar el PDF. Probá de nuevo."))
+      .catch(err => {
+        console.error("Error generando PDF:", err);
+        alert("No se pudo generar el PDF. Probá de nuevo.");
+      })
       .finally(() => {
-        btn.textContent = original;
-        btn.disabled = false;
+        if (!ok || !IS_MOBILE) {
+          btn.textContent = original;
+          btn.disabled = false;
+        }
       });
   }
 
