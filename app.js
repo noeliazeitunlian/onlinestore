@@ -4,6 +4,8 @@
   const FAV_KEY = "genclases_favorites";
   const HIDDEN_KEY = "genclases_hidden";
 
+  const MAX_DURATION = 60; // duración máxima de una clase (también para "+ min sin repetir")
+
   let state = {
     discipline: "pilates",
     modality: null,
@@ -201,7 +203,7 @@
     state.accesorios = Array.isArray(entry.accesorios) ? entry.accesorios.slice() : [];
     state.upperFocus = entry.upperFocus || "mixto";
     state.level = entry.level;
-    state.duration = entry.duration;
+    state.duration = Math.min(entry.duration, MAX_DURATION);
 
     $$("#modality-group .pill").forEach(p => p.classList.toggle("is-active", p.dataset.value === state.modality));
     refreshAccesorioPills();
@@ -410,7 +412,8 @@
       // escala del estudio: amarillo < azul < rojo < verde. Con verde no hay color más pesado,
       // y en "carro firme" o barra fija el resorte no se toca.
       const isMax = /^verde/i.test(ex.resortes);
-      const isFixed = /trabado|firme|no carga|torre/i.test(ex.resortes);
+      // en las versiones por nivel (variantes-pilates.js) el resorte ya viene ajustado: no se suma otro cambio
+      const isFixed = /trabado|firme|no carga|torre/i.test(ex.resortes) || !!ex.resortesAjustado;
       const wantsStrength = (ex.patron || []).some(p => p === "empuje" || p === "traccion");
       const tip = isFixed ? ""
         : level === "inicial" ? (isMax ? "" : " Si el carro se mueve de más, pasá al color siguiente (más pesado).")
@@ -451,13 +454,15 @@
 
   // ---------- prioridades para el sorteo ----------
   // El nivel es "nivel mínimo": avanzado puede usar cualquier ejercicio, pero prioriza los de su nivel,
-  // así inicial, intermedio y avanzado no traen la misma clase.
+  // así inicial, intermedio y avanzado no traen la misma clase. La preferencia es fuerte: los de nivel
+  // más bajo entran sobre todo para completar cuando no hay suficientes del nivel elegido.
   const LEVEL_INDEX = { inicial: 0, intermedio: 1, avanzado: 2 };
+  const LEVEL_WEIGHT = [10, 2.5, 0.4]; // mismo nivel · un nivel abajo · dos niveles abajo
   const PROP_ACC = ["banda", "aro", "pelota", "fitball", "bloques", "foam_roller"];
 
   function exerciseWeight(ex, ctx) {
     const dist = (LEVEL_INDEX[ctx.level] ?? 1) - (LEVEL_INDEX[ex.nivelMin] ?? 0);
-    let w = [3, 1.2, 0.5][Math.max(0, Math.min(2, dist))];
+    let w = LEVEL_WEIGHT[Math.max(0, Math.min(2, dist))];
 
     // Reformer + tren superior sin accesorio elegido: lo propio del reformer (correas en manos,
     // arrodillada, de pie sobre el carro) va antes que la pelota, el aro o la banda.
@@ -572,8 +577,17 @@
     return ACC_ORDER.filter(a => present.has(a)).map(id => ({ id, label: ACCESORIO_LABELS[id] || id }));
   }
 
+  // Accesorios que no pueden armar la clase elegida: con los pies en las correas no se trabaja
+  // tren superior, y la serie de correas en pies es boca arriba (no apta en embarazo).
+  function accesorioFitsClass(id) {
+    const objective = $("#objective-select")?.value;
+    const populationId = $("#population-select")?.value;
+    if (id === "correas_pies" && (objective === "tren-superior" || populationId === "embarazo")) return false;
+    return true;
+  }
+
   function refreshAccesorioPills() {
-    const options = accesoriosFor(state.discipline, state.modality);
+    const options = accesoriosFor(state.discipline, state.modality).filter(o => accesorioFitsClass(o.id));
     state.accesorios = state.accesorios.filter(a => options.some(o => o.id === a));
     renderPillGroup("#accesorio-group", options, null, true);
     state.accesorios.forEach(a => $(`#accesorio-group .pill[data-value="${a}"]`)?.classList.add("is-active"));
@@ -698,22 +712,53 @@
       : !(populationId === "embarazo" && (ex.avoid || []).includes("Embarazo / posparto"));
   }
 
-  function filterPool({ discipline, moment, modality, level, objective, populationId, accesorios, excludeIds = new Set(), excludeNames = new Set() }) {
+  // Niveles que entran en la clase según la población:
+  // - principiantes absolutas: siempre inicial (la clase se fuerza a inicial en buildClass);
+  // - embarazo: el nivel elegido y los de abajo (en embarazo se mantiene, no se progresa);
+  // - mayores: el nivel elegido y uno abajo (la flexión y la rotación quedan en su versión intermedia).
+  // El sorteo prioriza siempre las versiones del nivel elegido (exerciseWeight).
+  function levelsFor(level, populationId) {
+    const i = LEVEL_INDEX[level] ?? 1;
+    const LV = ["inicial", "intermedio", "avanzado"];
+    if (populationId === "principiantes") return ["inicial"];
+    if (populationId === "embarazo") return LV.slice(0, i + 1).reverse();
+    if (populationId === "mayores") return LV.slice(Math.max(0, i - 1), i + 1).reverse();
+    return [level];
+  }
+
+  const familyOf = (ex) => ex.familia || ex.id;
+
+  function filterPool({ discipline, moment, modality, level, objective, populationId, accesorios, excludeIds = new Set(), excludeNames = new Set(), excludeFamilies = new Set() }) {
     const hidden = getHidden();
+    const levels = levelsFor(level, populationId);
     const base = allExercises().filter(ex =>
       ex.discipline === discipline &&
       ex.moment === moment &&
       (modality === "mixta" || (ex.modality || []).includes(modality)) &&
-      (ex.level || []).includes(level) &&
+      (ex.level || []).some(l => levels.includes(l)) &&
       matchesAccesorio(ex, accesorios) &&
       fitsPopulation(ex, populationId) &&
       !hidden.has(ex.id) &&
       !excludeIds.has(ex.id) &&
-      !excludeNames.has(ex.name)
+      !excludeNames.has(ex.name) &&
+      !excludeFamilies.has(familyOf(ex))
     );
     const withObjective = base.filter(ex => (ex.objective || []).includes(objective));
     const isFrame = moment === 1 || moment === 6;
-    return { pool: withObjective, general: isFrame ? base.filter(ex => !withObjective.includes(ex)) : [] };
+    // Preparación y cierre: si el accesorio elegido no alcanza, se completan con ejercicios
+    // sin elementos (respiración, movilidad, descarga) de la misma modalidad, nivel y población.
+    const sinElementos = isFrame && accesorios.length
+      ? allExercises().filter(ex =>
+          ex.discipline === discipline && ex.moment === moment &&
+          (modality === "mixta" || (ex.modality || []).includes(modality)) &&
+          (ex.level || []).some(l => levels.includes(l)) &&
+          !(ex.accesorio || []).some(a => PROP_ACC.includes(a)) &&
+          !base.includes(ex) &&
+          fitsPopulation(ex, populationId) &&
+          !hidden.has(ex.id) && !excludeIds.has(ex.id) && !excludeNames.has(ex.name) &&
+          !excludeFamilies.has(familyOf(ex)))
+      : [];
+    return { pool: withObjective, general: isFrame ? base.filter(ex => !withObjective.includes(ex)) : [], sinElementos };
   }
 
   // cantidad de ejercicios coherente con la duración: ~3,6 min por ejercicio (50 min ≈ 14)
@@ -729,6 +774,40 @@
     const mainIdx = Math.max(0, blocks.findIndex(b => b.id === 3));
     counts[mainIdx] = Math.max(1, counts[mainIdx] + diff);
     return counts;
+  }
+
+  // reparto de pocos ejercicios extra (al extender la clase): puede quedar algún bloque en 0
+  function allocateExtraCounts(blocks, total) {
+    const weightSum = blocks.reduce((s, b) => s + b.weight, 0);
+    const raw = blocks.map(b => (b.weight / weightSum) * total);
+    const counts = raw.map(Math.floor);
+    let left = total - counts.reduce((s, n) => s + n, 0);
+    raw.map((r, i) => ({ i, frac: r - Math.floor(r) }))
+      .sort((a, b) => b.frac - a.frac)
+      .forEach(({ i }) => { if (left > 0) { counts[i] += 1; left -= 1; } });
+    return counts;
+  }
+
+  // Si un bloque no llega a su cantidad (por ejemplo, preparación con un solo accesorio),
+  // esos lugares pasan a los bloques que todavía tienen ejercicios disponibles, empezando
+  // por el patrón principal. Así la clase sale completa sin repetir ni relajar filtros.
+  function fillDeficit(result, ctx, used) {
+    let deficit = result.reduce((s, r) => s + Math.max(0, r.requested - r.exercises.length), 0);
+    if (!deficit) return result;
+    for (const id of [3, 4, 2, 5, 1, 6]) {
+      if (!deficit) break;
+      const entry = result.find(r => r.block.id === id);
+      if (!entry) continue;
+      const extra = pickForBlock(entry.block, deficit, ctx, used);
+      if (!extra.exercises.length) continue;
+      entry.exercises = sortForFlow(entry.exercises.concat(extra.exercises));
+      entry.generalCount = (entry.generalCount || 0) + extra.generalCount;
+      entry.fillerCount = (entry.fillerCount || 0) + extra.fillerCount;
+      deficit -= extra.exercises.length;
+    }
+    // si se completó en otros bloques, ningún bloque queda marcado como corto
+    if (!deficit) result.forEach(r => { r.short = false; });
+    return result;
   }
 
   // minutos por bloque que suman exactamente la duración (método del mayor resto, mínimo 3 por bloque)
@@ -768,10 +847,10 @@
   // elige `count` ejercicios para un bloque. Con un enfoque de tren superior, en los bloques
   // principales (3 y 4) al menos dos tercios salen de ese patrón si la base lo permite.
   function pickForBlock(block, count, ctx, used) {
-    const { pool, general } = filterPool({
+    const { pool, general, sinElementos } = filterPool({
       discipline: ctx.discipline, moment: block.id, modality: ctx.modality, level: ctx.level,
       objective: ctx.objective, populationId: ctx.populationId, accesorios: ctx.accesorios,
-      excludeIds: used.ids, excludeNames: used.names,
+      excludeIds: used.ids, excludeNames: used.names, excludeFamilies: used.families,
     });
     const focusPatron = ctx.focus.patron;
     const isMain = block.id === 3 || block.id === 4;
@@ -798,16 +877,23 @@
       generalCount = extra.length;
       picked = picked.concat(extra);
     }
+    let fillerCount = 0;
+    if (picked.length < count && sinElementos.length) {
+      const extra = weightedShuffle(sinElementos, shuffleCtx).slice(0, count - picked.length);
+      fillerCount = extra.length;
+      picked = picked.concat(extra);
+    }
 
     // sin repetir: ni el mismo id ni el mismo nombre (los propios guardan una copia por bloque)
     const unique = [];
     picked.forEach(ex => {
-      if (used.ids.has(ex.id) || used.names.has(ex.name)) return;
-      used.ids.add(ex.id); used.names.add(ex.name);
+      // ni el mismo id, ni el mismo nombre, ni dos versiones del mismo ejercicio
+      if (used.ids.has(ex.id) || used.names.has(ex.name) || used.families.has(familyOf(ex))) return;
+      used.ids.add(ex.id); used.names.add(ex.name); used.families.add(familyOf(ex));
       unique.push(withLevel(ex));
     });
 
-    return { exercises: unique, requested: count, short: unique.length < count, focusShort, generalCount };
+    return { exercises: unique, requested: count, short: unique.length < count, focusShort, generalCount, fillerCount };
   }
 
   function buildClass() {
@@ -817,6 +903,12 @@
     const populationLabel = POPULATIONS.find(p => p.id === populationId)?.label || populationId;
     const includeWarmup = $("#include-warmup").checked;
 
+    // principiantes absolutas: la clase se arma siempre en nivel inicial
+    if (populationId === "principiantes" && state.level !== "inicial") {
+      state.level = "inicial";
+      $$("#level-group .pill").forEach(p => p.classList.toggle("is-active", p.dataset.value === "inicial"));
+    }
+
     const blocksToUse = BLOCKS.filter(b => includeWarmup || !b.optional);
     const blockMinutes = allocateMinutes(blocksToUse, state.duration);
     const counts = allocateCounts(blocksToUse, exerciseCountFor(state.duration));
@@ -824,13 +916,14 @@
     const avoidRecent = $("#avoid-recent")?.checked;
     const recentIds = avoidRecent ? getRecentExerciseIds(3) : new Set();
     const ctx = generationContext(objectiveId, populationId);
-    const used = { ids: new Set(recentIds), names: new Set() };
+    const used = { ids: new Set(recentIds), names: new Set(), families: new Set() };
 
     const result = blocksToUse.map((block, i) => {
       const minutes = blockMinutes[i];
       const pick = pickForBlock(block, counts[i], ctx, used);
       return { block, minutes, ...pick, exercises: sortForFlow(pick.exercises) };
     });
+    fillDeficit(result, ctx, used);
 
     renderClass({ objectiveId, objectiveLabel, populationId, populationLabel, result, focusId: ctx.focus.id });
   }
@@ -838,18 +931,21 @@
   // ---------- extender clase sin repetir ejercicios ----------
   function extendClass() {
     if (!lastRender) return;
-    state.duration += 20;
+    const add = Math.min(20, MAX_DURATION - state.duration);
+    if (add <= 0) return;
+    state.duration += add;
 
     const { objectiveId, objectiveLabel, populationId, populationLabel } = lastRender;
     const includeWarmup = $("#include-warmup").checked;
     const blocksToUse = BLOCKS.filter(b => includeWarmup || !b.optional);
     const blockMinutes = allocateMinutes(blocksToUse, state.duration);
-    const extraCounts = allocateCounts(blocksToUse, exerciseCountFor(20));
+    const extraCounts = allocateExtraCounts(blocksToUse, Math.max(1, Math.round(add / 3.6)));
 
     const ctx = generationContext(objectiveId, populationId);
     const used = {
       ids: new Set(lastRender.result.flatMap(r => r.exercises.map(ex => ex.id))),
       names: new Set(lastRender.result.flatMap(r => r.exercises.map(ex => ex.name))),
+      families: new Set(lastRender.result.flatMap(r => r.exercises.map(familyOf))),
     };
 
     const result = blocksToUse.map((block, i) => {
@@ -863,9 +959,11 @@
         short: exercises.length < (previous?.requested || 0) + extraCounts[i],
         focusShort: previous?.focusShort || pick.focusShort,
         generalCount: (previous?.generalCount || 0) + pick.generalCount,
-        noExtra: !!previous && exercises.length > 0 && pick.exercises.length === 0,
+        fillerCount: (previous?.fillerCount || 0) + pick.fillerCount,
+        noExtra: !!previous && exercises.length > 0 && pick.exercises.length === 0 && extraCounts[i] > 0,
       };
     });
+    fillDeficit(result, ctx, used);
 
     renderClass({ objectiveId, objectiveLabel, populationId, populationLabel, result, focusId: ctx.focus.id });
   }
@@ -999,11 +1097,12 @@
     const current = entry.exercises[idx];
     const excludeIds = new Set(lastRender.result.flatMap(r => r.exercises.map(ex => ex.id)));
     const excludeNames = new Set(lastRender.result.flatMap(r => r.exercises.map(ex => ex.name)));
+    const excludeFamilies = new Set(lastRender.result.flatMap(r => r.exercises.map(familyOf)));
     const ctx = generationContext(lastRender.objectiveId, lastRender.populationId);
     const { pool, general } = filterPool({
       discipline: state.discipline, moment: blockId, modality: state.modality, level: state.level,
       objective: lastRender.objectiveId, populationId: lastRender.populationId, accesorios: ctx.accesorios,
-      excludeIds, excludeNames,
+      excludeIds, excludeNames, excludeFamilies,
     });
     // preferimos un reemplazo con la misma configuración y posición, para no romper el orden del bloque
     const candidates = weightedShuffle(pool.length ? pool : general, ctx);
@@ -1294,7 +1393,7 @@
           <button type="button" class="btn-outline" id="btn-live">▶ Modo clase en vivo</button>
           <button type="button" class="btn-outline" id="btn-pdf">↓ Descargar PDF</button>
           <button type="button" class="btn-outline" id="btn-save-class">☆ Guardar clase</button>
-          <button type="button" class="btn-outline" id="btn-extend">+ 20 min sin repetir</button>
+          ${state.duration < MAX_DURATION ? `<button type="button" class="btn-outline" id="btn-extend">+ ${Math.min(20, MAX_DURATION - state.duration)} min sin repetir</button>` : ""}
           <button type="button" class="btn-outline" id="btn-regenerate">↻ Regenerar clase</button>
           <button type="button" class="btn-outline" id="btn-copy">⎘ Copiar texto</button>
         </div>
@@ -1308,6 +1407,18 @@
 
     if (state.modality !== "mat" && state.discipline === "pilates" && window.RESORTES_LEYENDA) {
       html += `<p class="block-note resortes-leyenda">${window.RESORTES_LEYENDA}</p>`;
+    }
+
+    if (populationId === "principiantes") {
+      html += `<p class="block-note">Principiantes absolutas: la clase se arma siempre en nivel inicial, con las versiones de más base de apoyo.</p>`;
+    } else if (populationId === "embarazo" && state.level !== "inicial") {
+      html += `<p class="block-note">Embarazo / posparto: se mantiene el nivel, no se progresa. Las versiones de este nivel que no son aptas (boca arriba, boca abajo, planchas, flexión o torsión de columna) se completan con versiones más simples y aptas. Siempre con el alta de su médico/a.</p>`;
+    } else if (populationId === "mayores" && state.level === "avanzado") {
+      html += `<p class="block-note">Adultos mayores: los ejercicios con flexión o rotación de columna y las planchas van en su versión intermedia, para cuidar la columna y las muñecas.</p>`;
+    }
+
+    if (result.some(r => r.fillerCount)) {
+      html += `<p class="block-note">Preparación y cierre se completaron con algún ejercicio sin elementos, porque con el accesorio elegido no alcanzaba.</p>`;
     }
 
     const shortBlocks = result.filter(r => r.short && r.requested);
@@ -1363,7 +1474,7 @@
     content.innerHTML = html;
 
     $("#btn-regenerate").addEventListener("click", buildClass);
-    $("#btn-extend").addEventListener("click", extendClass);
+    $("#btn-extend")?.addEventListener("click", extendClass);
     $("#btn-pdf").addEventListener("click", downloadPDF);
     $("#btn-live").addEventListener("click", startLiveMode);
     $("#btn-save-class").addEventListener("click", saveCurrentClass);
@@ -1500,7 +1611,8 @@
   });
 
   // el enfoque de tren superior solo aparece con ese objetivo
-  $("#objective-select").addEventListener("change", refreshFocusVisibility);
+  $("#objective-select").addEventListener("change", () => { refreshFocusVisibility(); refreshAccesorioPills(); });
+  $("#population-select").addEventListener("change", refreshAccesorioPills);
 
   // ---------- mis clases guardadas: toggle + interacciones ----------
   $("#toggle-saved-classes").addEventListener("click", () => {
@@ -1525,6 +1637,9 @@
   });
 
   // ---------- init ----------
+  // duración máxima 60 min: se sacan del formulario las opciones más largas (si el HTML las trae)
+  $$("#duration-group .pill").forEach(p => { if (Number(p.dataset.value) > MAX_DURATION) p.remove(); });
+  if (state.duration > MAX_DURATION) state.duration = MAX_DURATION;
   refreshFormForDiscipline();
   renderSavedClassesList();
   renderMyExercisesList();

@@ -4477,7 +4477,7 @@
        Sin supino ni prono: aptos para las cuatro poblaciones.
        ===================================================================== */
     RT({
-      id: "pilates-700", name: "Torre: respiración sentada con manos en la barra",
+      id: "pilates-700", image: "images/exercises/pilates-700.png", name: "Torre: respiración sentada con manos en la barra",
       position: "Sentada en el carro mirando la torre, piernas cruzadas, manos apoyadas en la barra del push through a la altura del pecho",
       population: ALL, moment: 1, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", 
       objective: ["columna", "centro"],
@@ -4494,7 +4494,7 @@
       },
     }),
     RT({
-      id: "pilates-701", name: "Torre: movilidad de hombros arrodillada con la barra",
+      id: "pilates-701", image: "images/exercises/pilates-701.png", name: "Torre: movilidad de hombros arrodillada con la barra",
       position: "Arrodillada en el carro mirando la torre, rodillas al ancho de cadera, manos en la barra del push through a la altura de los hombros",
       population: ALL, moment: 1, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", 
       objective: ["control-escapular", "columna"],
@@ -4511,7 +4511,7 @@
       },
     }),
     RT({
-      id: "pilates-702", name: "Torre: activación sentada bajando la barra",
+      id: "pilates-702", image: "images/exercises/pilates-702.png", name: "Torre: activación sentada bajando la barra",
       position: "Sentada en el carro mirando la torre, piernas cruzadas, brazos estirados hacia arriba tomando la barra del push through",
       population: ALL, moment: 2, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", 
       objective: ["centro", "lumbopelvica"],
@@ -4528,7 +4528,7 @@
       },
     }),
     RT({
-      id: "pilates-703", name: "Torre: gato-vaca arrodillada con manos en la barra",
+      id: "pilates-703", image: "images/exercises/pilates-703.png", name: "Torre: gato-vaca arrodillada con manos en la barra",
       position: "Arrodillada en el carro mirando la torre, manos en la barra del push through a la altura del pecho, cadera sobre las rodillas",
       population: ALL, moment: 2, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", avoid: ["Osteoporosis / osteopenia"], 
       objective: ["columna", "coordinacion-fluidez"],
@@ -4545,7 +4545,7 @@
       },
     }),
     RT({
-      id: "pilates-704", name: "Torre: tirón de barra hacia el pecho sentada",
+      id: "pilates-704", image: "images/exercises/pilates-704.png", name: "Torre: tirón de barra hacia el pecho sentada",
       position: "Sentada en el carro mirando la torre, piernas cruzadas, brazos estirados hacia arriba y levemente adelante tomando la barra",
       population: ALL, moment: 2, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", 
       objective: ["tren-superior", "control-escapular"],
@@ -4562,7 +4562,7 @@
       },
     }),
     RT({
-      id: "pilates-705", name: "Torre: marcha sentada con manos en la barra",
+      id: "pilates-705", image: "images/exercises/pilates-705.png", name: "Torre: marcha sentada con manos en la barra",
       position: "Sentada en el carro mirando la torre, rodillas flexionadas y pies apoyados en el carro, manos en la barra",
       population: ALL, moment: 2, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", 
       objective: ["lumbopelvica", "centro"],
@@ -4579,7 +4579,7 @@
       },
     }),
     RT({
-      id: "pilates-706", name: "Torre: elongación sentada empujando la barra hacia arriba",
+      id: "pilates-706", image: "images/exercises/pilates-706.png", name: "Torre: elongación sentada empujando la barra hacia arriba",
       position: "Sentada en el carro de espaldas a la torre, piernas cruzadas, manos en la barra a la altura de los hombros, codos flexionados",
       population: ALL, moment: 2, resortes: "Torre: push through con resorte desde abajo, liviano (amarillo o azul). Carro trabado.", 
       objective: ["columna", "coordinacion-fluidez"],
@@ -4596,7 +4596,7 @@
       },
     }),
     RT({
-      id: "pilates-707", name: "Torre: retracción de omóplatos sentada con la barra",
+      id: "pilates-707", image: "images/exercises/pilates-707.png", name: "Torre: retracción de omóplatos sentada con la barra",
       position: "Sentada en el carro mirando la torre, piernas cruzadas, brazos estirados al frente a la altura de los hombros, manos en la barra",
       population: ALL, moment: 2, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", 
       objective: ["control-escapular", "tren-superior"],
@@ -4613,7 +4613,7 @@
       },
     }),
     RT({
-      id: "pilates-708", name: "Torre: báscula sentada con manos en la barra",
+      id: "pilates-708", image: "images/exercises/pilates-708.png", name: "Torre: báscula sentada con manos en la barra",
       position: "Sentada en el carro mirando la torre, rodillas flexionadas, pies apoyados en el carro, manos en la barra a la altura del pecho",
       population: ALL, moment: 2, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", 
       objective: ["lumbopelvica", "centro"],
@@ -4630,7 +4630,7 @@
       },
     }),
     RT({
-      id: "pilates-709", name: "Torre: ola de columna sentada empujando la barra",
+      id: "pilates-709", image: "images/exercises/pilates-709.png", name: "Torre: ola de columna sentada empujando la barra",
       position: "Sentada en el carro mirando la torre, piernas cruzadas, brazos estirados al frente, manos en la barra a la altura de los hombros",
       population: ALL, moment: 2, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", avoid: ["Osteoporosis / osteopenia"], 
       objective: ["columna", "coordinacion-fluidez"],
@@ -4647,7 +4647,7 @@
       },
     }),
     RT({
-      id: "pilates-710", name: "Torre: press de barra al frente sentada",
+      id: "pilates-710", image: "images/exercises/pilates-710.png", name: "Torre: press de barra al frente sentada",
       position: "Sentada en el carro de espaldas a la torre, piernas cruzadas, manos en la barra a la altura del pecho, codos flexionados",
       population: ALL, moment: 2, resortes: "Torre: push through con resorte desde abajo, liviano (amarillo o azul). Carro trabado.", 
       objective: ["tren-superior", "control-escapular"],
@@ -4664,7 +4664,7 @@
       },
     }),
     RT({
-      id: "pilates-711", name: "Torre: bisagra sentada empujando la barra al frente",
+      id: "pilates-711", image: "images/exercises/pilates-711.png", name: "Torre: bisagra sentada empujando la barra al frente",
       position: "Sentada en el carro mirando la torre, piernas cruzadas, brazos estirados al frente, manos en la barra",
       population: ALL, moment: 3, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", 
       objective: ["lumbopelvica", "centro"],
@@ -4681,7 +4681,7 @@
       },
     }),
     RT({
-      id: "pilates-712", name: "Torre: empuje de barra arrodillada con pelvis quieta",
+      id: "pilates-712", image: "images/exercises/pilates-712.png", name: "Torre: empuje de barra arrodillada con pelvis quieta",
       position: "Arrodillada en el carro mirando la torre, cadera sobre las rodillas, manos en la barra a la altura de los hombros",
       population: ALL, moment: 3, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", 
       objective: ["centro", "lumbopelvica"],
@@ -4698,7 +4698,7 @@
       },
     }),
     RT({
-      id: "pilates-713", name: "Torre: sirena sentada con la mano en la barra",
+      id: "pilates-713", image: "images/exercises/pilates-713.png", name: "Torre: sirena sentada con la mano en la barra",
       position: "Sentada de costado a la torre en el carro, piernas en sirena o cruzadas, la mano de cerca en la barra",
       population: ALL, moment: 3, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", 
       objective: ["columna", "coordinacion-fluidez"],
@@ -4715,7 +4715,7 @@
       },
     }),
     RT({
-      id: "pilates-714", name: "Torre: rotación sentada con una mano en la barra",
+      id: "pilates-714", image: "images/exercises/pilates-714.png", name: "Torre: rotación sentada con una mano en la barra",
       position: "Sentada en el carro de costado a la torre, piernas cruzadas, la mano de cerca en la barra",
       population: ALL, moment: 3, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", avoid: ["Osteoporosis / osteopenia"], 
       objective: ["columna", "coordinacion-fluidez"],
@@ -4732,7 +4732,7 @@
       },
     }),
     RT({
-      id: "pilates-715", name: "Torre: tirón de barra a una mano sentada",
+      id: "pilates-715", image: "images/exercises/pilates-715.png", name: "Torre: tirón de barra a una mano sentada",
       position: "Sentada en el carro de costado a la torre, piernas cruzadas, la mano de cerca tomando la barra arriba",
       population: ALL, moment: 3, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", 
       objective: ["tren-superior", "control-escapular"],
@@ -4749,7 +4749,7 @@
       },
     }),
     RT({
-      id: "pilates-716", name: "Torre: press de barra hacia arriba arrodillada",
+      id: "pilates-716", image: "images/exercises/pilates-716.png", name: "Torre: press de barra hacia arriba arrodillada",
       position: "Arrodillada en el carro de espaldas a la torre, manos en la barra a la altura de los hombros",
       population: ALL, moment: 3, resortes: "Torre: push through con resorte desde abajo, liviano (amarillo o azul). Carro trabado.", 
       objective: ["tren-superior", "control-escapular"],
@@ -4766,7 +4766,7 @@
       },
     }),
     RT({
-      id: "pilates-717", name: "Torre: cadera atrás arrodillada con la barra",
+      id: "pilates-717", image: "images/exercises/pilates-717.png", name: "Torre: cadera atrás arrodillada con la barra",
       position: "Arrodillada en el carro mirando la torre, brazos estirados al frente, manos en la barra",
       population: ALL, moment: 3, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", 
       objective: ["lumbopelvica", "centro"],
@@ -4783,7 +4783,7 @@
       },
     }),
     RT({
-      id: "pilates-718", name: "Torre: press sobre la cabeza sentada de espaldas",
+      id: "pilates-718", image: "images/exercises/pilates-718.png", name: "Torre: press sobre la cabeza sentada de espaldas",
       position: "Sentada en el carro de espaldas a la torre, piernas cruzadas, manos en la barra a la altura de los hombros",
       population: ALL, moment: 3, resortes: "Torre: push through con resorte desde abajo, liviano (amarillo o azul). Carro trabado.", 
       objective: ["tren-superior", "control-escapular"],
@@ -4800,7 +4800,7 @@
       },
     }),
     RT({
-      id: "pilates-719", name: "Torre: extensión de espalda alta sentada con la barra",
+      id: "pilates-719", image: "images/exercises/pilates-719.png", name: "Torre: extensión de espalda alta sentada con la barra",
       position: "Sentada en el carro mirando la torre, piernas cruzadas, brazos estirados arriba tomando la barra",
       population: ALL, moment: 3, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", 
       objective: ["columna", "coordinacion-fluidez"],
@@ -4817,7 +4817,7 @@
       },
     }),
     RT({
-      id: "pilates-720", name: "Torre: empuje alternado de brazos arrodillada",
+      id: "pilates-720", image: "images/exercises/pilates-720.png", name: "Torre: empuje alternado de brazos arrodillada",
       position: "Arrodillada en el carro mirando la torre, manos en la barra a la altura de los hombros",
       population: ALL, moment: 4, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", 
       objective: ["centro", "lumbopelvica"],
@@ -4834,7 +4834,7 @@
       },
     }),
     RT({
-      id: "pilates-721", name: "Torre: tirón de barra con un pie despegado",
+      id: "pilates-721", image: "images/exercises/pilates-721.png", name: "Torre: tirón de barra con un pie despegado",
       position: "Sentada en el carro mirando la torre, rodillas flexionadas, pies apoyados, brazos arriba en la barra",
       population: ALL, moment: 4, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", 
       objective: ["lumbopelvica", "centro"],
@@ -4851,7 +4851,7 @@
       },
     }),
     RT({
-      id: "pilates-722", name: "Torre: tirón de barra arrodillada alta",
+      id: "pilates-722", image: "images/exercises/pilates-722.png", name: "Torre: tirón de barra arrodillada alta",
       position: "Arrodillada en el carro mirando la torre, cadera sobre las rodillas, brazos arriba tomando la barra",
       population: ALL, moment: 4, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", 
       objective: ["centro", "lumbopelvica"],
@@ -4868,7 +4868,7 @@
       },
     }),
     RT({
-      id: "pilates-723", name: "Torre: sirena arrodillada con la barra",
+      id: "pilates-723", image: "images/exercises/pilates-723.png", name: "Torre: sirena arrodillada con la barra",
       position: "Arrodillada en el carro de costado a la torre, la mano de cerca en la barra",
       population: ALL, moment: 4, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", 
       objective: ["columna", "coordinacion-fluidez"],
@@ -4885,7 +4885,7 @@
       },
     }),
     RT({
-      id: "pilates-724", name: "Torre: rotación con tirón de barra sentada",
+      id: "pilates-724", image: "images/exercises/pilates-724.png", name: "Torre: rotación con tirón de barra sentada",
       position: "Sentada en el carro de costado a la torre, piernas cruzadas, la mano de afuera en la barra",
       population: ALL, moment: 4, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", avoid: ["Osteoporosis / osteopenia"], 
       objective: ["columna", "coordinacion-fluidez"],
@@ -4902,7 +4902,7 @@
       },
     }),
     RT({
-      id: "pilates-725", name: "Torre: extensión de espalda alta arrodillada empujando la barra",
+      id: "pilates-725", image: "images/exercises/pilates-725.png", name: "Torre: extensión de espalda alta arrodillada empujando la barra",
       position: "Arrodillada en el carro mirando la torre, manos en la barra a la altura de la frente",
       population: ALL, moment: 4, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", 
       objective: ["columna", "coordinacion-fluidez"],
@@ -4919,7 +4919,7 @@
       },
     }),
     RT({
-      id: "pilates-726", name: "Torre: tirón de barra a una mano arrodillada",
+      id: "pilates-726", image: "images/exercises/pilates-726.png", name: "Torre: tirón de barra a una mano arrodillada",
       position: "Arrodillada en el carro de costado a la torre, la mano de cerca tomando la barra arriba",
       population: ALL, moment: 4, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", 
       objective: ["tren-superior", "control-escapular"],
@@ -4936,7 +4936,7 @@
       },
     }),
     RT({
-      id: "pilates-727", name: "Torre: tríceps sobre la cabeza sentada de espaldas",
+      id: "pilates-727", image: "images/exercises/pilates-727.png", name: "Torre: tríceps sobre la cabeza sentada de espaldas",
       position: "Sentada en el carro de espaldas a la torre, piernas cruzadas, brazos arriba con los codos doblados, manos en la barra detrás de la cabeza",
       population: ALL, moment: 4, resortes: "Torre: push through con resorte desde abajo, liviano (amarillo o azul). Carro trabado.", 
       objective: ["tren-superior", "control-escapular"],
@@ -4953,7 +4953,7 @@
       },
     }),
     RT({
-      id: "pilates-728", name: "Torre: círculos de hombros arrodillada con la barra",
+      id: "pilates-728", image: "images/exercises/pilates-728.png", name: "Torre: círculos de hombros arrodillada con la barra",
       position: "Arrodillada en el carro mirando la torre, brazos estirados al frente, manos en la barra",
       population: ALL, moment: 4, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", 
       objective: ["control-escapular", "tren-superior"],
@@ -4970,7 +4970,7 @@
       },
     }),
     RT({
-      id: "pilates-729", name: "Torre: secuencia sentada de tirón y press",
+      id: "pilates-729", image: "images/exercises/pilates-729.png", name: "Torre: secuencia sentada de tirón y press",
       position: "Sentada en el carro mirando la torre, piernas cruzadas, brazos arriba en la barra",
       population: ALL, moment: 5, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", 
       objective: ["tren-superior", "control-escapular"],
@@ -4987,7 +4987,7 @@
       },
     }),
     RT({
-      id: "pilates-730", name: "Torre: ola de columna arrodillada con la barra",
+      id: "pilates-730", image: "images/exercises/pilates-730.png", name: "Torre: ola de columna arrodillada con la barra",
       position: "Arrodillada en el carro mirando la torre, manos en la barra a la altura del pecho",
       population: ALL, moment: 5, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", avoid: ["Osteoporosis / osteopenia"], 
       objective: ["columna", "coordinacion-fluidez"],
@@ -5004,7 +5004,7 @@
       },
     }),
     RT({
-      id: "pilates-731", name: "Torre: bisagra y elongación sentada con la barra",
+      id: "pilates-731", image: "images/exercises/pilates-731.png", name: "Torre: bisagra y elongación sentada con la barra",
       position: "Sentada en el carro mirando la torre, piernas cruzadas, brazos al frente en la barra",
       population: ALL, moment: 5, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", 
       objective: ["lumbopelvica", "centro"],
@@ -5021,7 +5021,7 @@
       },
     }),
     RT({
-      id: "pilates-732", name: "Torre: cadera atrás y crecimiento arrodillada",
+      id: "pilates-732", image: "images/exercises/pilates-732.png", name: "Torre: cadera atrás y crecimiento arrodillada",
       position: "Arrodillada en el carro mirando la torre, brazos al frente en la barra",
       population: ALL, moment: 5, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", 
       objective: ["lumbopelvica", "centro"],
@@ -5038,7 +5038,7 @@
       },
     }),
     RT({
-      id: "pilates-733", name: "Torre: sirena en fluidez con la barra",
+      id: "pilates-733", image: "images/exercises/pilates-733.png", name: "Torre: sirena en fluidez con la barra",
       position: "Sentada de costado a la torre en el carro, piernas cruzadas, la mano de cerca en la barra",
       population: ALL, moment: 5, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", 
       objective: ["columna", "coordinacion-fluidez"],
@@ -5055,7 +5055,7 @@
       },
     }),
     RT({
-      id: "pilates-734", name: "Torre: press y tirón alternados arrodillada",
+      id: "pilates-734", image: "images/exercises/pilates-734.png", name: "Torre: press y tirón alternados arrodillada",
       position: "Arrodillada en el carro mirando la torre, brazos arriba en la barra",
       population: ALL, moment: 5, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", 
       objective: ["tren-superior", "control-escapular"],
@@ -5072,7 +5072,7 @@
       },
     }),
     RT({
-      id: "pilates-735", name: "Torre: estiramiento de espalda sentada con la barra",
+      id: "pilates-735", image: "images/exercises/pilates-735.png", name: "Torre: estiramiento de espalda sentada con la barra",
       position: "Sentada en el carro mirando la torre, piernas cruzadas, brazos estirados al frente en la barra",
       population: ALL, moment: 6, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", 
       objective: ["columna"],
@@ -5089,7 +5089,7 @@
       },
     }),
     RT({
-      id: "pilates-736", name: "Torre: estiramiento de pecho arrodillada con la barra",
+      id: "pilates-736", image: "images/exercises/pilates-736.png", name: "Torre: estiramiento de pecho arrodillada con la barra",
       position: "Arrodillada en el carro de costado a la torre, la mano de cerca en la barra a la altura del hombro",
       population: ALL, moment: 6, resortes: "Torre: push through con resorte desde arriba, liviano (amarillo o azul). Carro trabado.", 
       objective: ["control-escapular"],
@@ -5110,7 +5110,7 @@
        Sin supino ni prono: aptos para las cuatro poblaciones.
        ===================================================================== */
     RC({
-      id: "pilates-737", name: "Carro: respiración sentada en el carro",
+      id: "pilates-737", image: "images/exercises/pilates-737.png", name: "Carro: respiración sentada en el carro",
       position: "Sentada en el carro, piernas cruzadas, manos sobre las rodillas",
       population: ALL, moment: 1, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["columna", "centro"],
@@ -5144,7 +5144,7 @@
       },
     }),
     RC({
-      id: "pilates-739", name: "Carro: marcha sentada en el carro",
+      id: "pilates-739", image: "images/exercises/pilates-739.png", name: "Carro: marcha sentada en el carro",
       position: "Sentada en el carro de espaldas a la barra, rodillas flexionadas, pies apoyados en el carro, manos a los costados",
       population: ALL, moment: 2, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["lumbopelvica", "centro"],
@@ -5178,7 +5178,7 @@
       },
     }),
     RC({
-      id: "pilates-741", name: "Carro: activación arrodillada con cadera atrás",
+      id: "pilates-741", image: "images/exercises/pilates-741.png", name: "Carro: activación arrodillada con cadera atrás",
       position: "Arrodillada en el carro, rodillas al ancho de cadera, manos en la cintura",
       population: ALL, moment: 2, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["lumbopelvica", "centro"],
@@ -5212,7 +5212,7 @@
       },
     }),
     RC({
-      id: "pilates-743", name: "Carro: alargue de espalda alta en cuadrupedia",
+      id: "pilates-743", image: "images/exercises/pilates-743.png", name: "Carro: alargue de espalda alta en cuadrupedia",
       position: "Cuadrupedia en el carro, manos sobre el carro debajo de los hombros, rodillas bajo la cadera",
       population: ALL, moment: 2, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["columna", "coordinacion-fluidez"],
@@ -5263,7 +5263,7 @@
       },
     }),
     RC({
-      id: "pilates-746", name: "Carro: brazos en W sentada en el carro",
+      id: "pilates-746", image: "images/exercises/pilates-746.png", name: "Carro: brazos en W sentada en el carro",
       position: "Sentada en el carro, piernas cruzadas, codos flexionados a la altura de los hombros",
       population: ALL, moment: 2, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["tren-superior", "control-escapular"],
@@ -5297,7 +5297,7 @@
       },
     }),
     RC({
-      id: "pilates-748", name: "Carro: pierna atrás en cuadrupedia sobre el carro",
+      id: "pilates-748", image: "images/exercises/pilates-748.png", name: "Carro: pierna atrás en cuadrupedia sobre el carro",
       position: "Cuadrupedia en el carro, manos sobre el carro debajo de los hombros, rodillas bajo la cadera",
       population: ALL, moment: 3, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["lumbopelvica", "centro"],
@@ -5331,7 +5331,7 @@
       },
     }),
     RC({
-      id: "pilates-750", name: "Carro: bisagra arrodillada con brazos al frente",
+      id: "pilates-750", image: "images/exercises/pilates-750.png", name: "Carro: bisagra arrodillada con brazos al frente",
       position: "Arrodillada en el carro, rodillas al ancho de cadera, brazos estirados al frente",
       population: ALL, moment: 3, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["lumbopelvica", "centro"],
@@ -5382,7 +5382,7 @@
       },
     }),
     RC({
-      id: "pilates-753", name: "Carro: sirena arrodillada en el carro",
+      id: "pilates-753", image: "images/exercises/pilates-753.png", name: "Carro: sirena arrodillada en el carro",
       position: "Arrodillada en el carro, rodillas al ancho de cadera, brazos al costado",
       population: ALL, moment: 3, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["columna", "coordinacion-fluidez"],
@@ -5416,7 +5416,7 @@
       },
     }),
     RC({
-      id: "pilates-755", name: "Carro: brazos de W a Y sentada en el carro",
+      id: "pilates-755", image: "images/exercises/pilates-755.png", name: "Carro: brazos de W a Y sentada en el carro",
       position: "Sentada en el carro, piernas cruzadas, brazos en W",
       population: ALL, moment: 3, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["tren-superior", "control-escapular"],
@@ -5450,7 +5450,7 @@
       },
     }),
     RC({
-      id: "pilates-757", name: "Carro: brazo y pierna opuestos en cuadrupedia sobre el carro",
+      id: "pilates-757", image: "images/exercises/pilates-757.png", name: "Carro: brazo y pierna opuestos en cuadrupedia sobre el carro",
       position: "Cuadrupedia en el carro, manos sobre el carro debajo de los hombros, rodillas bajo la cadera",
       population: ALL, moment: 4, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["centro", "lumbopelvica"],
@@ -5501,7 +5501,7 @@
       },
     }),
     RC({
-      id: "pilates-760", name: "Carro: rotación arrodillada con brazos en cruz",
+      id: "pilates-760", image: "images/exercises/pilates-760.png", name: "Carro: rotación arrodillada con brazos en cruz",
       position: "Arrodillada en el carro, rodillas al ancho de cadera, brazos abiertos en cruz",
       population: ALL, moment: 4, resortes: "Carro trabado (todos los resortes enganchados).", avoid: ["Osteoporosis / osteopenia"], 
       objective: ["columna", "coordinacion-fluidez"],
@@ -5535,7 +5535,7 @@
       },
     }),
     RC({
-      id: "pilates-762", name: "Carro: alargue con brazo al frente en cuadrupedia",
+      id: "pilates-762", image: "images/exercises/pilates-762.png", name: "Carro: alargue con brazo al frente en cuadrupedia",
       position: "Cuadrupedia en el carro, manos sobre el carro debajo de los hombros, rodillas bajo la cadera",
       population: ALL, moment: 4, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["columna", "coordinacion-fluidez"],
@@ -5569,7 +5569,7 @@
       },
     }),
     RC({
-      id: "pilates-764", name: "Carro: brazos arriba y al frente arrodillada",
+      id: "pilates-764", image: "images/exercises/pilates-764.png", name: "Carro: brazos arriba y al frente arrodillada",
       position: "Arrodillada en el carro, rodillas al ancho de cadera, brazos al costado",
       population: ALL, moment: 4, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["tren-superior", "control-escapular"],
@@ -5620,7 +5620,7 @@
       },
     }),
     RC({
-      id: "pilates-767", name: "Carro: bisagra y elongación arrodillada",
+      id: "pilates-767", image: "images/exercises/pilates-767.png", name: "Carro: bisagra y elongación arrodillada",
       position: "Arrodillada en el carro, rodillas al ancho de cadera, brazos al costado",
       population: ALL, moment: 5, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["lumbopelvica", "centro"],
@@ -5654,7 +5654,7 @@
       },
     }),
     RC({
-      id: "pilates-769", name: "Carro: ola de columna en cuadrupedia con alcance",
+      id: "pilates-769", image: "images/exercises/pilates-769.png", name: "Carro: ola de columna en cuadrupedia con alcance",
       position: "Cuadrupedia en el carro, manos sobre el carro debajo de los hombros, rodillas bajo la cadera",
       population: ALL, moment: 5, resortes: "Carro trabado (todos los resortes enganchados).", avoid: ["Osteoporosis / osteopenia"], 
       objective: ["columna", "coordinacion-fluidez"],
@@ -5688,7 +5688,7 @@
       },
     }),
     RC({
-      id: "pilates-771", name: "Carro: protracción y flexión corta en cuadrupedia",
+      id: "pilates-771", image: "images/exercises/pilates-771.png", name: "Carro: protracción y flexión corta en cuadrupedia",
       position: "Cuadrupedia en el carro, manos sobre el carro debajo de los hombros, rodillas bajo la cadera",
       population: ALL, moment: 5, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["tren-superior", "control-escapular"],
@@ -5743,7 +5743,7 @@
        Sin supino ni prono: aptos para las cuatro poblaciones.
        ===================================================================== */
     RX({
-      id: "pilates-774", name: "Box: respiración sentada en el box",
+      id: "pilates-774", image: "images/exercises/pilates-774.png", name: "Box: respiración sentada en el box",
       position: "Sentada en el box chico sobre el carro mirando la barra, pies bajo la correa de pies del box, manos sobre los muslos",
       population: ALL, moment: 1, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["columna", "centro"],
@@ -5777,7 +5777,7 @@
       },
     }),
     RX({
-      id: "pilates-776", name: "Box: activación sentada con pies en la correa",
+      id: "pilates-776", image: "images/exercises/pilates-776.png", name: "Box: activación sentada con pies en la correa",
       position: "Sentada en el box chico sobre el carro mirando la barra, pies bajo la correa de pies del box, manos cruzadas sobre el pecho",
       population: ALL, moment: 2, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["lumbopelvica", "centro"],
@@ -5811,7 +5811,7 @@
       },
     }),
     RX({
-      id: "pilates-778", name: "Box: remo bajo sentada en el box",
+      id: "pilates-778", image: "images/exercises/pilates-778.png", name: "Box: remo bajo sentada en el box",
       position: "Sentada en el box chico sobre el carro mirando las poleas, piernas cruzadas o pies apoyados en el carro, correas en las manos con los brazos estirados al frente",
       population: ALL, moment: 2, resortes: "Amarillo o azul (liviano).", accesorio: ["box", "correas_manos"], 
       objective: ["lumbopelvica", "centro"],
@@ -5845,7 +5845,7 @@
       },
     }),
     RX({
-      id: "pilates-780", name: "Box: inclinación lateral sentada en el box",
+      id: "pilates-780", image: "images/exercises/pilates-780.png", name: "Box: inclinación lateral sentada en el box",
       position: "Sentada en el box chico sobre el carro mirando la barra, pies bajo la correa de pies del box, un brazo estirado sobre la cabeza",
       population: ALL, moment: 2, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["columna", "coordinacion-fluidez"],
@@ -5896,7 +5896,7 @@
       },
     }),
     RX({
-      id: "pilates-783", name: "Box: press de pecho con correas sentada en el box",
+      id: "pilates-783", image: "images/exercises/pilates-783.png", name: "Box: press de pecho con correas sentada en el box",
       position: "Sentada en el box chico sobre el carro de espaldas a las poleas, pies apoyados en el carro, correas en las manos, codos flexionados a la altura del pecho",
       population: ALL, moment: 2, resortes: "Amarillo o azul (liviano).", accesorio: ["box", "correas_manos"], 
       objective: ["tren-superior", "control-escapular"],
@@ -5930,7 +5930,7 @@
       },
     }),
     RX({
-      id: "pilates-785", name: "Box: espalda plana con brazos al frente",
+      id: "pilates-785", image: "images/exercises/pilates-785.png", name: "Box: espalda plana con brazos al frente",
       position: "Sentada en el box chico sobre el carro mirando la barra, pies bajo la correa de pies del box, brazos estirados al frente",
       population: ALL, moment: 3, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["lumbopelvica", "centro"],
@@ -5964,7 +5964,7 @@
       },
     }),
     RX({
-      id: "pilates-787", name: "Box: remo a una mano con tronco quieto",
+      id: "pilates-787", image: "images/exercises/pilates-787.png", name: "Box: remo a una mano con tronco quieto",
       position: "Sentada de costado en el box chico sobre el carro, pies apoyados en el carro, la mano de cerca de las poleas toma una correa",
       population: ALL, moment: 3, resortes: "Amarillo o azul (liviano).", accesorio: ["box", "correas_manos"], 
       objective: ["lumbopelvica", "centro"],
@@ -6015,7 +6015,7 @@
       },
     }),
     RX({
-      id: "pilates-790", name: "Box: extensión de espalda alta con brazos en W",
+      id: "pilates-790", image: "images/exercises/pilates-790.png", name: "Box: extensión de espalda alta con brazos en W",
       position: "Sentada en el box chico sobre el carro mirando la barra, pies bajo la correa de pies del box, brazos en W",
       population: ALL, moment: 3, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["columna", "coordinacion-fluidez"],
@@ -6049,7 +6049,7 @@
       },
     }),
     RX({
-      id: "pilates-792", name: "Box: bíceps con correas sentada en el box",
+      id: "pilates-792", image: "images/exercises/pilates-792.png", name: "Box: bíceps con correas sentada en el box",
       position: "Sentada en el box chico sobre el carro mirando las poleas, piernas cruzadas o pies apoyados en el carro, correas en las manos, brazos estirados al frente",
       population: ALL, moment: 3, resortes: "Amarillo o azul (liviano).", accesorio: ["box", "correas_manos"], 
       objective: ["tren-superior", "control-escapular"],
@@ -6083,7 +6083,7 @@
       },
     }),
     RX({
-      id: "pilates-794", name: "Box: espalda plana con brazos arriba",
+      id: "pilates-794", image: "images/exercises/pilates-794.png", name: "Box: espalda plana con brazos arriba",
       position: "Sentada en el box chico sobre el carro mirando la barra, pies bajo la correa de pies del box, brazos estirados sobre la cabeza",
       population: ALL, moment: 4, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["lumbopelvica", "centro"],
@@ -6134,7 +6134,7 @@
       },
     }),
     RX({
-      id: "pilates-797", name: "Box: rotación con correa sentada de costado",
+      id: "pilates-797", image: "images/exercises/pilates-797.png", name: "Box: rotación con correa sentada de costado",
       position: "Sentada de costado en el box chico sobre el carro, pies apoyados en el carro, las dos manos toman una correa a la altura del pecho",
       population: ALL, moment: 4, resortes: "Amarillo o azul (liviano).", avoid: ["Osteoporosis / osteopenia"], accesorio: ["box", "correas_manos"], 
       objective: ["columna", "coordinacion-fluidez"],
@@ -6168,7 +6168,7 @@
       },
     }),
     RX({
-      id: "pilates-799", name: "Box: remo con extensión de espalda alta",
+      id: "pilates-799", image: "images/exercises/pilates-799.png", name: "Box: remo con extensión de espalda alta",
       position: "Sentada en el box chico sobre el carro mirando las poleas, piernas cruzadas o pies apoyados en el carro, correas en las manos",
       population: ALL, moment: 4, resortes: "Amarillo o azul (liviano).", accesorio: ["box", "correas_manos"], 
       objective: ["columna", "coordinacion-fluidez"],
@@ -6202,7 +6202,7 @@
       },
     }),
     RX({
-      id: "pilates-801", name: "Box: remo alto con correas",
+      id: "pilates-801", image: "images/exercises/pilates-801.png", name: "Box: remo alto con correas",
       position: "Sentada en el box chico sobre el carro mirando las poleas, piernas cruzadas o pies apoyados en el carro, correas en las manos, brazos estirados al frente a la altura de los hombros",
       population: ALL, moment: 4, resortes: "Amarillo o azul (liviano).", accesorio: ["box", "correas_manos"], 
       objective: ["tren-superior", "control-escapular"],
@@ -6253,7 +6253,7 @@
       },
     }),
     RX({
-      id: "pilates-804", name: "Box: secuencia sentada en el box",
+      id: "pilates-804", image: "images/exercises/pilates-804.png", name: "Box: secuencia sentada en el box",
       position: "Sentada en el box chico sobre el carro mirando la barra, pies bajo la correa de pies del box",
       population: ALL, moment: 5, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["lumbopelvica", "centro"],
@@ -6287,7 +6287,7 @@
       },
     }),
     RX({
-      id: "pilates-806", name: "Box: rotación y apertura con correas",
+      id: "pilates-806", image: "images/exercises/pilates-806.png", name: "Box: rotación y apertura con correas",
       position: "Sentada en el box chico sobre el carro mirando las poleas, piernas cruzadas o pies apoyados en el carro, correas en las manos",
       population: ALL, moment: 5, resortes: "Amarillo o azul (liviano).", avoid: ["Osteoporosis / osteopenia"], accesorio: ["box", "correas_manos"], 
       objective: ["columna", "coordinacion-fluidez"],
@@ -6321,7 +6321,7 @@
       },
     }),
     RX({
-      id: "pilates-808", name: "Box: remo y bajada de brazos en fluidez",
+      id: "pilates-808", image: "images/exercises/pilates-808.png", name: "Box: remo y bajada de brazos en fluidez",
       position: "Sentada en el box chico sobre el carro mirando las poleas, piernas cruzadas o pies apoyados en el carro, correas en las manos",
       population: ALL, moment: 5, resortes: "Amarillo o azul (liviano).", accesorio: ["box", "correas_manos"], 
       objective: ["tren-superior", "control-escapular"],
@@ -6376,7 +6376,7 @@
        Sin supino ni prono: aptos para las cuatro poblaciones.
        ===================================================================== */
     RB({
-      id: "pilates-811", name: "Barra: rodillas al pecho arrodillada con espalda plana",
+      id: "pilates-811", image: "images/exercises/pilates-811.png", name: "Barra: rodillas al pecho arrodillada con espalda plana",
       position: "Arrodillada en el carro mirando la barra, rodillas contra los apoyahombros, manos en la barra, espalda larga",
       population: ALL, moment: 2, resortes: "Azul (liviano a medio); el carro se mueve con control.", 
       objective: ["lumbopelvica", "centro"],
@@ -6410,7 +6410,7 @@
       },
     }),
     RB({
-      id: "pilates-813", name: "Barra: bisagra de pie con manos en la barra",
+      id: "pilates-813", image: "images/exercises/pilates-813.png", name: "Barra: bisagra de pie con manos en la barra",
       position: "De pie en el piso frente a la barra, manos en la barra, pies al ancho de cadera, un paso atrás de la barra",
       population: ALL, moment: 2, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["lumbopelvica", "centro"],
@@ -6444,7 +6444,7 @@
       },
     }),
     RB({
-      id: "pilates-815", name: "Barra: elongación sentada con manos en la barra",
+      id: "pilates-815", image: "images/exercises/pilates-815.png", name: "Barra: elongación sentada con manos en la barra",
       position: "Sentada en el carro mirando la barra, piernas cruzadas, manos en la barra",
       population: ALL, moment: 2, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["columna", "coordinacion-fluidez"],
@@ -6495,7 +6495,7 @@
       },
     }),
     RB({
-      id: "pilates-818", name: "Barra: flexión de brazos de pie en la barra",
+      id: "pilates-818", image: "images/exercises/pilates-818.png", name: "Barra: flexión de brazos de pie en la barra",
       position: "De pie en el piso frente a la barra, manos en la barra, un paso atrás, cuerpo inclinado en línea",
       population: ALL, moment: 2, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["tren-superior", "control-escapular"],
@@ -6529,7 +6529,7 @@
       },
     }),
     RB({
-      id: "pilates-820", name: "Barra: sentadilla de pie con manos en la barra",
+      id: "pilates-820", image: "images/exercises/pilates-820.png", name: "Barra: sentadilla de pie con manos en la barra",
       position: "De pie en el piso frente a la barra, manos en la barra, pies al ancho de cadera",
       population: ALL, moment: 3, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["lumbopelvica", "centro"],
@@ -6563,7 +6563,7 @@
       },
     }),
     RB({
-      id: "pilates-822", name: "Barra: sirena arrodillada con una mano en la barra",
+      id: "pilates-822", image: "images/exercises/pilates-822.png", name: "Barra: sirena arrodillada con una mano en la barra",
       position: "Arrodillada en el carro de costado a la barra, la mano de cerca en la barra",
       population: ALL, moment: 3, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["columna", "coordinacion-fluidez"],
@@ -6614,7 +6614,7 @@
       },
     }),
     RB({
-      id: "pilates-825", name: "Barra: plancha corta arrodillada en la barra",
+      id: "pilates-825", image: "images/exercises/pilates-825.png", name: "Barra: plancha corta arrodillada en la barra",
       position: "Arrodillada en el carro mirando la barra, rodillas contra los apoyahombros, manos en la barra, cadera alineada con rodillas y hombros",
       population: ALL, moment: 3, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["tren-superior", "control-escapular"],
@@ -6648,7 +6648,7 @@
       },
     }),
     RB({
-      id: "pilates-827", name: "Barra: protracción de pie inclinada en la barra",
+      id: "pilates-827", image: "images/exercises/pilates-827.png", name: "Barra: protracción de pie inclinada en la barra",
       position: "De pie en el piso frente a la barra, manos en la barra, un paso atrás, cuerpo inclinado",
       population: ALL, moment: 3, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["control-escapular", "tren-superior"],
@@ -6699,7 +6699,7 @@
       },
     }),
     RB({
-      id: "pilates-830", name: "Barra: zancada con un pie en el carro",
+      id: "pilates-830", image: "images/exercises/pilates-830.png", name: "Barra: zancada con un pie en el carro",
       position: "De pie en el piso frente a la barra, manos en la barra, un pie apoyado en el carro contra los apoyahombros",
       population: ALL, moment: 4, resortes: "Azul (liviano a medio); el carro se mueve con control.", 
       objective: ["lumbopelvica", "centro"],
@@ -6733,7 +6733,7 @@
       },
     }),
     RB({
-      id: "pilates-832", name: "Barra: rotación de pie con una mano en la barra",
+      id: "pilates-832", image: "images/exercises/pilates-832.png", name: "Barra: rotación de pie con una mano en la barra",
       position: "De pie en el piso al costado de la barra, la mano de cerca en la barra",
       population: ALL, moment: 4, resortes: "Carro trabado (todos los resortes enganchados).", avoid: ["Osteoporosis / osteopenia"], 
       objective: ["columna", "coordinacion-fluidez"],
@@ -6767,7 +6767,7 @@
       },
     }),
     RB({
-      id: "pilates-834", name: "Barra: flexión de brazos de pie con pierna atrás",
+      id: "pilates-834", image: "images/exercises/pilates-834.png", name: "Barra: flexión de brazos de pie con pierna atrás",
       position: "De pie en el piso frente a la barra, manos en la barra, un paso atrás, cuerpo inclinado en línea",
       population: ALL, moment: 4, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["tren-superior", "control-escapular"],
@@ -6818,7 +6818,7 @@
       },
     }),
     RB({
-      id: "pilates-837", name: "Barra: sentadilla y bisagra en fluidez",
+      id: "pilates-837", image: "images/exercises/pilates-837.png", name: "Barra: sentadilla y bisagra en fluidez",
       position: "De pie en el piso frente a la barra, manos en la barra",
       population: ALL, moment: 5, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["lumbopelvica", "centro"],
@@ -6852,7 +6852,7 @@
       },
     }),
     RB({
-      id: "pilates-839", name: "Barra: sirena de pie en fluidez",
+      id: "pilates-839", image: "images/exercises/pilates-839.png", name: "Barra: sirena de pie en fluidez",
       position: "De pie en el piso al costado de la barra, la mano de cerca en la barra",
       population: ALL, moment: 5, resortes: "Carro trabado (todos los resortes enganchados).", avoid: ["Osteoporosis / osteopenia"], 
       objective: ["columna", "coordinacion-fluidez"],
@@ -6907,7 +6907,7 @@
        Sin supino ni prono: aptos para las cuatro poblaciones.
        ===================================================================== */
     RM({
-      id: "pilates-842", name: "Correas en manos: respiración sentada con brazos al frente",
+      id: "pilates-842", image: "images/exercises/pilates-842.png", name: "Correas en manos: respiración sentada con brazos al frente",
       position: "Sentada en el carro mirando las poleas, piernas cruzadas, correas en las manos, brazos estirados al frente",
       population: ALL, moment: 1, resortes: "Amarillo o azul (liviano).", 
       objective: ["columna", "control-escapular"],
@@ -6941,7 +6941,7 @@
       },
     }),
     RM({
-      id: "pilates-844", name: "Correas en manos: press al frente arrodillada",
+      id: "pilates-844", image: "images/exercises/pilates-844.png", name: "Correas en manos: press al frente arrodillada",
       position: "Arrodillada en el carro de espaldas a las poleas, correas en las manos, codos flexionados a la altura del pecho",
       population: ALL, moment: 2, resortes: "Amarillo o azul (liviano).", 
       objective: ["centro", "lumbopelvica"],
@@ -6975,7 +6975,7 @@
       },
     }),
     RM({
-      id: "pilates-846", name: "Correas en manos: apertura de pecho sentada",
+      id: "pilates-846", image: "images/exercises/pilates-846.png", name: "Correas en manos: apertura de pecho sentada",
       position: "Sentada en el carro mirando las poleas, piernas cruzadas, correas en las manos, brazos al frente",
       population: ALL, moment: 2, resortes: "Amarillo o azul (liviano).", 
       objective: ["columna", "coordinacion-fluidez"],
@@ -7026,7 +7026,7 @@
       },
     }),
     RM({
-      id: "pilates-849", name: "Correas en manos: expansión de pecho arrodillada",
+      id: "pilates-849", image: "images/exercises/pilates-849.png", name: "Correas en manos: expansión de pecho arrodillada",
       position: "Arrodillada en el carro mirando las poleas, correas en las manos, brazos estirados al frente",
       population: ALL, moment: 3, resortes: "Amarillo o azul (liviano).", 
       objective: ["columna", "coordinacion-fluidez"],
@@ -7060,7 +7060,7 @@
       },
     }),
     RM({
-      id: "pilates-851", name: "Correas en manos: remo con cadera atrás arrodillada",
+      id: "pilates-851", image: "images/exercises/pilates-851.png", name: "Correas en manos: remo con cadera atrás arrodillada",
       position: "Arrodillada en el carro mirando las poleas, correas en las manos, brazos al frente",
       population: ALL, moment: 4, resortes: "Amarillo o azul (liviano).", 
       objective: ["lumbopelvica", "centro"],
@@ -7094,7 +7094,7 @@
       },
     }),
     RM({
-      id: "pilates-853", name: "Correas en manos: remo y press en fluidez arrodillada",
+      id: "pilates-853", image: "images/exercises/pilates-853.png", name: "Correas en manos: remo y press en fluidez arrodillada",
       position: "Arrodillada en el carro mirando las poleas, correas en las manos, brazos al frente",
       population: ALL, moment: 5, resortes: "Amarillo o azul (liviano).", 
       objective: ["lumbopelvica", "centro"],
@@ -7149,7 +7149,7 @@
        Sin supino ni prono: aptos para las cuatro poblaciones.
        ===================================================================== */
     RPE({
-      id: "pilates-856", name: "Pelota: press de pecho sentada con la pelota",
+      id: "pilates-856", image: "images/exercises/pilates-856.png", name: "Pelota: press de pecho sentada con la pelota",
       position: "Sentada en el carro, piernas cruzadas, la pelota entre las palmas, brazos estirados al frente",
       population: ALL, moment: 2, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["tren-superior", "control-escapular"],
@@ -7183,7 +7183,7 @@
       },
     }),
     RPE({
-      id: "pilates-858", name: "Pelota: círculos de hombros sentada con la pelota",
+      id: "pilates-858", image: "images/exercises/pilates-858.png", name: "Pelota: círculos de hombros sentada con la pelota",
       position: "Sentada en el carro, piernas cruzadas, la pelota entre las palmas frente al pecho",
       population: ALL, moment: 2, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["control-escapular", "tren-superior"],
@@ -7217,7 +7217,7 @@
       },
     }),
     RPE({
-      id: "pilates-860", name: "Pelota: apertura de pecho sentada con la pelota al frente",
+      id: "pilates-860", image: "images/exercises/pilates-860.png", name: "Pelota: apertura de pecho sentada con la pelota al frente",
       position: "Sentada en el carro, piernas cruzadas, la pelota entre las palmas a la altura del pecho",
       population: ALL, moment: 2, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["columna", "coordinacion-fluidez"],
@@ -7268,7 +7268,7 @@
       },
     }),
     RPE({
-      id: "pilates-863", name: "Pelota: marcha sentada con la pelota entre las rodillas",
+      id: "pilates-863", image: "images/exercises/pilates-863.png", name: "Pelota: marcha sentada con la pelota entre las rodillas",
       position: "Sentada en el carro, rodillas flexionadas, pies apoyados, la pelota entre las rodillas, manos a los costados",
       population: ALL, moment: 3, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["lumbopelvica", "centro"],
@@ -7302,7 +7302,7 @@
       },
     }),
     RPE({
-      id: "pilates-865", name: "Pelota: rotación sentada con la pelota al frente",
+      id: "pilates-865", image: "images/exercises/pilates-865.png", name: "Pelota: rotación sentada con la pelota al frente",
       position: "Sentada en el carro, piernas cruzadas, la pelota entre las palmas frente al pecho",
       population: ALL, moment: 3, resortes: "Carro trabado (todos los resortes enganchados).", avoid: ["Osteoporosis / osteopenia"], 
       objective: ["columna", "coordinacion-fluidez"],
@@ -7336,7 +7336,7 @@
       },
     }),
     RPE({
-      id: "pilates-867", name: "Pelota: extensión de espalda alta arrodillada con la pelota sobre la cabeza",
+      id: "pilates-867", image: "images/exercises/pilates-867.png", name: "Pelota: extensión de espalda alta arrodillada con la pelota sobre la cabeza",
       position: "Arrodillada en el carro, rodillas al ancho de cadera, la pelota entre las palmas sobre la cabeza",
       population: ALL, moment: 3, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["columna", "coordinacion-fluidez"],
@@ -7387,7 +7387,7 @@
       },
     }),
     RPE({
-      id: "pilates-870", name: "Pelota: cadera atrás arrodillada con la pelota entre los muslos",
+      id: "pilates-870", image: "images/exercises/pilates-870.png", name: "Pelota: cadera atrás arrodillada con la pelota entre los muslos",
       position: "Arrodillada en el carro, rodillas al ancho de cadera, la pelota entre los muslos, manos en la cintura",
       population: ALL, moment: 4, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["lumbopelvica", "centro"],
@@ -7421,7 +7421,7 @@
       },
     }),
     RPE({
-      id: "pilates-872", name: "Pelota: sostén en un pie con la pelota al pecho",
+      id: "pilates-872", image: "images/exercises/pilates-872.png", name: "Pelota: sostén en un pie con la pelota al pecho",
       position: "Sentada en el carro, rodillas flexionadas, pies apoyados, la pelota entre las palmas frente al pecho",
       population: ALL, moment: 4, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["lumbopelvica", "centro"],
@@ -7455,7 +7455,7 @@
       },
     }),
     RPE({
-      id: "pilates-874", name: "Pelota: ola de columna sentada con la pelota al frente",
+      id: "pilates-874", image: "images/exercises/pilates-874.png", name: "Pelota: ola de columna sentada con la pelota al frente",
       position: "Sentada en el carro con piernas apenas flexionadas, la pelota entre las palmas al frente",
       population: ALL, moment: 4, resortes: "Carro trabado (todos los resortes enganchados).", avoid: ["Osteoporosis / osteopenia"], 
       objective: ["columna", "coordinacion-fluidez"],
@@ -7506,7 +7506,7 @@
       },
     }),
     RPE({
-      id: "pilates-877", name: "Pelota: press al frente arrodillada con la pelota",
+      id: "pilates-877", image: "images/exercises/pilates-877.png", name: "Pelota: press al frente arrodillada con la pelota",
       position: "Arrodillada en el carro, rodillas al ancho de cadera, la pelota entre las palmas a la altura del pecho",
       population: ALL, moment: 4, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["tren-superior", "control-escapular"],
@@ -7540,7 +7540,7 @@
       },
     }),
     RPE({
-      id: "pilates-879", name: "Pelota: marcha sentada con la pelota sobre la cabeza",
+      id: "pilates-879", image: "images/exercises/pilates-879.png", name: "Pelota: marcha sentada con la pelota sobre la cabeza",
       position: "Sentada en el carro, rodillas flexionadas, pies apoyados, la pelota entre las palmas",
       population: ALL, moment: 5, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["lumbopelvica", "centro"],
@@ -7574,7 +7574,7 @@
       },
     }),
     RPE({
-      id: "pilates-881", name: "Pelota: secuencia de presión en tres alturas sentada con la pelota",
+      id: "pilates-881", image: "images/exercises/pilates-881.png", name: "Pelota: secuencia de presión en tres alturas sentada con la pelota",
       position: "Sentada en el carro, piernas cruzadas, la pelota entre las palmas al pecho",
       population: ALL, moment: 5, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["tren-superior", "control-escapular"],
@@ -7629,7 +7629,7 @@
        Sin supino ni prono: aptos para las cuatro poblaciones.
        ===================================================================== */
     RAR({
-      id: "pilates-884", name: "Aro: marcha sentada con el aro entre las rodillas",
+      id: "pilates-884", image: "images/exercises/pilates-884.png", name: "Aro: marcha sentada con el aro entre las rodillas",
       position: "Sentada en el carro, rodillas flexionadas, pies apoyados, el aro entre las rodillas, manos a los costados",
       population: ALL, moment: 3, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["lumbopelvica", "centro"],
@@ -7663,7 +7663,7 @@
       },
     }),
     RAR({
-      id: "pilates-886", name: "Aro: rotación sentada con el aro al frente",
+      id: "pilates-886", image: "images/exercises/pilates-886.png", name: "Aro: rotación sentada con el aro al frente",
       position: "Sentada en el carro, piernas cruzadas, el aro entre las palmas frente al pecho",
       population: ALL, moment: 3, resortes: "Carro trabado (todos los resortes enganchados).", avoid: ["Osteoporosis / osteopenia"], 
       objective: ["columna", "coordinacion-fluidez"],
@@ -7697,7 +7697,7 @@
       },
     }),
     RAR({
-      id: "pilates-888", name: "Aro: extensión de espalda alta arrodillada con el aro sobre la cabeza",
+      id: "pilates-888", image: "images/exercises/pilates-888.png", name: "Aro: extensión de espalda alta arrodillada con el aro sobre la cabeza",
       position: "Arrodillada en el carro, rodillas al ancho de cadera, el aro entre las palmas sobre la cabeza",
       population: ALL, moment: 3, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["columna", "coordinacion-fluidez"],
@@ -7748,7 +7748,7 @@
       },
     }),
     RAR({
-      id: "pilates-891", name: "Aro: ola de columna sentada con el aro al frente",
+      id: "pilates-891", image: "images/exercises/pilates-891.png", name: "Aro: ola de columna sentada con el aro al frente",
       position: "Sentada en el carro con piernas apenas flexionadas, el aro entre las palmas al frente",
       population: ALL, moment: 4, resortes: "Carro trabado (todos los resortes enganchados).", avoid: ["Osteoporosis / osteopenia"], 
       objective: ["columna", "coordinacion-fluidez"],
@@ -7782,7 +7782,7 @@
       },
     }),
     RAR({
-      id: "pilates-893", name: "Aro: círculos arrodillada con el aro al frente",
+      id: "pilates-893", image: "images/exercises/pilates-893.png", name: "Aro: círculos arrodillada con el aro al frente",
       position: "Arrodillada en el carro, rodillas al ancho de cadera, el aro entre las palmas con los brazos al frente",
       population: ALL, moment: 4, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["control-escapular", "tren-superior"],
@@ -7837,7 +7837,7 @@
        Sin supino ni prono: aptos para las cuatro poblaciones.
        ===================================================================== */
     RBN({
-      id: "pilates-896", name: "Banda: marcha sentada en el carro con banda en los muslos",
+      id: "pilates-896", image: "images/exercises/pilates-896.png", name: "Banda: marcha sentada en el carro con banda en los muslos",
       position: "Sentada en el carro, rodillas flexionadas, pies apoyados, banda corta alrededor de los muslos, manos a los costados",
       population: ALL, moment: 2, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["lumbopelvica", "centro"],
@@ -7871,7 +7871,7 @@
       },
     }),
     RBN({
-      id: "pilates-898", name: "Banda: gato-vaca en el carro con banda en las muñecas",
+      id: "pilates-898", image: "images/exercises/pilates-898.png", name: "Banda: gato-vaca en el carro con banda en las muñecas",
       position: "Cuadrupedia en el carro, manos debajo de los hombros, rodillas bajo la cadera, banda corta alrededor de las muñecas",
       population: ALL, moment: 2, resortes: "Carro trabado (todos los resortes enganchados).", avoid: ["Osteoporosis / osteopenia"], 
       objective: ["columna", "coordinacion-fluidez"],
@@ -7905,7 +7905,7 @@
       },
     }),
     RBN({
-      id: "pilates-900", name: "Banda: remo sentada en el carro con banda en los pies",
+      id: "pilates-900", image: "images/exercises/pilates-900.png", name: "Banda: remo sentada en el carro con banda en los pies",
       position: "Sentada en el carro con piernas estiradas y apenas flexionadas, banda alrededor de los pies tomada con las manos, brazos estirados al frente",
       population: ALL, moment: 2, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["tren-superior", "control-escapular"],
@@ -7939,7 +7939,7 @@
       },
     }),
     RBN({
-      id: "pilates-902", name: "Banda: patada atrás en cuadrupedia sobre el carro",
+      id: "pilates-902", image: "images/exercises/pilates-902.png", name: "Banda: patada atrás en cuadrupedia sobre el carro",
       position: "Cuadrupedia en el carro, manos debajo de los hombros, rodillas bajo la cadera, banda alrededor de la planta de un pie y extremos bajo las manos",
       population: ALL, moment: 3, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["lumbopelvica", "centro"],
@@ -7990,7 +7990,7 @@
       },
     }),
     RBN({
-      id: "pilates-905", name: "Banda: rotación sentada con banda en los pies",
+      id: "pilates-905", image: "images/exercises/pilates-905.png", name: "Banda: rotación sentada en el carro con banda en los pies",
       position: "Sentada en el carro con piernas estiradas y apenas flexionadas, banda alrededor de los pies tomada con las manos, banda cruzada",
       population: ALL, moment: 3, resortes: "Carro trabado (todos los resortes enganchados).", avoid: ["Osteoporosis / osteopenia"], 
       objective: ["columna", "coordinacion-fluidez"],
@@ -8024,7 +8024,7 @@
       },
     }),
     RBN({
-      id: "pilates-907", name: "Banda: inclinación lateral arrodillada con banda arriba",
+      id: "pilates-907", image: "images/exercises/pilates-907.png", name: "Banda: inclinación lateral arrodillada con banda arriba",
       position: "Arrodillada en el carro, rodillas al ancho de cadera, banda tomada ancha sobre la cabeza",
       population: ALL, moment: 3, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["columna", "coordinacion-fluidez"],
@@ -8058,7 +8058,7 @@
       },
     }),
     RBN({
-      id: "pilates-909", name: "Banda: rotación externa sentada en el carro",
+      id: "pilates-909", image: "images/exercises/pilates-909.png", name: "Banda: rotación externa sentada en el carro",
       position: "Sentada en el carro, piernas cruzadas, codos pegados a la cintura y doblados a 90 grados, banda en las manos",
       population: ALL, moment: 3, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["control-escapular", "tren-superior"],
@@ -8092,7 +8092,7 @@
       },
     }),
     RBN({
-      id: "pilates-911", name: "Banda: brazo y pierna opuestos con banda en el carro",
+      id: "pilates-911", image: "images/exercises/pilates-911.png", name: "Banda: brazo y pierna opuestos con banda en el carro",
       position: "Cuadrupedia en el carro, manos debajo de los hombros, rodillas bajo la cadera, un extremo de la banda bajo una mano y el otro en la mano contraria",
       population: ALL, moment: 4, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["centro", "lumbopelvica"],
@@ -8143,7 +8143,7 @@
       },
     }),
     RBN({
-      id: "pilates-914", name: "Banda: tirón hacia abajo arrodillada",
+      id: "pilates-914", image: "images/exercises/pilates-914.png", name: "Banda: tirón hacia abajo arrodillada",
       position: "Arrodillada en el carro, rodillas al ancho de cadera, banda tomada ancha sobre la cabeza",
       population: ALL, moment: 4, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["tren-superior", "control-escapular"],
@@ -8177,7 +8177,7 @@
       },
     }),
     RBN({
-      id: "pilates-916", name: "Banda: diagonales sentada en el carro",
+      id: "pilates-916", image: "images/exercises/pilates-916.png", name: "Banda: diagonales sentada en el carro",
       position: "Sentada en el carro, piernas cruzadas, banda tomada con las dos manos frente a una cadera",
       population: ALL, moment: 4, resortes: "Carro trabado (todos los resortes enganchados).", 
       objective: ["control-escapular", "tren-superior"],
@@ -8211,7 +8211,7 @@
       },
     }),
     RBN({
-      id: "pilates-918", name: "Banda: secuencia de columna sentada con banda",
+      id: "pilates-918", image: "images/exercises/pilates-918.png", name: "Banda: secuencia de columna sentada con banda",
       position: "Sentada en el carro, piernas cruzadas, banda tomada ancha",
       population: ALL, moment: 5, resortes: "Carro trabado (todos los resortes enganchados).", avoid: ["Osteoporosis / osteopenia"], 
       objective: ["columna", "coordinacion-fluidez"],
