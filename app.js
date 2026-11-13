@@ -1312,8 +1312,7 @@
 
     const shortBlocks = result.filter(r => r.short && r.requested);
     if (shortBlocks.length) {
-      const missing = shortBlocks.reduce((s, r) => s + (r.requested - r.exercises.length), 0);
-      html += `<p class="class-warning">Hay pocos ejercicios para esta combinación: ${missing === 1 ? "falta 1 ejercicio" : `faltan ${missing} ejercicios`} para completar ${shortBlocks.length === 1 ? "un bloque" : `${shortBlocks.length} bloques`}. No relleno con ejercicios que no corresponden. Para una clase más completa podés ${widenHint()}.</p>`;
+      html += `<p class="block-note">Tip: combinando con otro accesorio la clase gana variedad.</p>`;
     }
 
     result.forEach(({ block, minutes, exercises, noExtra, focusShort, generalCount }) => {
@@ -1328,16 +1327,8 @@
         </div>`;
 
       if (!exercises.length) {
-        html += populationId && populationId !== "general"
-          ? `<p class="block-empty">No hay ejercicios de la base marcados como aptos para ${populationLabel.toLowerCase()} en este bloque con este elemento. Probá con otro elemento o sumá uno propio acá abajo.</p>`
-          : `<p class="block-empty">Todavía no cargaste ejercicios para esta combinación en este bloque. Sumalos con "+ Agregar ejercicio propio" o con el campo de acá abajo.</p>`;
+        html += `<p class="block-empty">Bloque libre: podés sumar un ejercicio propio acá abajo.</p>`;
       } else {
-        if (generalCount) {
-          html += `<p class="block-note">${block.id === 1 ? "Incluye movilidad general" : "Incluye vuelta a la calma general"} (del mismo nivel y accesorio) para completar el bloque.</p>`;
-        }
-        if (focusShort) {
-          html += `<p class="block-note">Hay pocos ejercicios de ${(UPPER_FOCUS.find(f => f.id === focusId)?.label || "").toLowerCase()} con estos filtros: el bloque se completa con otros de tren superior.</p>`;
-        }
         if (noExtra) {
           html += `<p class="block-empty">No hay más ejercicios nuevos para sumar en este bloque sin repetir.</p>`;
         }
