@@ -990,14 +990,56 @@
 
   // Los celulares tienen un tope de tamaño de canvas (~16 millones de píxeles en iOS);
   // si se pasa, el canvas sale en blanco. Ajustamos la escala para no superarlo.
-  function safeCanvasScale(el) {
-    const w = el.scrollWidth || 1;
-    const h = el.scrollHeight || 1;
+  function safeCanvasScale(w, h) {
     const maxArea = IS_MOBILE ? 14_000_000 : 60_000_000;
-    const maxSide = IS_MOBILE ? 16_000 : 32_000;
     const byArea = Math.sqrt(maxArea / (w * h));
-    const bySide = maxSide / Math.max(w, h);
-    return Math.max(0.5, Math.min(2, byArea, bySide));
+    return Math.max(1, Math.min(3, byArea));
+  }
+
+  // Ancho fijo de "hoja" para el PDF: así en el celular no se captura la columna
+  // angosta de la pantalla (que estirada a A4 queda borrosa y gigante).
+  const PDF_SHEET_PX = 760;
+  const PDF_MARGIN_PT = 24;
+  // Elementos que no conviene cortar al medio entre dos páginas.
+  const PDF_KEEP_TOGETHER = ".class-header, .intent-box, .block-note, .block-head, .block-empty, .exercise-card, .quick-add-row, .class-summary";
+
+  // Copia de la clase fuera de pantalla, con ancho de hoja fijo.
+  function buildPdfSheet(target) {
+    const viewport = document.createElement("div");
+    viewport.style.cssText = `position:absolute; left:-20000px; top:0; width:${PDF_SHEET_PX}px; overflow:hidden; background:${getComputedStyle(document.body).backgroundColor};`;
+    const inner = target.cloneNode(true);
+    inner.removeAttribute("id");
+    inner.classList.remove("hidden");
+    inner.style.cssText = "position:relative; margin:0; width:100%;";
+    inner.querySelectorAll("img").forEach(img => { img.loading = "eager"; });
+    viewport.appendChild(inner);
+    document.body.appendChild(viewport);
+    return { viewport, inner };
+  }
+
+  // Calcula dónde cortar cada página, siempre entre elementos (no a mitad de un texto).
+  function pdfPageBreaks(inner, pageHeightPx) {
+    const base = inner.getBoundingClientRect().top;
+    const total = inner.scrollHeight;
+    const cuts = Array.from(inner.querySelectorAll(PDF_KEEP_TOGETHER))
+      .map(el => Math.round(el.getBoundingClientRect().top - base))
+      .filter(y => y > 0 && y < total)
+      .sort((a, b) => a - b);
+    const pages = [];
+    let start = 0;
+    while (start < total) {
+      const limit = start + pageHeightPx;
+      if (limit >= total) { pages.push([start, total]); break; }
+      // el corte más bajo que entra en la página (y que no deje la página casi vacía)
+      let end = limit;
+      for (const y of cuts) {
+        if (y > limit) break;
+        if (y > start + pageHeightPx * 0.3) end = y;
+      }
+      pages.push([start, end]);
+      start = end;
+    }
+    return pages;
   }
 
   // iOS/Android no respetan la descarga "invisible" de pdf.save().
@@ -1040,33 +1082,41 @@
     const filename = `clase-${state.discipline}-${Date.now()}.pdf`;
     let ok = false;
 
-    loadAllImages(target)
-      .then(() => html2canvas(target, {
-        scale: safeCanvasScale(target),
-        backgroundColor: "#FBF1EE",
-        useCORS: true,
-      }))
-      .then(canvas => {
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF({ unit: "pt", format: "a4" });
-        const pageWidth = pdf.internal.pageSize.getWidth();
-        const pageHeight = pdf.internal.pageSize.getHeight();
-        const imgWidth = pageWidth;
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    const bg = getComputedStyle(document.body).backgroundColor || "rgb(244, 241, 231)";
+    const bgRgb = (bg.match(/\d+/g) || [244, 241, 231]).slice(0, 3).map(Number);
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ unit: "pt", format: "a4" });
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const contentWidthPt = pageWidth - PDF_MARGIN_PT * 2;
+    const pxPerPt = PDF_SHEET_PX / contentWidthPt;
+    const pageHeightPx = Math.floor((pageHeight - PDF_MARGIN_PT * 2) * pxPerPt);
+    const sheet = buildPdfSheet(target);
+
+    // Una captura por página: cada canvas es chico, así puede ir en alta
+    // resolución también en el celular sin pasarse del tope de memoria.
+    const renderPages = async () => {
+      if (document.fonts && document.fonts.ready) await document.fonts.ready;
+      await loadAllImages(sheet.inner);
+      const pages = pdfPageBreaks(sheet.inner, pageHeightPx);
+      const scale = safeCanvasScale(PDF_SHEET_PX, pageHeightPx);
+      for (let i = 0; i < pages.length; i++) {
+        const [start, end] = pages[i];
+        sheet.viewport.style.height = `${end - start}px`;
+        sheet.inner.style.top = `${-start}px`;
+        const canvas = await html2canvas(sheet.viewport, { scale, backgroundColor: bg, useCORS: true });
+        if (i > 0) pdf.addPage();
+        pdf.setFillColor(...bgRgb);
+        pdf.rect(0, 0, pageWidth, pageHeight, "F");
         // JPEG pesa mucho menos que PNG: evita quedarse sin memoria en el celular.
-        const imgData = canvas.toDataURL("image/jpeg", 0.88);
+        const imgData = canvas.toDataURL("image/jpeg", 0.92);
+        canvas.width = canvas.height = 0; // libera memoria antes de la próxima página
+        pdf.addImage(imgData, "JPEG", PDF_MARGIN_PT, PDF_MARGIN_PT, contentWidthPt, (end - start) / pxPerPt);
+      }
+    };
 
-        let heightLeft = imgHeight;
-        let position = 0;
-        pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-        while (heightLeft > 0) {
-          position = heightLeft - imgHeight;
-          pdf.addPage();
-          pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
-          heightLeft -= pageHeight;
-        }
-
+    renderPages()
+      .then(() => {
         if (IS_MOBILE) {
           offerPdfOnMobile(btn, pdf.output("blob"), filename);
         } else {
@@ -1079,6 +1129,7 @@
         alert("No se pudo generar el PDF. Probá de nuevo.");
       })
       .finally(() => {
+        sheet.viewport.remove();
         if (!ok || !IS_MOBILE) {
           btn.textContent = original;
           btn.disabled = false;
