@@ -13,6 +13,8 @@
     upperFocus: "mixto", // solo aplica con objetivo "tren-superior"
     level: "intermedio",
     duration: 55,
+    conditions: [],          // condiciones de salud presentes en el grupo (data-patologias.js)
+    conditionMode: "adaptar", // "adaptar": se muestran adaptadas · "excluir": se sacan los contraindicados
   };
 
   // ---------- almacenamiento local seguro (modo privado / storage bloqueado) ----------
@@ -34,6 +36,9 @@
   }
 
   let lastRender = null; // { objectiveId, objectiveLabel, populationId, populationLabel, result } de la clase mostrada actualmente
+  // vista de la clase: resumen (una fila por ejercicio) o todo abierto; fichas abiertas a mano
+  let viewAll = false;
+  const openCards = new Set(); // claves "bloque:id" de las fichas abiertas, sobreviven a cambiar/quitar ejercicios
 
   // ---------- helpers ----------
   const $ = (sel) => document.querySelector(sel);
@@ -173,6 +178,8 @@
       upperFocus: state.upperFocus,
       level: state.level,
       duration: state.duration,
+      conditions: state.conditions.slice(),
+      conditionMode: state.conditionMode,
       render: lastRender,
     });
     persistSavedClasses(saved);
@@ -204,6 +211,9 @@
     state.upperFocus = entry.upperFocus || "mixto";
     state.level = entry.level;
     state.duration = Math.min(entry.duration, MAX_DURATION);
+    state.conditions = Array.isArray(entry.conditions) ? entry.conditions.filter(c => AVOID_TAGS.includes(c)) : [];
+    state.conditionMode = entry.conditionMode || "adaptar";
+    renderConditionPills();
 
     $$("#modality-group .pill").forEach(p => p.classList.toggle("is-active", p.dataset.value === state.modality));
     refreshAccesorioPills();
@@ -475,6 +485,8 @@
     // enfoque de tren superior: en los bloques que no son el principal, el patrón elegido tiene prioridad
     if (ctx.focusPatron && (ex.patron || []).includes(ctx.focusPatron)) w *= 3;
     if (ctx.favorites && ctx.favorites.has(ex.id)) w *= 2.5;
+    // condiciones del grupo (modo adaptar): lo contraindicado entra solo si no hay otra opción
+    if (ctx.conditions && ctx.conditions.length && conditionRisk(ex, ctx.conditions) === "evitar") w *= 0.15;
     return w;
   }
 
@@ -485,63 +497,34 @@
       .map(o => o.ex);
   }
 
-  // Principio general de seguridad por condición + cómo aplicarlo en el ejercicio puntual.
-  // Se usa como base para CUALQUIER ejercicio; si el ejercicio tiene "adaptations" cargado
-  // a mano para esa condición, ese contenido específico tiene prioridad sobre este genérico.
-  const CONDITION_GUIDANCE = {
-    "Osteoporosis / osteopenia": {
-      principle: "evitar la flexión de columna combinada con rotación y cualquier carga de impacto",
-      suggestion: "trabajá dentro de un rango más neutro de columna, sin buscar el máximo de flexión ni de rotación, y con apoyos que reduzcan la carga articular",
-    },
-    "Hernia de disco lumbar": {
-      principle: "evitar la flexión lumbar profunda y la rotación forzada bajo carga",
-      suggestion: "reducí el rango de flexión hacia adelante, mantené la columna más neutra y priorizá el control abdominal antes que la amplitud del movimiento",
-    },
-    "Embarazo / posparto": {
-      principle: "evitar la posición boca abajo, la presión abdominal directa y las torsiones cerradas",
-      suggestion: "adaptá la posición (de costado, sentada o de pie según convenga), reducí la intensidad y priorizá la respiración por sobre el rango de movimiento",
-    },
-    "Problemas de cadera / prótesis": {
-      principle: "evitar el rango extremo de flexión, rotación interna o cruzar la línea media de cadera",
-      suggestion: "trabajá dentro de un rango cómodo y menor, sumando apoyos (bloques, silla, pared) que sostengan la articulación",
-    },
-    "Post-cirugía de rodilla": {
-      principle: "evitar la flexión profunda de rodilla y la carga con pivote sobre la rodilla flexionada",
-      suggestion: "reducí el rango de flexión de rodilla, trabajá con menor carga o apoyo adicional, y evitá cualquier torsión con el pie fijo",
-    },
-    "Hipermovilidad": {
-      principle: "evitar buscar el rango máximo o bloquear las articulaciones al final del recorrido",
-      suggestion: "sostené el movimiento dentro de un rango controlado, activando el músculo en vez de apoyarte en el límite articular",
-    },
-    "Fibromialgia": {
-      principle: "evitar sostenidos largos, cargas altas o cambios bruscos de ritmo que puedan generar sobrecarga",
-      suggestion: "reducí el tiempo de sostén y la intensidad, sumá pausas y dejá que la alumna regule el ritmo según su energía del día",
-    },
-    "Disfunción de suelo pélvico": {
-      principle: "evitar retener el aire o generar presión intraabdominal alta (maniobra de Valsalva)",
-      suggestion: "coordiná el esfuerzo con una exhalación activa y reducí la intensidad o el rango si aparece sensación de presión hacia abajo",
-    },
-  };
+  // Adaptaciones por condición: las condiciones, reglas y textos están en data-patologias.js.
+  // Prioridad: adaptación escrita a mano en el ejercicio → regla según el movimiento → "no lo compromete".
+  function getAdaptation(ex, tag) {
+    if (window.PATOLOGIAS) return window.PATOLOGIAS.adaptation(ex, tag);
+    const texto = (ex.adaptations && ex.adaptations[tag]) || ex.adaptation ||
+      "No hay un ajuste específico registrado; individualizá el rango y la intensidad, y ante cualquier duda consultá con el profesional tratante de la alumna.";
+    return { nivel: (ex.avoid || []).includes(tag) ? "evitar" : null, texto };
+  }
 
-  function getAdaptationForCondition(ex, tag) {
-    // 1) contenido específico cargado a mano para este ejercicio y esta condición puntual
-    if (ex.adaptations && ex.adaptations[tag]) return ex.adaptations[tag];
-
-    const guidance = CONDITION_GUIDANCE[tag];
-    const taggedHere = (ex.avoid || []).includes(tag);
-
-    // 2) el ejercicio ya trae una adaptación general y esta condición es la que la motiva
-    const specificNote = taggedHere && ex.adaptation
-      ? ` Para este ejercicio en particular: ${ex.adaptation.charAt(0).toLowerCase()}${ex.adaptation.slice(1)}`
-      : "";
-
-    if (!guidance) {
-      return ex.adaptation || "No hay un ajuste específico registrado; individualizá el rango y la intensidad, y ante cualquier duda consultá con el profesional tratante de la alumna.";
+  // peor nivel de riesgo del ejercicio para las condiciones dadas: "evitar" | "precaucion" | null
+  function conditionRisk(ex, conditions) {
+    if (!conditions || !conditions.length) return null;
+    let worst = null;
+    for (const c of conditions) {
+      const n = getAdaptation(ex, c).nivel;
+      if (n === "evitar") return "evitar";
+      if (n) worst = n;
     }
+    return worst;
+  }
 
-    // 3) siempre generamos una adaptación aplicable a "este" ejercicio, combinando el
-    // principio general de la condición con el nombre del ejercicio que se está mostrando
-    return `Para esta condición, en general conviene ${guidance.principle}. En "${ex.name}": ${guidance.suggestion}.${specificNote}`;
+  // modo "excluir": los ejercicios contraindicados para alguna condición del grupo no entran
+  const fitsConditions = (ex, conditions, mode) =>
+    !(mode === "excluir" && conditionRisk(ex, conditions) === "evitar");
+
+  // condiciones en las que el ejercicio está contraindicado (aviso "Evitar en")
+  function evitarConditions(ex) {
+    return window.PATOLOGIAS ? window.PATOLOGIAS.evitarList(ex) : (ex.avoid || []);
   }
 
   // ---------- render form options depending on discipline ----------
@@ -624,9 +607,18 @@
     renderPillGroup("#ex-moment-group", BLOCKS.map(b => ({ id: b.id, label: `${b.id}. ${b.name}` })), null, true);
     renderPillGroup("#ex-objective-group", OBJECTIVES[d], null, true);
     renderPillGroup("#ex-avoid-group", AVOID_TAGS.map(t => ({ id: t, label: t })), null, true);
+    renderConditionPills();
     renderPillGroup("#ex-patron-group", Object.keys(PATRON_LABELS).map(id => ({ id, label: PATRON_LABELS[id] })), null, true);
     renderSelect("#ex-posicion-select", POSICION_ORDER.map(id => ({ id, label: POSICION_LABELS[id] })));
     refreshExAccesorioPills();
+  }
+
+  // condiciones del grupo: no dependen de la disciplina, se conservan al cambiarla
+  function renderConditionPills() {
+    renderPillGroup("#condition-group", AVOID_TAGS.map(t => ({ id: t, label: t })), null, true);
+    $$("#condition-group .pill").forEach(p => p.classList.toggle("is-active", state.conditions.includes(p.dataset.value)));
+    $$("#condition-mode-group .pill").forEach(p => p.classList.toggle("is-active", p.dataset.value === state.conditionMode));
+    $("#condition-mode-fieldset")?.classList.toggle("hidden", !state.conditions.length);
   }
 
   // ---------- pill click handling (event delegation) ----------
@@ -653,6 +645,11 @@
     if (group.id === "focus-group") state.upperFocus = pill.dataset.value;
     if (group.id === "level-group") state.level = pill.dataset.value;
     if (group.id === "duration-group") state.duration = Number(pill.dataset.value);
+    if (group.id === "condition-group") {
+      state.conditions = $$("#condition-group .pill.is-active").map(p => p.dataset.value);
+      $("#condition-mode-fieldset")?.classList.toggle("hidden", !state.conditions.length);
+    }
+    if (group.id === "condition-mode-group") state.conditionMode = pill.dataset.value;
   });
 
   // ---------- discipline toggle (sincroniza la barra principal y la barra pegajosa) ----------
@@ -728,7 +725,7 @@
 
   const familyOf = (ex) => ex.familia || ex.id;
 
-  function filterPool({ discipline, moment, modality, level, objective, populationId, accesorios, excludeIds = new Set(), excludeNames = new Set(), excludeFamilies = new Set() }) {
+  function filterPool({ discipline, moment, modality, level, objective, populationId, accesorios, conditions = [], conditionMode = "adaptar", excludeIds = new Set(), excludeNames = new Set(), excludeFamilies = new Set() }) {
     const hidden = getHidden();
     const levels = levelsFor(level, populationId);
     const base = allExercises().filter(ex =>
@@ -738,6 +735,7 @@
       (ex.level || []).some(l => levels.includes(l)) &&
       matchesAccesorio(ex, accesorios) &&
       fitsPopulation(ex, populationId) &&
+      fitsConditions(ex, conditions, conditionMode) &&
       !hidden.has(ex.id) &&
       !excludeIds.has(ex.id) &&
       !excludeNames.has(ex.name) &&
@@ -755,6 +753,7 @@
           !(ex.accesorio || []).some(a => PROP_ACC.includes(a)) &&
           !base.includes(ex) &&
           fitsPopulation(ex, populationId) &&
+          fitsConditions(ex, conditions, conditionMode) &&
           !hidden.has(ex.id) && !excludeIds.has(ex.id) && !excludeNames.has(ex.name) &&
           !excludeFamilies.has(familyOf(ex)))
       : [];
@@ -841,6 +840,7 @@
       discipline: state.discipline, modality: state.modality, level: state.level,
       objective: objectiveId, populationId, accesorios: state.accesorios.slice(),
       focus, favorites: getFavorites(),
+      conditions: state.conditions.slice(), conditionMode: state.conditionMode,
     };
   }
 
@@ -850,6 +850,7 @@
     const { pool, general, sinElementos } = filterPool({
       discipline: ctx.discipline, moment: block.id, modality: ctx.modality, level: ctx.level,
       objective: ctx.objective, populationId: ctx.populationId, accesorios: ctx.accesorios,
+      conditions: ctx.conditions, conditionMode: ctx.conditionMode,
       excludeIds: used.ids, excludeNames: used.names, excludeFamilies: used.families,
     });
     const focusPatron = ctx.focus.patron;
@@ -1001,7 +1002,7 @@
   const PDF_SHEET_PX = 760;
   const PDF_MARGIN_PT = 24;
   // Elementos que no conviene cortar al medio entre dos páginas.
-  const PDF_KEEP_TOGETHER = ".class-header, .intent-box, .block-note, .block-head, .block-empty, .exercise-card, .quick-add-row, .class-summary";
+  const PDF_KEEP_TOGETHER = ".class-header, .intent-box, .block-note, .block-head, .block-empty, .exercise-card, .ex-ficha-top, .ex-tiles, .ex-clave, .group-adapt, .quick-add-row, .class-summary";
 
   // Copia de la clase fuera de pantalla, con ancho de hoja fijo.
   function buildPdfSheet(target) {
@@ -1010,6 +1011,8 @@
     const inner = target.cloneNode(true);
     inner.removeAttribute("id");
     inner.classList.remove("hidden");
+    // en el PDF van todas las fichas abiertas y sin botones
+    inner.classList.add("show-all", "pdf-sheet");
     inner.style.cssText = "position:relative; margin:0; width:100%;";
     inner.querySelectorAll("img").forEach(img => { img.loading = "eager"; });
     viewport.appendChild(inner);
@@ -1153,6 +1156,7 @@
     const { pool, general } = filterPool({
       discipline: state.discipline, moment: blockId, modality: state.modality, level: state.level,
       objective: lastRender.objectiveId, populationId: lastRender.populationId, accesorios: ctx.accesorios,
+      conditions: ctx.conditions, conditionMode: ctx.conditionMode,
       excludeIds, excludeNames, excludeFamilies,
     });
     // preferimos un reemplazo con la misma configuración y posición, para no romper el orden del bloque
@@ -1262,43 +1266,127 @@
       </div>`;
   }
 
+  // ---------- barra de tiempo por bloque (reemplaza al gráfico circular) ----------
+  function renderTimeBar(result) {
+    const total = result.reduce((s, r) => s + r.minutes, 0) || 1;
+    const bar = result.map((r, i) =>
+      `<span style="flex:${r.minutes};background:${CHART_COLORS[i % CHART_COLORS.length]}" title="${r.block.name} · ${r.minutes} min"></span>`).join("");
+    const legend = result.map((r, i) => `
+      <div class="legend-item">
+        <span class="legend-dot" style="background:${CHART_COLORS[i % CHART_COLORS.length]}"></span>
+        <span>${r.block.name} · ${r.minutes} min</span>
+      </div>`).join("");
+    return `<div class="time-bar" aria-hidden="true">${bar}</div><div class="time-bar-legend">${legend}</div>`;
+  }
+
+  // color del punto según el resorte (escala del estudio: amarillo < azul < rojo < verde)
+  function resorteColor(text) {
+    const t = (text || "").toLowerCase().trim();
+    if (/^(carro )?trabado|firme|no carga|^torre/.test(t)) return "lock";
+    if (t.startsWith("amarillo")) return "yellow";
+    if (t.startsWith("azul")) return "blue";
+    if (t.startsWith("rojo")) return "red";
+    if (t.startsWith("verde")) return "green";
+    return "lock";
+  }
+  const shortCondition = (c) => c.split(/ \/ | \(/)[0];
+  const cardKey = (blockId, ex) => `${blockId}:${ex.id}`;
+
   // ---------- render de una tarjeta de ejercicio ----------
-  function renderExerciseCard(ex, blockId, idx, isPrepOriented, minutesEach) {
+  // adaptaciones para las condiciones elegidas en el grupo: quedan visibles en la tarjeta
+  // (y por eso también en el PDF y en "Copiar texto")
+  function groupAdaptations(ex) {
+    return state.conditions
+      .map(c => ({ c, ...getAdaptation(ex, c) }))
+      .filter(a => a.nivel);
+  }
+
+  function renderGroupAdaptations(ex) {
+    if (!state.conditions.length) return "";
+    const list = groupAdaptations(ex);
+    const ok = state.conditions.filter(c => !list.some(a => a.c === c));
+    const rows = list.map(a => `
+      <div class="group-adapt-row is-${a.nivel}">
+        <span class="group-adapt-tag">${a.nivel === "evitar" ? "Reemplazar" : "Adaptar"} · ${a.c}</span>
+        <p>${a.texto}</p>
+      </div>`).join("");
+    const okRow = ok.length ? `<p class="group-adapt-ok">Sin cambios para: ${ok.join(", ")}.</p>` : "";
+    return `<div class="group-adapt">${rows}${okRow}</div>`;
+  }
+
+  function renderExerciseCard(ex, blockId, idx, isPrepOriented, minutesEach, number) {
     const coaching = getCoaching(ex);
     const levelLabel = LEVEL_LABELS[state.level] || state.level;
     const imageSrc = getExerciseImage(ex);
     const isFav = getFavorites().has(ex.id);
     const metaChips = [
-      minutesEach ? `≈ ${minutesEach} min` : "",
       ...(ex.accesorio || []).filter(a => a !== "ninguno").map(a => ACCESORIO_LABELS[a] || a),
       ...(ex.patron || []).slice(0, 2).map(p => PATRON_LABELS[p] || p),
     ].filter(Boolean);
 
-    return `
-      <div class="exercise-card" data-block="${blockId}" data-idx="${idx}">
-        <div class="exercise-illustration">
-          <img src="${imageSrc}" alt="${ex.name}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-          <div class="exercise-illustration-icon" style="display:none;">${getPositionIcon(ex.position)}</div>
-        </div>
-        <div class="exercise-body">
-          <div class="exercise-title-row">
-            <h5>${ex.name}</h5>
-            ${ex.position ? `<span class="position">${ex.position}</span>` : ""}
-            ${isPrepOriented ? `<span class="badge-prep">PREP ORIENTADA</span>` : ""}
-          </div>
-          ${metaChips.length ? `<div class="exercise-meta">${metaChips.map(c => `<span class="meta-chip">${c}</span>`).join("")}</div>` : ""}
-          <p class="exercise-desc">${ex.description}</p>
+    // fila de resumen: dosis corta, resorte con su color y avisos por las condiciones del grupo
+    const guide = getLevelGuide(ex);
+    const cueLine = guide.find(l => l.label === "Cue");
+    const tiles = guide.filter(l => l.label !== "Cue");
+    const dosisCorta = capitalize(levelAmount(ex, state.level) || "");
+    const showRes = ex.resortes && state.modality !== "mat";
+    const resCorto = showRes ? ex.resortes.split("(")[0].trim().replace(/[.,;]$/, "") : "";
+    const adapts = groupAdaptations(ex);
+    const reemplazar = adapts.filter(a => a.nivel === "evitar");
+    const adaptar = adapts.filter(a => a.nivel !== "evitar");
+    const flags = [
+      reemplazar.length ? `<span class="ex-flag is-evitar" title="${reemplazar.map(a => a.c).join(", ")}">⚠ Reemplazar · ${reemplazar.map(a => shortCondition(a.c)).join(", ")}</span>` : "",
+      adaptar.length ? `<span class="ex-flag" title="${adaptar.map(a => a.c).join(", ")}">⚠ Adaptar · ${adaptar.map(a => shortCondition(a.c)).join(", ")}</span>` : "",
+    ].join("");
+    const isOpen = openCards.has(cardKey(blockId, ex));
+    const fichaId = `ficha-${blockId}-${idx}`;
 
-          <div class="level-guide">
-            <span class="level-guide-title">Nivel ${levelLabel}</span>
-            <ul>${getLevelGuide(ex).map(line => `<li><strong>${line.label}:</strong> ${line.text}</li>`).join("")}</ul>
+    return `
+      <div class="exercise-card ex-item${isOpen ? " is-open" : ""}" data-block="${blockId}" data-idx="${idx}" data-key="${cardKey(blockId, ex)}">
+        <button type="button" class="ex-row" aria-expanded="${isOpen}" aria-controls="${fichaId}">
+          <span class="ex-row-num">${number || ""}</span>
+          <span class="ex-row-thumb">
+            <img src="${imageSrc}" alt="" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <span class="exercise-illustration-icon" style="display:none;">${getPositionIcon(ex.position)}</span>
+          </span>
+          <span class="ex-row-main">
+            <span class="ex-row-name">${ex.name.replace(/\s*·\s*(inicial|intermedio|avanzado)\s*$/i, "")}${isFav ? ` <span class="ex-row-fav" title="Favorito">★</span>` : ""}</span>
+            <span class="ex-row-meta">
+              ${dosisCorta ? `<span>${dosisCorta}</span>` : ""}
+              ${resCorto ? `<span><i class="res-dot res-${resorteColor(ex.resortes)}"></i>${resCorto}</span>` : ""}
+              ${flags}
+            </span>
+          </span>
+          <span class="ex-row-min">${minutesEach ? `${minutesEach} min` : ""}<svg class="ex-row-chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span>
+        </button>
+
+        <div class="ex-ficha" id="${fichaId}">
+          <div class="ex-ficha-top">
+            <div class="exercise-illustration ex-ficha-img">
+              <img src="${imageSrc}" alt="${ex.name}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+              <div class="exercise-illustration-icon" style="display:none;">${getPositionIcon(ex.position)}</div>
+            </div>
+            <div class="exercise-body">
+              <div class="exercise-title-row">
+                ${ex.position ? `<span class="position">${ex.position}</span>` : ""}
+                ${isPrepOriented ? `<span class="badge-prep">PREP ORIENTADA</span>` : ""}
+              </div>
+              <p class="exercise-desc">${ex.description}</p>
+              ${metaChips.length ? `<div class="exercise-meta">${metaChips.map(c => `<span class="meta-chip">${c}</span>`).join("")}</div>` : ""}
+            </div>
           </div>
+
+          <div class="ex-tiles" aria-label="Nivel ${levelLabel}">
+            ${tiles.map(line => `<div class="ex-tile"><span class="ex-tile-label">${line.label}</span><p>${line.label === "Resortes" ? `<i class="res-dot res-${resorteColor(ex.resortes)}"></i>` : ""}${line.text}</p></div>`).join("")}
+          </div>
+          ${cueLine ? `<div class="ex-clave"><span class="ex-tile-label">La clave para corregir</span><p>${cueLine.text}</p></div>` : ""}
 
           <div class="exercise-chips">
             <button type="button" class="chip-btn toggle-coaching">Cómo explicarlo ▾</button>
             <button type="button" class="chip-btn toggle-adaptation">+ Adaptación por patología ▾</button>
-            ${(ex.avoid && ex.avoid.length) ? `<span class="chip warn">Evitar en: ${ex.avoid.join(", ")}</span>` : ""}
+            ${(() => { const ev = evitarConditions(ex); return ev.length ? `<span class="chip warn">Evitar en: ${ev.join(", ")}</span>` : ""; })()}
           </div>
+          ${renderGroupAdaptations(ex)}
 
           <div class="coaching-panel hidden">
             <div class="coaching-row"><span class="coaching-icon" aria-hidden="true">🗣️</span><div><strong>Verbal</strong><p>${coaching.verbal}</p></div></div>
@@ -1330,6 +1418,39 @@
       </div>`;
   }
 
+  // abrir/cerrar una ficha sin volver a dibujar la clase
+  function setCardOpen(card, open) {
+    card.classList.toggle("is-open", open);
+    card.querySelector(".ex-row")?.setAttribute("aria-expanded", String(open));
+    const key = card.dataset.key;
+    if (key) { if (open) openCards.add(key); else openCards.delete(key); }
+  }
+
+  function setViewAll(all) {
+    viewAll = all;
+    const content = $("#output-content");
+    content.classList.toggle("show-all", all);
+    content.querySelectorAll(".view-toggle button").forEach(b =>
+      b.setAttribute("aria-pressed", String((b.dataset.view === "all") === all)));
+    if (!all) {
+      openCards.clear();
+      content.querySelectorAll(".ex-item.is-open").forEach(c => setCardOpen(c, false));
+    }
+  }
+
+  // la barra fija de abajo (celular) se muestra solo mientras la clase está en pantalla
+  let dockObserver = null;
+  function watchDock() {
+    const dock = $("#class-dock");
+    const content = $("#output-content");
+    if (!dock || !content || !("IntersectionObserver" in window)) return;
+    if (dockObserver) dockObserver.disconnect();
+    dockObserver = new IntersectionObserver(([entry]) => {
+      dock.classList.toggle("is-visible", entry.isIntersecting);
+    }, { rootMargin: "-120px 0px -120px 0px" });
+    dockObserver.observe(content);
+  }
+
   // ---------- modo clase en vivo (cronómetro por ejercicio) ----------
   let liveState = null; // { steps: [{block, ex}], index, seconds, timerId, paused }
 
@@ -1356,6 +1477,12 @@
     $("#live-ex-name").textContent = ex.name;
     $("#live-ex-desc").textContent = ex.description || "";
     $("#live-ex-howto").textContent = levelGuideText(ex).join(" · ");
+    const adaptBox = $("#live-ex-adapt");
+    if (adaptBox) {
+      const list = groupAdaptations(ex);
+      adaptBox.innerHTML = list.map(a => `<p><strong>${a.nivel === "evitar" ? "Reemplazar" : "Adaptar"} · ${a.c}:</strong> ${a.texto}</p>`).join("");
+      adaptBox.classList.toggle("hidden", !list.length);
+    }
 
     liveState.seconds = 0;
     liveState.paused = false;
@@ -1418,6 +1545,17 @@
     return hints.join(", ");
   }
 
+  // Frase de inicio/cierre según disciplina y objetivo (data-frases.js). Se elige a partir de
+  // los ejercicios de la clase, así no cambia al re-renderizar la misma clase.
+  function pickFrase(tipo, objectiveId, result) {
+    const list = (typeof FRASES !== "undefined" && FRASES[state.discipline]?.[objectiveId]?.[tipo]) || [];
+    if (!list.length) return null;
+    const key = result.map(r => r.exercises.map(e => e.id).join(",")).join("|") + tipo;
+    let h = 0;
+    for (let i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) >>> 0;
+    return list[h % list.length];
+  }
+
   function renderClass({ objectiveId, objectiveLabel, populationId, populationLabel, result, focusId }) {
     lastRender = { objectiveId, objectiveLabel, populationId, populationLabel, result, focusId };
     $("#output-empty").classList.add("hidden");
@@ -1426,6 +1564,10 @@
 
     const modLabel = MODALITIES[state.discipline].find(m => m.id === state.modality)?.label || state.modality;
     const levelLabel = LEVEL_LABELS[state.level];
+    const allEx = result.flatMap(r => r.exercises);
+    const nAdaptar = state.conditions.length ? allEx.filter(ex => conditionRisk(ex, state.conditions)).length : 0;
+    const statMinutes = result.reduce((s, r) => s + (r.exercises.length ? r.minutes : 0), 0);
+    const statBlocks = result.filter(r => r.exercises.length).length;
 
     let html = `
       <div class="class-header">
@@ -1438,27 +1580,50 @@
           <span class="tag">${populationLabel}</span>
           ${state.accesorios.map(a => `<span class="tag">${ACCESORIO_LABELS[a] || a}</span>`).join("")}
           ${focusId && focusId !== "mixto" ? `<span class="tag">${UPPER_FOCUS.find(f => f.id === focusId)?.label || focusId}</span>` : ""}
+          ${state.conditions.length ? `<span class="tag tag-cond">⚠ ${state.conditions.length === 1 ? `Grupo con ${shortCondition(state.conditions[0]).toLowerCase()}` : `${state.conditions.length} condiciones en el grupo`}</span>` : ""}
         </div>
-        ${renderTimeDonut(result)}
+        <div class="class-stats">
+          <span><b>${allEx.length}</b> ejercicios</span>
+          <span><b>${statBlocks}</b> bloques</span>
+          <span><b>${statMinutes}</b> minutos</span>
+          ${nAdaptar ? `<span><b>${nAdaptar}</b> para adaptar</span>` : ""}
+        </div>
+        ${renderTimeBar(result)}
         <div class="actions">
-          <button type="button" class="btn-outline" id="btn-live">▶ Modo clase en vivo</button>
-          <button type="button" class="btn-outline" id="btn-pdf">↓ Descargar PDF</button>
-          <button type="button" class="btn-outline" id="btn-save-class">☆ Guardar clase</button>
-          ${state.duration < MAX_DURATION ? `<button type="button" class="btn-outline" id="btn-extend">+ ${Math.min(20, MAX_DURATION - state.duration)} min sin repetir</button>` : ""}
-          <button type="button" class="btn-outline" id="btn-regenerate">↻ Regenerar clase</button>
-          <button type="button" class="btn-outline" id="btn-copy">⎘ Copiar texto</button>
+          <button type="button" class="btn-outline btn-primary-light" id="btn-live">▶ Dar la clase</button>
+          <button type="button" class="btn-outline" id="btn-pdf">↓ PDF</button>
+          <button type="button" class="btn-outline" id="btn-save-class">☆ Guardar</button>
+          <button type="button" class="btn-outline" id="btn-regenerate">↻ Otra versión</button>
+          <details class="more-actions">
+            <summary class="btn-outline">⋯ Más</summary>
+            <div class="more-actions-menu">
+              ${state.duration < MAX_DURATION ? `<button type="button" id="btn-extend">+ ${Math.min(20, MAX_DURATION - state.duration)} min sin repetir</button>` : ""}
+              <button type="button" id="btn-copy">⎘ Copiar texto</button>
+            </div>
+          </details>
         </div>
       </div>
 
       <div class="intent-box">
-        <span class="label">Frase de inicio — la intención de hoy</span>
-        "Hoy en esta clase vamos a trabajar ${objectiveLabel.toLowerCase()}. Antes de empezar, tomá un momento para notar cómo llegás — sin cambiarlo, solo notarlo."
+        <span class="label">Para abrir la clase</span>
+        "${pickFrase("inicio", objectiveId, result) || `Hoy en esta clase vamos a trabajar ${objectiveLabel.toLowerCase()}. Antes de empezar, tomá un momento para notar cómo llegás — sin cambiarlo, solo notarlo.`}"
+      </div>
+
+      <div class="view-bar">
+        <div class="view-toggle" role="group" aria-label="Vista de la clase">
+          <button type="button" data-view="summary" aria-pressed="${!viewAll}">Resumen</button>
+          <button type="button" data-view="all" aria-pressed="${viewAll}">Todo abierto</button>
+        </div>
+        ${state.modality !== "mat" && state.discipline === "pilates" ? `
+        <div class="res-legend" title="${window.RESORTES_LEYENDA || ""}">
+          <span><i class="res-dot res-yellow"></i>Amarillo: muy liviano</span>
+          <span><i class="res-dot res-blue"></i>Azul: liviano a medio</span>
+          <span><i class="res-dot res-red"></i>Rojo: alto</span>
+          <span><i class="res-dot res-green"></i>Verde: máximo</span>
+          <span><i class="res-dot res-lock"></i>Carro trabado</span>
+        </div>` : ""}
       </div>
     `;
-
-    if (state.modality !== "mat" && state.discipline === "pilates" && window.RESORTES_LEYENDA) {
-      html += `<p class="block-note resortes-leyenda">${window.RESORTES_LEYENDA}</p>`;
-    }
 
     if (populationId === "principiantes") {
       html += `<p class="block-note">Principiantes absolutas: la clase se arma siempre en nivel inicial, con las versiones de más base de apoyo.</p>`;
@@ -1466,6 +1631,20 @@
       html += `<p class="block-note">Embarazo / posparto: se mantiene el nivel, no se progresa. Las versiones de este nivel que no son aptas (boca arriba, boca abajo, planchas, flexión o torsión de columna) se completan con versiones más simples y aptas. Siempre con el alta de su médico/a.</p>`;
     } else if (populationId === "mayores" && state.level === "avanzado") {
       html += `<p class="block-note">Adultos mayores: los ejercicios con flexión o rotación de columna y las planchas van en su versión intermedia, para cuidar la columna y las muñecas.</p>`;
+    }
+
+    if (state.conditions.length) {
+      const all = result.flatMap(r => r.exercises);
+      const reemplazar = all.filter(ex => conditionRisk(ex, state.conditions) === "evitar").length;
+      const adaptar = all.filter(ex => conditionRisk(ex, state.conditions) === "precaucion").length;
+      const modo = state.conditionMode === "excluir"
+        ? "Se dejaron afuera los ejercicios contraindicados."
+        : "La clase es la misma para todo el grupo; en cada ejercicio ves qué cambiar para quien lo necesite.";
+      html += `<p class="block-note group-adapt-note"><strong>Condiciones en el grupo:</strong> ${state.conditions.join(", ")}. ${modo} ${adaptar} ejercicio${adaptar === 1 ? "" : "s"} para adaptar${reemplazar ? ` y ${reemplazar} para reemplazar por una opción más segura` : ""}. Orientativo: siempre individualizá y trabajá junto al profesional tratante.</p>`;
+    } else if (populationId === "embarazo") {
+      html += `<p class="block-note">Desde el segundo trimestre conviene no sostener mucho tiempo la posición boca arriba. Si en el grupo hay una embarazada, marcá la condición en el formulario para ver la adaptación en cada ejercicio.</p>`;
+    } else if (populationId === "mayores") {
+      html += `<p class="block-note">En adultos mayores la osteoporosis es frecuente: si no sabés si alguien la tiene, marcá la condición en el formulario y vas a ver qué ejercicios conviene adaptar.</p>`;
     }
 
     if (result.some(r => r.fillerCount)) {
@@ -1477,6 +1656,7 @@
       html += `<p class="block-note">Tip: combinando con otro accesorio la clase gana variedad.</p>`;
     }
 
+    let exNumber = 0;
     result.forEach(({ block, minutes, exercises, noExtra, focusShort, generalCount }) => {
       html += `<div class="block">
         <div class="block-head">
@@ -1497,7 +1677,7 @@
         const minutesEach = Math.max(1, Math.round(minutes / exercises.length));
         exercises.forEach((ex, idx) => {
           const isPrepOriented = !!block.optional && (ex.objective || []).includes(objectiveId);
-          html += renderExerciseCard(ex, block.id, idx, isPrepOriented, minutesEach);
+          html += renderExerciseCard(ex, block.id, idx, isPrepOriented, minutesEach, ++exNumber);
         });
       }
 
@@ -1517,20 +1697,33 @@
         <span>${totalExercises} ejercicios · ${result.filter(r => r.exercises.length).length} bloques${totalMinutes < state.duration ? ` · ${state.duration - totalMinutes} min sin cubrir por falta de ejercicios` : ""}</span>
       </div>
       <div class="intent-box" style="background:var(--gold-soft); color:var(--bordo-deep);">
-        <span class="label">Frase de cierre — decila en los últimos 30 segundos</span>
-        "Hoy trabajamos ${objectiveLabel.toLowerCase()}. La próxima clase vamos a seguir construyendo sobre esta base."
+        <span class="label">Para cerrar — decila en los últimos 30 segundos</span>
+        "${pickFrase("cierre", objectiveId, result) || `Hoy trabajamos ${objectiveLabel.toLowerCase()}. La próxima clase vamos a seguir construyendo sobre esta base.`}"
+      </div>
+
+      <div class="class-dock" id="class-dock">
+        <button type="button" class="btn btn-primary" id="dock-live">▶ Dar la clase</button>
+        <button type="button" class="btn-outline" id="dock-pdf">↓ PDF</button>
       </div>
     `;
 
     content.innerHTML = html;
+    content.classList.toggle("show-all", viewAll);
+    watchDock();
 
     $("#btn-regenerate").addEventListener("click", buildClass);
     $("#btn-extend")?.addEventListener("click", extendClass);
     $("#btn-pdf").addEventListener("click", downloadPDF);
     $("#btn-live").addEventListener("click", startLiveMode);
+    $("#dock-live").addEventListener("click", startLiveMode);
+    $("#dock-pdf").addEventListener("click", () => { $("#btn-pdf")?.scrollIntoView({ behavior: "smooth", block: "center" }); downloadPDF(); });
     $("#btn-save-class").addEventListener("click", saveCurrentClass);
     $("#btn-copy").addEventListener("click", () => {
-      navigator.clipboard.writeText(content.innerText).then(() => {
+      // el texto incluye todas las fichas, aunque estén cerradas en pantalla
+      content.classList.add("show-all");
+      const text = content.innerText;
+      content.classList.toggle("show-all", viewAll);
+      navigator.clipboard.writeText(text).then(() => {
         const b = $("#btn-copy");
         const original = b.textContent;
         b.textContent = "Copiado ✓";
@@ -1549,10 +1742,18 @@
       return;
     }
 
+    const viewBtn = e.target.closest(".view-toggle button");
+    if (viewBtn) { setViewAll(viewBtn.dataset.view === "all"); return; }
+
     const card = e.target.closest(".exercise-card");
     if (!card) return;
     const blockId = Number(card.dataset.block);
     const idx = Number(card.dataset.idx);
+
+    if (e.target.closest(".ex-row")) {
+      setCardOpen(card, !card.classList.contains("is-open"));
+      return;
+    }
 
     if (e.target.closest(".toggle-coaching")) {
       card.querySelector(".coaching-panel").classList.toggle("hidden");
@@ -1570,7 +1771,9 @@
       const entry = findEntry(blockId);
       const ex = entry.exercises[idx];
       const resultBox = panel.querySelector(".condition-result");
-      resultBox.textContent = getAdaptationForCondition(ex, conditionPill.dataset.tag);
+      const adapt = getAdaptation(ex, conditionPill.dataset.tag);
+      const prefix = adapt.nivel === "evitar" ? "Reemplazar: " : adapt.nivel ? "Adaptar: " : "";
+      resultBox.textContent = prefix + adapt.texto;
       resultBox.classList.remove("hidden");
       return;
     }

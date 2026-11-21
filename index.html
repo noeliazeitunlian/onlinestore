@@ -86,6 +86,21 @@
       </fieldset>
 
       <fieldset>
+        <legend>Lesiones o condiciones en el grupo <span class="legend-optional">(opcional)</span></legend>
+        <div class="pill-group multi" id="condition-group"></div>
+        <p class="field-hint">Marcá las que tenga alguna alumna. En cada ejercicio vas a ver qué cambiar para ella.</p>
+      </fieldset>
+
+      <fieldset id="condition-mode-fieldset" class="hidden">
+        <legend>¿Qué hago con los ejercicios contraindicados?</legend>
+        <div class="pill-group" id="condition-mode-group">
+          <button type="button" class="pill is-active" data-value="adaptar">Mostrar la alternativa</button>
+          <button type="button" class="pill" data-value="excluir">Sacarlos de la clase</button>
+        </div>
+        <p class="field-hint">"Mostrar la alternativa" sirve cuando la condición es de una sola alumna: el resto hace la clase normal. "Sacarlos" sirve para una clase individual o un grupo con la misma condición.</p>
+      </fieldset>
+
+      <fieldset>
         <legend>Duración</legend>
         <div class="pill-group" id="duration-group">
           <button type="button" class="pill" data-value="45">45 min</button>
@@ -242,6 +257,7 @@
       <h4 id="live-ex-name"></h4>
       <p id="live-ex-desc"></p>
       <p class="live-ex-howto" id="live-ex-howto"></p>
+      <div class="live-ex-adapt hidden" id="live-ex-adapt"></div>
     </div>
     <div class="live-controls">
       <button type="button" class="btn-mini" id="live-prev">‹ Anterior</button>
@@ -258,6 +274,8 @@
 <script src="data-extra-3.js"></script>
 <script src="data-meta.js"></script>
 <script src="data-variantes.js"></script>
+<script src="data-patologias.js"></script>
+<script src="data-frases.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
